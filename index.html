@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Keylimba Atelier — Chord, Belajar &amp; Mainkan Kalimba</title>
+  <title>Keylimba Atelier — Multi-Instrumen Chord &amp; Belajar Musik</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,10 +29,7 @@
       --accent-amber: #D97706;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     html, body {
       margin: 0;
@@ -49,8 +46,9 @@
       background-size: 24px 24px;
     }
 
-    .soundboard {
-      background: linear-gradient(180deg, #FFFFFF 0%, #F7F3EC 64%, #EFE9DF 100%);
+    /* Unified Stage Card */
+    .stage-shell {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F7F3EC 66%, #EFE9DF 100%);
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.9) inset,
         0 20px 50px -20px rgba(24, 21, 18, 0.10),
@@ -64,11 +62,10 @@
 
     .bridge-bar {
       background: linear-gradient(180deg, #E5E0D7 0%, #D5CFC4 50%, #C6BFB2 100%);
-      box-shadow:
-        0 2px 6px rgba(24, 21, 18, 0.12),
-        0 1px 0 rgba(255, 255, 255, 0.65) inset;
+      box-shadow: 0 2px 6px rgba(24, 21, 18, 0.12), 0 1px 0 rgba(255, 255, 255, 0.65) inset;
     }
 
+    /* ==================== 1. KALIMBA TINES ==================== */
     .tine {
       position: relative;
       display: flex;
@@ -76,69 +73,48 @@
       justify-content: flex-end;
       align-items: center;
       border-radius: 0 0 999px 999px;
-      background: linear-gradient(180deg,
-        #E4E2DD 0%,
-        #F3F2EE 28%,
-        #FFFFFF 72%,
-        #ECEAE4 94%,
-        #DCD8CF 100%
-      );
+      background: linear-gradient(180deg, #E4E2DD 0%, #F3F2EE 28%, #FFFFFF 72%, #ECEAE4 94%, #DCD8CF 100%);
       border: 1px solid rgba(24, 21, 18, 0.11);
       border-top: none;
-      box-shadow:
-        0 8px 16px -6px rgba(24, 21, 18, 0.14),
-        0 2px 4px rgba(24, 21, 18, 0.06),
-        inset 1px 0 0 rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 16px -6px rgba(24, 21, 18, 0.14), inset 1px 0 0 rgba(255, 255, 255, 0.85);
       cursor: pointer;
       transform-origin: top center;
       will-change: transform;
       padding-bottom: 9px;
-      transition: background 110ms ease, border-color 110ms ease, box-shadow 110ms ease;
+      transition: background 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
     }
 
-    .tine::before {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 16%;
-      right: 16%;
-      height: 22%;
-      border-radius: 0 0 999px 999px;
-      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.75) 100%);
-      pointer-events: none;
+    .tine.theme-crystal {
+      background: linear-gradient(180deg, #E0F2FE 0%, #F0F9FF 32%, #FFFFFF 75%, #BAE6FD 100%);
+      border-color: rgba(14, 116, 144, 0.22);
     }
 
-    .tine:hover {
-      border-color: rgba(24, 21, 18, 0.24);
+    .tine.theme-musicbox {
+      background: linear-gradient(180deg, #E7D8B9 0%, #F6ECD6 35%, #FFFDF7 75%, #DEC79A 100%);
+      border-color: rgba(146, 64, 14, 0.22);
     }
 
     .tine.is-chord {
-      background: linear-gradient(180deg, #FDE68A 0%, #FEF3C7 35%, #FFFBEB 75%, #FCD34D 100%);
-      border-color: rgba(217, 119, 6, 0.55);
-      box-shadow: 0 10px 22px -6px rgba(217, 119, 6, 0.30), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+      background: linear-gradient(180deg, #FDE68A 0%, #FEF3C7 35%, #FFFBEB 75%, #FCD34D 100%) !important;
+      border-color: rgba(217, 119, 6, 0.55) !important;
+      box-shadow: 0 10px 22px -6px rgba(217, 119, 6, 0.30);
     }
 
     .tine.is-chord.is-left-hint {
-      background: linear-gradient(180deg, #CCFBF1 0%, #E6FFFA 40%, #F0FDFA 78%, #99F6E4 100%);
-      border-color: rgba(13, 148, 136, 0.52);
-      box-shadow: 0 10px 22px -6px rgba(13, 148, 136, 0.26), inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+      background: linear-gradient(180deg, #CCFBF1 0%, #E6FFFA 40%, #F0FDFA 78%, #99F6E4 100%) !important;
+      border-color: rgba(13, 148, 136, 0.52) !important;
     }
 
     .tine.is-target {
-      background: linear-gradient(180deg, #F59E0B 0%, #FBBF24 45%, #FDE68A 85%, #F59E0B 100%);
-      border-color: #B45309;
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.30), 0 12px 24px -6px rgba(217, 119, 6, 0.45);
-    }
-
-    .tine.is-target .tine-num,
-    .tine.is-target .tine-letter {
-      color: #451A03 !important;
+      background: linear-gradient(180deg, #F59E0B 0%, #FBBF24 45%, #FDE68A 85%, #F59E0B 100%) !important;
+      border-color: #B45309 !important;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.32), 0 12px 24px -6px rgba(217, 119, 6, 0.45);
     }
 
     .tine.is-plucked {
       background: linear-gradient(180deg, #F59E0B 0%, #FDE68A 48%, #FFFBEB 85%, #F59E0B 100%) !important;
       border-color: #D97706 !important;
-      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.24), 0 4px 10px rgba(217, 119, 6, 0.35) !important;
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.26) !important;
     }
 
     .tine.is-wrong {
@@ -147,96 +123,287 @@
     }
 
     .soundhole {
-      position: relative;
-      width: 54px;
-      height: 54px;
+      width: 50px;
+      height: 50px;
       border-radius: 999px;
       background: radial-gradient(circle at 38% 35%, #2B2622 0%, #14110F 72%, #0B0908 100%);
-      box-shadow:
-        0 8px 18px rgba(24, 21, 18, 0.16) inset,
-        0 1px 0 rgba(255, 255, 255, 0.9),
-        0 0 0 5px rgba(24, 21, 18, 0.035);
-      transition: transform 110ms ease;
+      box-shadow: 0 8px 18px rgba(24, 21, 18, 0.16) inset, 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 0 5px rgba(24, 21, 18, 0.035);
+      transition: transform 100ms ease;
+    }
+    .soundhole.is-resonating { transform: scale(1.07); }
+
+    /* ==================== 2. PIANO KEYBOARD ==================== */
+    .piano-bed {
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: clamp(165px, 24vw, 230px);
+      background: #1C1917;
+      padding: 6px 4px 4px 4px;
+      border-radius: 16px;
+      box-shadow: inset 0 6px 14px rgba(0,0,0,0.45);
+      overflow: hidden;
     }
 
-    .soundhole.is-resonating {
-      transform: scale(1.06);
+    .piano-white {
+      position: relative;
+      flex: 1 1 0%;
+      height: 100%;
+      background: linear-gradient(180deg, #F9F8F6 0%, #FFFFFF 70%, #EFECE6 100%);
+      border: 1px solid rgba(24, 21, 18, 0.16);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 8px;
+      cursor: pointer;
+      transition: transform 70ms ease, background 80ms ease;
+      transform-origin: top center;
+      z-index: 1;
     }
 
+    .piano-white:hover { background: linear-gradient(180deg, #FFFFFF 0%, #FAF8F4 100%); }
+    .piano-white.is-chord {
+      background: linear-gradient(180deg, #FEF3C7 0%, #FDE68A 75%, #FCD34D 100%) !important;
+      border-color: rgba(217, 119, 6, 0.5);
+    }
+    .piano-white.is-target {
+      background: linear-gradient(180deg, #FBBF24 0%, #F59E0B 100%) !important;
+      color: #451A03;
+    }
+    .piano-white.is-plucked {
+      background: linear-gradient(180deg, #F59E0B 0%, #FDE68A 100%) !important;
+      transform: translateY(2px) scaleY(0.99);
+    }
+    .piano-white.is-wrong { background: #FCA5A5 !important; }
+
+    .piano-black {
+      position: absolute;
+      top: 6px;
+      height: 58%;
+      background: linear-gradient(180deg, #332E2A 0%, #1C1917 72%, #0C0A09 100%);
+      border: 1px solid #0C0A09;
+      border-radius: 0 0 6px 6px;
+      box-shadow: 0 5px 8px rgba(0, 0, 0, 0.38), inset 0 -2px 3px rgba(255, 255, 255, 0.12);
+      z-index: 3;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 5px;
+      transition: transform 70ms ease, background 80ms ease;
+    }
+    .piano-black:hover { background: linear-gradient(180deg, #44403C 0%, #292524 100%); }
+    .piano-black.is-plucked {
+      background: linear-gradient(180deg, #D97706 0%, #92400E 100%) !important;
+      transform: translateY(2px);
+    }
+
+    /* ==================== 3. GUITAR / UKULELE FRETBOARD ==================== */
+    .fretboard {
+      background: linear-gradient(180deg, #3B281E 0%, #2D1E16 55%, #231711 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(24, 21, 18, 0.25);
+      box-shadow: inset 0 4px 16px rgba(0,0,0,0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fret-wire {
+      border-right: 2px solid rgba(226, 217, 200, 0.35);
+    }
+
+    .guitar-string-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      background: linear-gradient(180deg, #F5EFE6 0%, #C8B8A2 100%);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.45);
+      transition: background 90ms ease;
+    }
+
+    .guitar-string-row.is-vibrating .guitar-string-line {
+      background: #FBBF24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+    }
+
+    .fret-cell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .fret-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      transition: transform 90ms ease, background 90ms ease, opacity 90ms ease;
+      opacity: 0;
+    }
+
+    .fret-cell:hover .fret-dot {
+      opacity: 0.7;
+      background: rgba(255,255,255,0.2);
+      color: #FFF;
+    }
+
+    .fret-cell.is-chord .fret-dot {
+      opacity: 1;
+      background: #FBBF24;
+      color: #181512;
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.28);
+    }
+
+    .fret-cell.is-target .fret-dot {
+      opacity: 1;
+      background: #F59E0B;
+      color: #FFFFFF;
+      transform: scale(1.14);
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.45);
+    }
+
+    .fret-cell.is-plucked .fret-dot {
+      opacity: 1;
+      background: #FFFFFF;
+      color: #181512;
+      transform: scale(1.18);
+    }
+
+    /* ==================== 4. CONCERT HARP ==================== */
+    .harp-frame {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: clamp(175px, 25vw, 235px);
+      padding: 14px 10px 8px 10px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #FBF8F3 0%, #F1EAE0 100%);
+      border: 1px solid rgba(24, 21, 18, 0.08);
+    }
+
+    .harp-string-col {
+      position: relative;
+      flex: 1 1 0%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      cursor: pointer;
+    }
+
+    .harp-wire {
+      width: 2.5px;
+      border-radius: 999px;
+      transition: transform 80ms ease, box-shadow 80ms ease;
+      margin-bottom: 6px;
+    }
+    .harp-wire.is-c { background: linear-gradient(180deg, #EF4444, #B91C1C); width: 3px; }
+    .harp-wire.is-f { background: linear-gradient(180deg, #3B82F6, #1D4ED8); width: 3px; }
+    .harp-wire.is-nat { background: linear-gradient(180deg, #D6C3A5, #9A7B4F); }
+
+    .harp-string-col.is-chord .harp-wire {
+      background: #D97706 !important;
+      width: 4px;
+      box-shadow: 0 0 10px rgba(217, 119, 6, 0.55);
+    }
+    .harp-string-col.is-target .harp-wire {
+      background: #F59E0B !important;
+      width: 4.5px;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.85);
+    }
+    .harp-string-col.is-plucked .harp-wire {
+      background: #F59E0B !important;
+      width: 4.5px;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.9);
+    }
+
+    /* ==================== 5. MARIMBA / VIBRAPHONE BARS ==================== */
+    .perc-bar {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      padding: 8px 2px;
+      cursor: pointer;
+      transition: transform 80ms ease, box-shadow 100ms ease, background 100ms ease;
+    }
+
+    .perc-bar.theme-marimba {
+      background: linear-gradient(180deg, #6F3B24 0%, #522917 55%, #3E1D10 100%);
+      color: #FAF5EE;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 14px -6px rgba(24, 21, 18, 0.35), inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+
+    .perc-bar.theme-vibraphone {
+      background: linear-gradient(180deg, #E5E7EB 0%, #F9FAFB 45%, #D1D5DB 100%);
+      color: #181512;
+      border: 1px solid rgba(24, 21, 18, 0.14);
+      box-shadow: 0 8px 14px -6px rgba(24, 21, 18, 0.18), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .perc-bar.is-chord {
+      background: linear-gradient(180deg, #FDE68A 0%, #F59E0B 100%) !important;
+      color: #181512 !important;
+      box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.45);
+    }
+    .perc-bar.is-target {
+      background: linear-gradient(180deg, #FBBF24 0%, #D97706 100%) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4);
+    }
+    .perc-bar.is-plucked {
+      transform: scale(0.95) translateY(2px);
+      background: linear-gradient(180deg, #F59E0B 0%, #FDE68A 100%) !important;
+      color: #181512 !important;
+    }
+
+    /* Utilities */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     input[type="range"].atelier-range {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 4px;
-      border-radius: 999px;
-      background: #E5E0D7;
-      outline: none;
+      -webkit-appearance: none; appearance: none;
+      height: 4px; border-radius: 999px; background: #E5E0D7; outline: none;
     }
     input[type="range"].atelier-range::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 15px;
-      height: 15px;
-      border-radius: 999px;
-      background: #181512;
-      border: 2px solid #FFFFFF;
-      box-shadow: 0 2px 6px rgba(24, 21, 18, 0.25);
-      cursor: pointer;
+      -webkit-appearance: none; appearance: none;
+      width: 15px; height: 15px; border-radius: 999px;
+      background: #181512; border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(24, 21, 18, 0.25); cursor: pointer;
     }
 
-    .mini-note {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      line-height: 1;
-      vertical-align: middle;
-    }
-    .mini-dots {
-      display: inline-flex;
-      gap: 1.5px;
-      height: 4px;
-      align-items: center;
-      margin-bottom: 1px;
-    }
-    .mini-dot {
-      width: 2.5px;
-      height: 2.5px;
-      border-radius: 999px;
-      background: currentColor;
-    }
+    .mini-note { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; vertical-align: middle; }
+    .mini-dots { display: inline-flex; gap: 1.5px; height: 4px; align-items: center; margin-bottom: 1px; }
+    .mini-dot { width: 2.5px; height: 2.5px; border-radius: 999px; background: currentColor; }
 
-    .note-dot-stack {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      line-height: 1;
-    }
-    .note-dots {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5px;
-      min-height: 7px;
-      justify-content: flex-end;
-      margin-bottom: 1.5px;
-    }
-    .note-dots-below {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5px;
-      margin-top: 1.5px;
-    }
-    .note-dot {
-      width: 2.8px;
-      height: 2.8px;
-      border-radius: 999px;
-      background: currentColor;
-    }
+    .note-dot-stack { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; }
+    .note-dots { display: flex; flex-direction: column; gap: 1.5px; min-height: 7px; justify-content: flex-end; margin-bottom: 1.5px; }
+    .note-dots-below { display: flex; flex-direction: column; gap: 1.5px; margin-top: 1.5px; }
+    .note-dot { width: 2.8px; height: 2.8px; border-radius: 999px; background: currentColor; }
 
     @media (max-width: 640px) {
       .tine { padding-bottom: 6px; }
-      .soundhole { width: 44px; height: 44px; }
+      .soundhole { width: 42px; height: 42px; }
+      .fret-dot { width: 20px; height: 20px; font-size: 9px; }
     }
   </style>
 </head>
@@ -250,7 +417,7 @@
         <div class="w-8 h-8 rounded-xl bg-[#181512] text-[#FAF8F4] flex items-center justify-center shadow-xs">
           <iconify-icon icon="solar:music-note-2-bold-duotone" width="18" height="18"></iconify-icon>
         </div>
-        <div class="hidden xs:flex sm:flex items-baseline gap-1">
+        <div class="hidden sm:flex items-baseline gap-1">
           <span class="font-semibold tracking-tight text-sm text-[#181512]">Keylimba</span>
           <span class="font-serif italic text-base text-[#D97706]">Atelier</span>
         </div>
@@ -275,25 +442,38 @@
       <!-- Essential Quick Controls -->
       <div class="flex items-center gap-1.5">
         <!-- Tactile Key Count Stepper (5–21 Keys) -->
-        <div class="h-8 inline-flex items-center rounded-full bg-white border border-[#181512]/10 px-1" title="Atur jumlah bilah kalimba (5–21)">
+        <div id="key-stepper-wrap" class="h-8 inline-flex items-center rounded-full bg-white border border-[#181512]/10 px-1" title="Atur jumlah bilah/tuts (5–21)">
           <button id="btn-key-minus" aria-label="Kurangi bilah" class="w-6 h-6 rounded-full hover:bg-[#F2EFE9] flex items-center justify-center text-[#181512] transition-colors">
             <iconify-icon icon="solar:minus-linear" width="13" height="13"></iconify-icon>
           </button>
-          <span id="label-key-count" class="px-1.5 text-[11px] font-mono font-semibold text-[#181512] min-w-[46px] text-center select-none">17 Key</span>
+          <span id="label-key-count" class="px-1.5 text-[11px] font-mono font-semibold text-[#181512] min-w-[44px] text-center select-none">17 Key</span>
           <button id="btn-key-plus" aria-label="Tambah bilah" class="w-6 h-6 rounded-full hover:bg-[#F2EFE9] flex items-center justify-center text-[#181512] transition-colors">
             <iconify-icon icon="solar:add-linear" width="13" height="13"></iconify-icon>
           </button>
         </div>
 
-        <!-- Instrument Sound Selector -->
-        <select id="select-instrument" aria-label="Pilih suara instrumen" class="h-8 pl-2.5 pr-5 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 text-[11px] sm:text-xs font-medium text-[#181512] focus:outline-none focus:border-[#D97706] cursor-pointer max-w-[108px] sm:max-w-none">
-          <option value="kalimba" selected>Kalimba Asli</option>
-          <option value="crystal">Kalimba Kristal</option>
-          <option value="piano">Grand Piano</option>
-          <option value="epiano">Electric Piano</option>
-          <option value="harp">Harpa</option>
-          <option value="musicbox">Music Box</option>
-          <option value="marimba">Marimba</option>
+        <!-- Multi-Instrument Selector (12 Instruments across 5 Visual Stages) -->
+        <select id="select-instrument" aria-label="Pilih alat musik" class="h-8 pl-2.5 pr-5 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 text-[11px] sm:text-xs font-medium text-[#181512] focus:outline-none focus:border-[#D97706] cursor-pointer max-w-[125px] sm:max-w-none">
+          <optgroup label="Kalimba &amp; Tines">
+            <option value="kalimba" selected>Kalimba Asli</option>
+            <option value="crystal">Kalimba Kristal</option>
+            <option value="musicbox">Music Box</option>
+          </optgroup>
+          <optgroup label="Keyboard &amp; Piano">
+            <option value="piano">Grand Piano</option>
+            <option value="epiano">Electric Piano</option>
+            <option value="organ">Warm Synth / Organ</option>
+          </optgroup>
+          <optgroup label="Gitar &amp; Petik">
+            <option value="guitar">Gitar Akustik</option>
+            <option value="eguitar">Gitar Elektrik Clean</option>
+            <option value="ukulele">Ukulele (4 Senar)</option>
+          </optgroup>
+          <optgroup label="Dawai &amp; Perkusi">
+            <option value="harp">Harpa Konser</option>
+            <option value="marimba">Marimba Kayu</option>
+            <option value="vibraphone">Vibraphone</option>
+          </optgroup>
         </select>
 
         <!-- Notation Toggle -->
@@ -302,13 +482,13 @@
         </button>
 
         <!-- Keyboard Hints Toggle (Desktop) -->
-        <button id="btn-keys-toggle" title="Tampilkan panduan tombol keyboard 2 tangan" class="h-8 px-2.5 rounded-full bg-[#181512] text-white border border-[#181512] text-[11px] font-medium hidden sm:flex items-center gap-1 transition-colors">
+        <button id="btn-keys-toggle" title="Tampilkan tombol keyboard" class="h-8 px-2.5 rounded-full bg-[#181512] text-white border border-[#181512] text-[11px] font-medium hidden sm:flex items-center gap-1 transition-colors">
           <iconify-icon icon="solar:keyboard-linear" width="14" height="14"></iconify-icon>
           <span>Keys</span>
         </button>
 
-        <!-- Quick Guide Modal Button -->
-        <button id="btn-guide" title="Panduan bermain &amp; keyboard 2 tangan" class="w-8 h-8 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 flex items-center justify-center text-[#6E685F] hover:text-[#181512] transition-colors shrink-0">
+        <!-- Guide -->
+        <button id="btn-guide" title="Panduan cepat" class="w-8 h-8 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 flex items-center justify-center text-[#6E685F] hover:text-[#181512] transition-colors shrink-0">
           <iconify-icon icon="solar:question-circle-linear" width="16" height="16"></iconify-icon>
         </button>
 
@@ -341,15 +521,16 @@
   <!-- MAIN WORKSPACE -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-5 space-y-5">
 
-    <!-- INTERACTIVE KEYLIMBA STAGE -->
-    <section aria-label="Instrumen Keylimba" class="soundboard rounded-3xl overflow-hidden">
-      <div class="bridge-bar h-3 sm:h-3.5 w-full flex items-center justify-between px-5 sm:px-8">
+    <!-- ADAPTIVE MULTI-INSTRUMENT STAGE -->
+    <section aria-label="Panggung Instrumen Interaktif" class="stage-shell rounded-3xl overflow-hidden">
+      <!-- Top Bar (Bridge for Kalimba, clean accent rail for others) -->
+      <div id="stage-top-rail" class="bridge-bar h-3 sm:h-3.5 w-full flex items-center justify-between px-5 sm:px-8">
         <div class="w-1.5 h-1.5 rounded-full bg-[#181512]/25"></div>
         <div class="w-1.5 h-1.5 rounded-full bg-[#181512]/25"></div>
         <div class="w-1.5 h-1.5 rounded-full bg-[#181512]/25"></div>
       </div>
 
-      <!-- Minimal Floating Cue Pill + Combo Badge -->
+      <!-- Minimal Floating Cue Pill + Combo -->
       <div class="px-3 sm:px-6 pt-3 pb-1 flex items-center justify-center gap-2">
         <div id="cue-pill" class="bg-[#181512] text-[#FAF8F4] px-4 py-1.5 rounded-full shadow-sm flex items-center gap-2.5 min-h-[32px] max-w-full overflow-x-auto no-scrollbar">
           <span id="cue-title" class="text-[11px] font-medium text-[#FBBF24] uppercase tracking-wider shrink-0">C Mayor</span>
@@ -361,18 +542,9 @@
         </div>
       </div>
 
-      <!-- DYNAMIC TINES GRID -->
-      <div class="px-2 sm:px-6 md:px-8 pt-1 pb-2">
-        <div id="tines-grid" class="grid gap-[2px] sm:gap-1.5 md:gap-2 items-start mx-auto"></div>
-      </div>
-
-      <!-- Minimal Soundhole -->
-      <div class="pb-4 pt-1 flex items-center justify-center">
-        <button id="soundhole-btn" title="Strum chord aktif (Spasi)" aria-label="Strum chord aktif" class="soundhole flex items-center justify-center cursor-pointer focus:outline-none">
-          <div class="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center">
-            <div class="w-1.5 h-1.5 rounded-full bg-[#D97706]/60"></div>
-          </div>
-        </button>
+      <!-- DYNAMIC INSTRUMENT MOUNT POINT -->
+      <div id="instrument-stage-body" class="px-2 sm:px-6 md:px-8 pt-1 pb-4">
+        <!-- Rendered dynamically per instrument: Kalimba / Piano / Guitar & Ukulele / Harp / Marimba -->
       </div>
     </section>
 
@@ -439,19 +611,18 @@
       </div>
     </section>
 
-    <!-- PANEL 2: BELAJAR LAGU (VIRAL TIKTOK 2026 + INDONESIA + BARAT + CUSTOM TAB) -->
+    <!-- PANEL 2: BELAJAR LAGU -->
     <section id="panel-learn" class="hidden space-y-4">
-      <!-- Active Lesson Card -->
       <div class="bg-white rounded-2xl border border-[#181512]/[0.08] p-4 sm:p-5 space-y-3.5 shadow-[0_2px_10px_rgba(24,21,18,0.03)]">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
             <div class="flex flex-wrap items-center gap-1.5">
-              <span id="learn-song-tag" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#181512] text-white">Indonesia</span>
-              <span id="learn-song-level" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]">Menengah</span>
-              <span id="learn-song-bpm-badge" class="text-[11px] font-mono text-[#6E685F]">96 BPM</span>
+              <span id="learn-song-tag" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#181512] text-white">Vierra</span>
+              <span id="learn-song-level" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]">Pemula</span>
+              <span id="learn-song-bpm-badge" class="text-[11px] font-mono text-[#6E685F]">94 BPM</span>
             </div>
             <div class="flex items-baseline gap-2 mt-1">
-              <h2 id="learn-song-title" class="text-xl sm:text-2xl font-serif text-[#181512]">Rasa Ini</h2>
+              <h2 id="learn-song-title" class="text-xl sm:text-2xl font-serif text-[#181512]">Takut</h2>
               <span id="learn-song-artist" class="text-xs text-[#6E685F]">Vierra</span>
             </div>
           </div>
@@ -488,7 +659,6 @@
           </div>
         </div>
 
-        <!-- Synced Chords Row -->
         <div class="flex flex-wrap items-center justify-between gap-2 py-2 px-3 rounded-xl bg-[#FAF8F4] border border-[#181512]/[0.06]">
           <div class="flex flex-wrap items-center gap-1.5">
             <span class="text-[11px] font-medium text-[#6E685F] mr-1">Chord:</span>
@@ -500,7 +670,6 @@
           </label>
         </div>
 
-        <!-- Progress + Speed Trainer -->
         <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
           <div class="sm:col-span-6 space-y-1">
             <div class="flex items-center justify-between text-[11px] font-mono text-[#6E685F]">
@@ -517,19 +686,18 @@
               <button data-speed="1" class="speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#181512] text-white">1x</button>
               <button data-speed="1.25" class="speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]">1.25x</button>
             </div>
-            <input id="bpm-slider" type="range" min="50" max="150" value="96" class="atelier-range flex-1" />
-            <span id="bpm-value" class="text-xs font-mono text-[#181512] w-14 text-right">96 BPM</span>
+            <input id="bpm-slider" type="range" min="50" max="150" value="94" class="atelier-range flex-1" />
+            <span id="bpm-value" class="text-xs font-mono text-[#181512] w-14 text-right">94 BPM</span>
           </div>
         </div>
 
-        <!-- Note Tab Strip -->
         <div id="song-tab-strip" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"></div>
       </div>
 
-      <!-- Song Filters + Search + Custom Tab Trigger -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <div id="song-region-filters" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
           <button data-region="all" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#181512] text-white shrink-0 transition-colors">Semua</button>
+          <button data-region="Vierra" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Vierra</button>
           <button data-region="Viral 2026" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Viral TikTok 2026</button>
           <button data-region="Indonesia" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Indonesia</button>
           <button data-region="Barat" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Barat</button>
@@ -602,7 +770,7 @@
 
           <div class="min-h-[96px] p-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/[0.08] font-mono text-sm">
             <div id="rec-notes-display" class="flex flex-wrap gap-1.5 items-center">
-              <span class="text-xs text-[#6E685F] font-sans italic">Tekan Rekam lalu mainkan Keylimba di atas.</span>
+              <span class="text-xs text-[#6E685F] font-sans italic">Tekan Rekam lalu mainkan alat musik di atas.</span>
             </div>
           </div>
         </div>
@@ -632,36 +800,29 @@
     </section>
   </main>
 
-  <!-- MODAL: PANDUAN SINGKAT & KEYBOARD 2 TANGAN -->
+  <!-- MODAL: PANDUAN SINGKAT -->
   <div id="modal-guide" class="hidden fixed inset-0 z-50 bg-[#181512]/40 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl border border-[#181512]/10 max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between">
-        <h3 class="font-serif text-2xl text-[#181512]">Panduan Cepat Keylimba</h3>
+        <h3 class="font-serif text-2xl text-[#181512]">Panduan Cepat Atelier</h3>
         <button id="btn-close-guide" aria-label="Tutup panduan" class="w-8 h-8 rounded-full bg-[#F2EFE9] hover:bg-[#E5E0D7] flex items-center justify-center text-[#181512]">
           <iconify-icon icon="solar:close-linear" width="16" height="16"></iconify-icon>
         </button>
       </div>
       <div class="space-y-3 text-xs text-[#6E685F] leading-relaxed">
         <div class="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#181512]/[0.06] space-y-1.5">
-          <div class="font-semibold text-[#181512] flex items-center gap-1.5">
-            <iconify-icon icon="solar:keyboard-linear" width="15" height="15" class="text-[#D97706]"></iconify-icon>
-            <span>Keyboard 2 Tangan (Ergonomis)</span>
-          </div>
-          <p>Letakkan jari kiri di <span class="font-mono text-[#0D9488] font-semibold">A S D F</span> (atas: <span class="font-mono text-[#0D9488]">Q W E R</span>) dan jari kanan di <span class="font-mono text-[#D97706] font-semibold">J K L ;</span> (atas: <span class="font-mono text-[#D97706]">U I O P</span>). Tombol <span class="font-mono text-[#181512] font-semibold">G / H</span> adalah bilah tengah (<span class="font-mono">1</span>). Tekan <span class="font-mono text-[#181512] font-semibold">Spasi</span> untuk strum chord aktif.</p>
+          <div class="font-semibold text-[#181512]">Tampilan Tuts Adaptif</div>
+          <p>Ganti alat musik di menu atas (<strong>Kalimba, Piano, Gitar, Ukulele, Harpa, Marimba, Vibraphone</strong>) dan tampilan tuts/senar akan otomatis berubah sesuai instrumen aslinya.</p>
         </div>
         <div class="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#181512]/[0.06] space-y-1.5">
-          <div class="font-semibold text-[#181512]">Membaca Titik Oktaf</div>
-          <p>Angka polos (<span class="font-mono text-[#181512]">1–7</span>) = oktaf tengah, 1 titik atas (<span class="font-mono text-[#181512]">1'</span>) = oktaf tinggi, 2 titik atas (<span class="font-mono text-[#181512]">1''</span>) = oktaf tertinggi, titik bawah = bass (khusus 18–21 Key).</p>
-        </div>
-        <div class="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#181512]/[0.06] space-y-1.5">
-          <div class="font-semibold text-[#181512]">Tips Cepat Jago</div>
-          <p>Mulai di mode <strong>Latihan</strong> dengan tempo <span class="font-mono text-[#181512]">0.75x</span> dan aktifkan <strong>Metronome</strong>. Setelah lancar, naikkan ke <span class="font-mono text-[#181512]">1x</span> atau tempel tab lagu favoritmu di tombol <strong>Tab Sendiri</strong>.</p>
+          <div class="font-semibold text-[#181512]">Keyboard 2 Tangan Ergonomis</div>
+          <p>Pada <strong>Kalimba</strong>: tangan kiri <span class="font-mono text-[#0D9488] font-semibold">A S D F / Q W E R</span>, tengah <span class="font-mono text-[#181512] font-semibold">G / H</span>, tangan kanan <span class="font-mono text-[#D97706] font-semibold">J K L ; / U I O P</span>. Pada <strong>Piano/Harpa/Marimba</strong>: <span class="font-mono text-[#181512]">A–;</span> &amp; <span class="font-mono text-[#181512]">Q–P</span> berurutan dari nada rendah ke tinggi. Tekan <span class="font-mono text-[#181512] font-semibold">Spasi</span> untuk strum chord.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: CUSTOM TAB IMPORTER -->
+  <!-- MODAL: CUSTOM TAB -->
   <div id="modal-custom-tab" class="hidden fixed inset-0 z-50 bg-[#181512]/40 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl border border-[#181512]/10 max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between">
@@ -671,9 +832,8 @@
         </button>
       </div>
       <div class="space-y-3">
-        <input id="custom-tab-title" type="text" placeholder="Judul lagu (mis. Melodi Favoritku)" class="w-full h-10 px-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/10 focus:border-[#D97706] focus:outline-none text-xs text-[#181512]" />
+        <input id="custom-tab-title" type="text" placeholder="Judul lagu..." class="w-full h-10 px-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/10 focus:border-[#D97706] focus:outline-none text-xs text-[#181512]" />
         <textarea id="custom-tab-notes" rows="4" placeholder="Tempel notasi angka dipisah spasi, contoh: 1' 2' 3' 4' 6' 6' 5' 4' 3' 1'" class="w-full p-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/10 focus:border-[#D97706] focus:outline-none font-mono text-xs text-[#181512]"></textarea>
-        <p class="text-[11px] text-[#6E685F]">Format didukung: <span class="font-mono text-[#181512]">1–7</span> (tengah), <span class="font-mono text-[#181512]">1'–7'</span> (tinggi), <span class="font-mono text-[#181512]">1''–3''</span> (tertinggi).</p>
         <div class="flex justify-end gap-2 pt-1">
           <button id="btn-cancel-custom" class="h-9 px-4 rounded-xl bg-[#F2EFE9] text-[#181512] text-xs font-medium">Batal</button>
           <button id="btn-save-custom" class="h-9 px-4 rounded-xl bg-[#181512] hover:bg-[#2E2924] text-white text-xs font-medium">Muat ke Latihan</button>
@@ -691,7 +851,7 @@
   <script>
     (() => {
       // ============================================================
-      // 0. INLINE SOLAR ICONS (ZERO LATENCY)
+      // 0. INLINE SOLAR ICONS
       // ============================================================
       const SOLAR_PATHS = {
         'solar:music-note-2-bold-duotone': '<path opacity="0.4" d="M13 18V5.5C13 4.1 13 3.4 13.44 2.97C13.88 2.54 14.58 2.66 15.98 2.9L19.98 3.57C20.95 3.73 21.44 3.81 21.72 4.16C22 4.5 22 5 22 6V9.2C22 10.2 22 10.7 21.66 11C21.33 11.3 20.84 11.22 19.86 11.05L13 9.9" fill="currentColor"/><circle cx="9" cy="18" r="4" fill="currentColor"/><path d="M13 18V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
@@ -738,21 +898,28 @@
         el.style.height = `${h}px`;
         el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
       }
-
-      function syncSolarIcons(root = document) {
-        root.querySelectorAll('iconify-icon').forEach(renderSolarIconEl);
-      }
-
-      function setSolarIcon(el, iconName) {
-        if (!el) return;
-        el.setAttribute('icon', iconName);
-        renderSolarIconEl(el);
-      }
+      function syncSolarIcons(root = document) { root.querySelectorAll('iconify-icon').forEach(renderSolarIconEl); }
+      function setSolarIcon(el, name) { if (!el) return; el.setAttribute('icon', name); renderSolarIconEl(el); }
 
       // ============================================================
-      // 1. CONTINUOUS 5–21 KEY KALIMBA LAYOUT + 2-HAND KEYBOARD MAP
+      // 1. INSTRUMENT CATALOG & VISUAL STAGE DEFINITIONS
       // ============================================================
-      // Canonical ascending scale from C4 upward for 5–17 keys, plus F3–B3 bass for 18–21 keys
+      const INSTRUMENTS = {
+        kalimba:    { name: 'Kalimba Asli',         stage: 'kalimba',    theme: 'mahogany' },
+        crystal:    { name: 'Kalimba Kristal',      stage: 'kalimba',    theme: 'crystal' },
+        musicbox:   { name: 'Music Box',            stage: 'kalimba',    theme: 'musicbox' },
+        piano:      { name: 'Grand Piano',          stage: 'piano',      theme: 'grand' },
+        epiano:     { name: 'Electric Piano',       stage: 'piano',      theme: 'epiano' },
+        organ:      { name: 'Warm Synth / Organ',   stage: 'piano',      theme: 'organ' },
+        guitar:     { name: 'Gitar Akustik',        stage: 'guitar',     strings: 6 },
+        eguitar:    { name: 'Gitar Elektrik Clean', stage: 'guitar',     strings: 6 },
+        ukulele:    { name: 'Ukulele',              stage: 'guitar',     strings: 4 },
+        harp:       { name: 'Harpa Konser',         stage: 'harp',       theme: 'concert' },
+        marimba:    { name: 'Marimba Kayu',         stage: 'percussion', theme: 'marimba' },
+        vibraphone: { name: 'Vibraphone',           stage: 'percussion', theme: 'vibraphone' },
+      };
+
+      // Canonical diatonic notes
       const BASE_17 = [
         { token: "2''", num: '2', dots: 2, lowDot: false, label: "2''", note: 'D6', midi: 86 },
         { token: "7'",  num: '7', dots: 1, lowDot: false, label: "7'",  note: 'B5', midi: 83 },
@@ -780,67 +947,52 @@
         { token: "6,", num: '6', dots: 0, lowDot: true, label: '6,', note: 'A3', midi: 57 },
       ];
 
-      const FULL_21 = [...BASE_17.slice(0, 8), ...BASS_4, ...BASE_17.slice(8)];
+      const FULL_21_KALIMBA = [...BASE_17.slice(0, 8), ...BASS_4, ...BASE_17.slice(8)];
+      const ALL_DIATONIC_ASC = [...BASS_4, ...BASE_17].sort((a, b) => a.midi - b.midi);
 
-      // Ergonomic 2-Hand Outward Keymap:
-      // Center = G (and H alias!), Left hand outward = F D S A R E W Q 2 1, Right hand outward = J K L ; U I O P 9 0
-      const LEFT_KEYS  = ['f', 'd', 's', 'a', 'r', 'e', 'w', 'q', '2', '1'];
-      const RIGHT_KEYS = ['j', 'k', 'l', ';', 'u', 'i', 'o', 'p', '9', '0'];
+      // Ergonomic 2-hand maps
+      const LEFT_KEYS_KALIMBA  = ['f', 'd', 's', 'a', 'r', 'e', 'w', 'q', '2', '1'];
+      const RIGHT_KEYS_KALIMBA = ['j', 'k', 'l', ';', 'u', 'i', 'o', 'p', '9', '0'];
+      const LINEAR_KEYS        = ['a','s','d','f','g','h','j','k','l',';','q','w','e','r','t','y','u','i','o','p','['];
 
-      function getTineLayout(count) {
-        const clamped = Math.max(5, Math.min(21, Number(count) || 17));
-        let raw;
-        if (clamped <= 17) {
-          // Slice symmetrically around center index 8 ('1' C4)
-          const leftCount = Math.floor((clamped - 1) / 2);
-          const rightCount = clamped - 1 - leftCount;
-          raw = BASE_17.slice(8 - leftCount, 8 + rightCount + 1);
-        } else {
-          // Slice symmetrically around center of FULL_21 (index 10 = 4, F3)
-          const leftCount = Math.floor((clamped - 1) / 2);
-          const rightCount = clamped - 1 - leftCount;
-          raw = FULL_21.slice(10 - leftCount, 10 + rightCount + 1);
-        }
+      // Authentic Guitar (6-string E2 A2 D3 G3 B3 E4) & Ukulele (4-string G4 C4 E4 A4) open MIDI
+      const GUITAR_STRINGS = [
+        { name: 'E4', openMidi: 64, gauge: 1.5 },
+        { name: 'B3', openMidi: 59, gauge: 1.8 },
+        { name: 'G3', openMidi: 55, gauge: 2.2 },
+        { name: 'D3', openMidi: 50, gauge: 2.6 },
+        { name: 'A2', openMidi: 45, gauge: 3.0 },
+        { name: 'E2', openMidi: 40, gauge: 3.5 },
+      ];
+      const UKULELE_STRINGS = [
+        { name: 'A4', openMidi: 69, gauge: 1.8 },
+        { name: 'E4', openMidi: 64, gauge: 2.1 },
+        { name: 'C4', openMidi: 60, gauge: 2.5 },
+        { name: 'G4', openMidi: 67, gauge: 2.0 },
+      ];
 
-        const centerIdx = Math.floor((raw.length - 1) / 2);
-        return raw.map((item, idx) => {
-          const offset = idx - centerIdx;
-          const dist = Math.abs(offset) / Math.max(1, centerIdx);
-          const heightPct = Math.round(100 - dist * 42);
-          let key = '';
-          let side = 'center';
-          if (offset === 0) {
-            key = 'g';
-            side = 'center';
-          } else if (offset < 0) {
-            key = LEFT_KEYS[Math.abs(offset) - 1] || '';
-            side = 'left';
-          } else {
-            key = RIGHT_KEYS[offset - 1] || '';
-            side = 'right';
-          }
-          return { ...item, idx, key, side, heightPct };
-        });
-      }
-
-      let ACTIVE_TINES = getTineLayout(17);
-      let TOKEN_TO_IDX = {};
-      let KEY_TO_IDX = {};
-
-      function rebuildTineMaps() {
-        TOKEN_TO_IDX = {};
-        KEY_TO_IDX = {};
-        ACTIVE_TINES.forEach((t) => {
-          TOKEN_TO_IDX[t.token] = t.idx;
-          if (t.key) KEY_TO_IDX[t.key.toLowerCase()] = t.idx;
-        });
-        // Allow BOTH 'g' and 'h' to pluck the center tine effortlessly!
-        const centerTine = ACTIVE_TINES.find(t => t.side === 'center');
-        if (centerTine) KEY_TO_IDX['h'] = centerTine.idx;
-      }
+      // Authentic Guitar & Ukulele chord voicings [high string -> low string fret numbers, -1 = muted]
+      const GUITAR_VOICINGS = {
+        C: [0, 1, 0, 2, 3, -1], Chigh: [3, 5, 5, 5, 3, -1],
+        Dm: [1, 3, 2, 0, -1, -1], DmHigh: [5, 6, 7, 7, 5, -1],
+        Em: [0, 0, 0, 2, 2, 0], F: [1, 1, 2, 3, 3, 1], Fhigh: [5, 6, 5, 3, -1, -1],
+        G: [3, 0, 0, 0, 2, 3], Am: [0, 1, 2, 2, 0, -1], Bdim: [1, 3, 4, 3, 2, -1],
+        Cmaj7: [0, 0, 0, 2, 3, -1], Dm7: [1, 1, 2, 0, -1, -1], Em7: [0, 3, 0, 2, 2, 0],
+        Fmaj7: [0, 1, 2, 3, -1, -1], G7: [1, 0, 0, 0, 2, 3], Am7: [0, 1, 0, 2, 0, -1],
+        Csus2: [3, 3, 0, 0, 3, -1], Csus4: [1, 1, 0, 3, 3, -1], Cadd9: [3, 3, 0, 2, 3, -1], G6: [0, 0, 0, 0, 2, 3],
+      };
+      const UKULELE_VOICINGS = {
+        C: [3, 0, 0, 0], Chigh: [3, 3, 4, 5],
+        Dm: [0, 1, 2, 2], DmHigh: [5, 5, 5, 2],
+        Em: [2, 3, 4, 0], F: [0, 1, 0, 2], Fhigh: [3, 5, 5, 5],
+        G: [2, 3, 2, 0], Am: [0, 0, 0, 2], Bdim: [2, 1, 2, 1],
+        Cmaj7: [2, 0, 0, 0], Dm7: [3, 1, 2, 2], Em7: [2, 0, 2, 0],
+        Fmaj7: [0, 1, 4, 2], G7: [2, 1, 2, 0], Am7: [0, 0, 0, 0],
+        Csus2: [3, 0, 2, 0], Csus4: [3, 1, 0, 0], Cadd9: [3, 0, 2, 0], G6: [2, 0, 2, 0],
+      };
 
       // ============================================================
-      // 2. CHORD LIBRARY
+      // 2. CHORDS & SONGS (INCLUDING VIERRA TAKUT, PERIH, DENGARKAN CURHATKU, BERSAMAMU, VIRAL 2026)
       // ============================================================
       const CHORDS = [
         { id: 'C',      symbol: 'C',       name: 'C Mayor',        category: 'Mayor',     tokens: ["1", "3", "5"],          thumb: 'Kanan',        technique: 'Glissando' },
@@ -871,10 +1023,26 @@
         { id: 'canon', name: 'Canon',       chords: ['C', 'G', 'Am', 'Em', 'F', 'C', 'F', 'G'] },
       ];
 
-      // ============================================================
-      // 3. CURATED SONGBOOK (VIERRA, KANGEN, VIRAL TIKTOK 2026, INDO & BARAT)
-      // ============================================================
       const SONGS = [
+        // --- VIERRA COLLECTION ---
+        {
+          id: 'vierra-takut',
+          title: 'Takut',
+          artist: 'Vierra',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Pemula',
+          bpm: 94,
+          chordList: ['C', 'G', 'Am', 'F'],
+          chordChanges: { 0: 'C', 8: 'G', 16: 'Am', 24: 'F', 30: 'G', 34: 'C' },
+          notes: [
+            "3'", "3'", "3'", "2'", "1'", "2'", "3'", "1'",
+            "2'", "2'", "2'", "1'", "7", "1'", "2'", "7",
+            "1'", "1'", "1'", "7", "6", "7", "1'", "6",
+            "4'", "3'", "2'", "1'", "6", "1'",
+            "2'", "3'", "2'", "1'", "1'"
+          ]
+        },
         {
           id: 'vierra-rasaini',
           title: 'Rasa Ini',
@@ -891,6 +1059,24 @@
             "1'", "1''", "7'", "6'", "5'", "3'",
             "4'", "3'", "2'", "1'", "6", "1'",
             "3'", "2'", "1'", "5", "2'", "3'", "2'", "1'", "1'"
+          ]
+        },
+        {
+          id: 'vierra-perih',
+          title: 'Perih',
+          artist: 'Vierra',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Menengah',
+          bpm: 88,
+          chordList: ['Am', 'Em', 'F', 'G', 'Dm'],
+          chordChanges: { 0: 'Am', 6: 'Em', 12: 'F', 18: 'G', 24: 'F', 28: 'Am', 31: 'G', 34: 'Am' },
+          notes: [
+            "3'", "2'", "1'", "7", "6", "1'",
+            "7", "6", "5", "7", "1'", "7",
+            "6", "1'", "2'", "1'", "6", "4",
+            "5", "7", "2'", "3'", "2'", "7",
+            "4'", "3'", "2'", "1'", "3'", "2'", "1'", "2'", "3'", "2'", "6"
           ]
         },
         {
@@ -911,6 +1097,43 @@
             "5", "7", "2'", "3'", "2'", "1'"
           ]
         },
+        {
+          id: 'vierra-curhatku',
+          title: 'Dengarkan Curhatku',
+          artist: 'Vierra',
+          region: 'Indonesia',
+          viral: false,
+          level: 'Pemula',
+          bpm: 108,
+          chordList: ['C', 'F', 'G', 'Am'],
+          chordChanges: { 0: 'C', 6: 'F', 12: 'C', 18: 'G', 24: 'Am', 28: 'F', 31: 'G', 34: 'C' },
+          notes: [
+            "5", "1'", "2'", "3'", "2'", "1'",
+            "4'", "3'", "2'", "1'", "6", "1'",
+            "5", "1'", "2'", "3'", "5'", "3'",
+            "2'", "3'", "2'", "1'", "7", "5",
+            "6", "1'", "2'", "3'", "4'", "3'", "2'", "2'", "3'", "2'", "1'"
+          ]
+        },
+        {
+          id: 'vierra-bersamamu',
+          title: 'Bersamamu',
+          artist: 'Vierra',
+          region: 'Indonesia',
+          viral: false,
+          level: 'Pemula',
+          bpm: 92,
+          chordList: ['C', 'G', 'Am', 'F'],
+          chordChanges: { 0: 'C', 7: 'G', 14: 'Am', 20: 'F', 26: 'C' },
+          notes: [
+            "3'", "2'", "1'", "5", "1'", "2'", "3'",
+            "2'", "3'", "2'", "1'", "7", "1'", "2'",
+            "1'", "7", "6", "1'", "2'", "1'",
+            "4'", "3'", "2'", "1'", "6", "1'",
+            "3'", "2'", "1'"
+          ]
+        },
+        // --- DEWA 19 & VIRAL TIKTOK 2026 ---
         {
           id: 'dewa-kangen',
           title: 'Kangen',
@@ -1002,23 +1225,6 @@
           ]
         },
         {
-          id: 'raim-iqro',
-          title: "iqro'",
-          artist: 'Raim Laode',
-          region: 'Indonesia',
-          viral: true,
-          level: 'Pemula',
-          bpm: 84,
-          chordList: ['C', 'F', 'Dm', 'G'],
-          chordChanges: { 0: 'C', 7: 'F', 14: 'Dm', 20: 'G', 25: 'C' },
-          notes: [
-            "3", "5", "1'", "2'", "3'", "2'", "1'",
-            "4", "6", "1'", "2'", "1'", "6", "4",
-            "2", "4", "6", "1'", "7", "6",
-            "5", "7", "2'", "3'", "2'", "1'"
-          ]
-        },
-        {
           id: 'tulus-hatihati',
           title: 'Hati-Hati di Jalan',
           artist: 'Tulus',
@@ -1089,23 +1295,6 @@
           ]
         },
         {
-          id: 'kartini',
-          title: 'Ibu Kita Kartini',
-          artist: 'W.R. Supratman',
-          region: 'Indonesia',
-          viral: false,
-          level: 'Pemula',
-          bpm: 92,
-          chordList: ['C', 'F', 'G', 'Dm'],
-          chordChanges: { 0: 'C', 7: 'F', 11: 'C', 12: 'F', 16: 'C', 18: 'G', 22: 'C' },
-          notes: [
-            "1", "2", "3", "4", "5", "3", "1",
-            "6", "1'", "7", "6", "5",
-            "4", "6", "5", "4", "3", "1",
-            "2", "4", "3", "2", "1"
-          ]
-        },
-        {
           id: 'falling',
           title: "Can't Help Falling in Love",
           artist: 'Elvis Presley',
@@ -1141,7 +1330,7 @@
       ];
 
       // ============================================================
-      // 4. ZERO-LATENCY MULTI-INSTRUMENT WEB AUDIO ENGINE
+      // 3. ZERO-LATENCY 12-INSTRUMENT WEB AUDIO ENGINE
       // ============================================================
       class StudioAudioEngine {
         constructor() {
@@ -1168,7 +1357,7 @@
             comp.knee.value = 18;
             comp.ratio.value = 4;
             comp.attack.value = 0.002;
-            comp.release.value = 0.15;
+            comp.release.value = 0.14;
 
             this.masterGain = this.ctx.createGain();
             this.masterGain.gain.value = this.muted ? 0 : this.volume;
@@ -1211,27 +1400,17 @@
 
         _syncMix() {
           if (!this.dryGain || !this.reverbGain) return;
-          this.dryGain.gain.value = 1 - this.reverbMix * 0.4;
+          this.dryGain.gain.value = 1 - this.reverbMix * 0.38;
           this.reverbGain.gain.value = this.reverbMix * 0.7;
         }
 
-        setVolume(v) {
-          this.volume = v;
-          if (this.masterGain && !this.muted) this.masterGain.gain.setValueAtTime(v, this.ctx.currentTime);
-        }
-
+        setVolume(v) { this.volume = v; if (this.masterGain && !this.muted) this.masterGain.gain.setValueAtTime(v, this.ctx.currentTime); }
         setReverb(r) { this.reverbMix = r; this._syncMix(); }
+        setMuted(m) { this.muted = m; if (this.masterGain) this.masterGain.gain.setValueAtTime(m ? 0 : this.volume, this.ctx.currentTime); }
 
-        setMuted(m) {
-          this.muted = m;
-          if (this.masterGain) this.masterGain.gain.setValueAtTime(m ? 0 : this.volume, this.ctx.currentTime);
-        }
+        midiToFreq(midi) { return 440 * Math.pow(2, (midi + this.transpose - 69) / 12); }
 
-        midiToFreq(midi) {
-          return 440 * Math.pow(2, (midi + this.transpose - 69) / 12);
-        }
-
-        _connectVoice(node, panVal) {
+        _out(node, panVal) {
           if (this.ctx.createStereoPanner) {
             const p = this.ctx.createStereoPanner();
             p.pan.setValueAtTime(panVal, this.ctx.currentTime);
@@ -1253,173 +1432,210 @@
           o.frequency.setValueAtTime(accent ? 1280 : 880, now);
           g.gain.setValueAtTime(accent ? 0.22 : 0.12, now);
           g.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
-          o.connect(g);
-          g.connect(this.masterGain);
-          o.start(now);
-          o.stop(now + 0.04);
+          o.connect(g); g.connect(this.masterGain);
+          o.start(now); o.stop(now + 0.04);
         }
 
         playNote(midi, panVal = 0, velocity = 0.88) {
           this.warmup();
           const now = this.ctx.currentTime;
           const freq = this.midiToFreq(midi);
-          const inst = this.instrument;
-
-          if (inst === 'piano') this._playPiano(freq, panVal, velocity, now);
-          else if (inst === 'epiano') this._playEPiano(freq, panVal, velocity, now);
-          else if (inst === 'harp') this._playHarp(freq, panVal, velocity, now);
-          else if (inst === 'musicbox') this._playMusicBox(freq, panVal, velocity, now);
-          else if (inst === 'marimba') this._playMarimba(freq, panVal, velocity, now);
-          else if (inst === 'crystal') this._playKalimba(freq, panVal, velocity, now, true);
-          else this._playKalimba(freq, panVal, velocity, now, false);
+          switch (this.instrument) {
+            case 'crystal':    return this._kalimba(freq, panVal, velocity, now, true);
+            case 'musicbox':   return this._musicbox(freq, panVal, velocity, now);
+            case 'piano':      return this._piano(freq, panVal, velocity, now);
+            case 'epiano':     return this._epiano(freq, panVal, velocity, now);
+            case 'organ':      return this._organ(freq, panVal, velocity, now);
+            case 'guitar':     return this._guitar(freq, panVal, velocity, now, 'acoustic');
+            case 'eguitar':    return this._guitar(freq, panVal, velocity, now, 'electric');
+            case 'ukulele':    return this._guitar(freq, panVal, velocity, now, 'ukulele');
+            case 'harp':       return this._harp(freq, panVal, velocity, now);
+            case 'marimba':    return this._marimba(freq, panVal, velocity, now);
+            case 'vibraphone': return this._vibraphone(freq, panVal, velocity, now);
+            default:           return this._kalimba(freq, panVal, velocity, now, false);
+          }
         }
 
-        _playKalimba(freq, pan, vel, now, crystal) {
-          const pitchScale = Math.max(0.55, 1.28 - (Math.log2(freq / 261.63)) * 0.28);
-          const decay = (crystal ? 2.6 : 2.15) * pitchScale;
+        _kalimba(freq, pan, vel, now, crystal) {
+          const decay = (crystal ? 2.6 : 2.1) * Math.max(0.55, 1.25 - Math.log2(freq / 261.63) * 0.28);
           const env = this.ctx.createGain();
           env.gain.setValueAtTime(0.0001, now);
-          env.gain.linearRampToValueAtTime(vel * 0.52, now + 0.002);
+          env.gain.linearRampToValueAtTime(vel * 0.52, now + 0.0015);
           env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
 
-          const o1 = this.ctx.createOscillator();
-          o1.type = 'sine'; o1.frequency.setValueAtTime(freq, now); o1.connect(env);
-
-          const o2 = this.ctx.createOscillator();
-          const g2 = this.ctx.createGain();
+          const o1 = this.ctx.createOscillator(); o1.type = 'sine'; o1.frequency.setValueAtTime(freq, now); o1.connect(env);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
           o2.type = 'sine'; o2.frequency.setValueAtTime(freq * (crystal ? 3.0 : 2.92), now);
-          g2.gain.setValueAtTime(crystal ? 0.22 : 0.14, now);
-          g2.gain.exponentialRampToValueAtTime(0.0001, now + (crystal ? 0.55 : 0.24));
+          g2.gain.setValueAtTime(crystal ? 0.22 : 0.14, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + (crystal ? 0.5 : 0.24));
           o2.connect(g2); g2.connect(env);
 
-          const o3 = this.ctx.createOscillator();
-          const g3 = this.ctx.createGain();
-          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * (crystal ? 6.02 : 5.42), now);
-          g3.gain.setValueAtTime(crystal ? 0.08 : 0.045, now);
-          g3.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
-          o3.connect(g3); g3.connect(env);
-
-          const noise = this.ctx.createBufferSource();
-          noise.buffer = this.noiseBuffer;
-          const bp = this.ctx.createBiquadFilter();
-          bp.type = 'bandpass'; bp.frequency.setValueAtTime(crystal ? 3600 : 1900, now); bp.Q.value = 1.6;
-          const ng = this.ctx.createGain();
-          ng.gain.setValueAtTime(vel * (crystal ? 0.14 : 0.22), now);
-          ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.018);
+          const noise = this.ctx.createBufferSource(); noise.buffer = this.noiseBuffer;
+          const bp = this.ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.setValueAtTime(crystal ? 3400 : 1850, now); bp.Q.value = 1.6;
+          const ng = this.ctx.createGain(); ng.gain.setValueAtTime(vel * 0.2, now); ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.016);
           noise.connect(bp); bp.connect(ng); ng.connect(env);
 
           if (!crystal) {
-            const body = this.ctx.createBiquadFilter();
-            body.type = 'peaking'; body.frequency.setValueAtTime(340, now); body.Q.value = 1.2; body.gain.setValueAtTime(3.2, now);
-            env.connect(body); this._connectVoice(body, pan);
-          } else {
-            this._connectVoice(env, pan);
-          }
+            const body = this.ctx.createBiquadFilter(); body.type = 'peaking'; body.frequency.setValueAtTime(340, now); body.gain.setValueAtTime(3.2, now);
+            env.connect(body); this._out(body, pan);
+          } else this._out(env, pan);
 
-          o1.start(now); o2.start(now); o3.start(now); noise.start(now);
-          o1.stop(now + decay + 0.03); o2.stop(now + 0.6); o3.stop(now + 0.1); noise.stop(now + 0.03);
+          o1.start(now); o2.start(now); noise.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + 0.55); noise.stop(now + 0.03);
         }
 
-        _playPiano(freq, pan, vel, now) {
-          const decay = Math.max(1.2, 2.9 - Math.log2(freq / 261.63) * 0.45);
+        _piano(freq, pan, vel, now) {
+          const decay = Math.max(1.2, 2.8 - Math.log2(freq / 261.63) * 0.42);
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.48, now + 0.002);
+          env.gain.exponentialRampToValueAtTime(vel * 0.23, now + 0.24);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const lpf = this.ctx.createBiquadFilter(); lpf.type = 'lowpass';
+          lpf.frequency.setValueAtTime(Math.min(11000, freq * 8), now);
+          lpf.frequency.exponentialRampToValueAtTime(Math.min(4200, freq * 2.1), now + 0.45);
+
+          const o1 = this.ctx.createOscillator(); o1.type = 'triangle'; o1.frequency.setValueAtTime(freq, now);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
+          o2.type = 'sawtooth'; o2.frequency.setValueAtTime(freq * 1.0014, now);
+          g2.gain.setValueAtTime(0.26, now); g2.gain.exponentialRampToValueAtTime(0.03, now + 0.55);
+
+          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
+          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * 2.0, now);
+          g3.gain.setValueAtTime(0.28, now); g3.gain.exponentialRampToValueAtTime(0.001, now + decay * 0.5);
+
+          const noise = this.ctx.createBufferSource(); noise.buffer = this.noiseBuffer;
+          const hlp = this.ctx.createBiquadFilter(); hlp.type = 'lowpass'; hlp.frequency.setValueAtTime(1100, now);
+          const hg = this.ctx.createGain(); hg.gain.setValueAtTime(vel * 0.22, now); hg.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+          noise.connect(hlp); hlp.connect(hg); hg.connect(env);
+
+          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); o3.connect(g3); g3.connect(lpf);
+          lpf.connect(env); this._out(env, pan);
+
+          o1.start(now); o2.start(now); o3.start(now); noise.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + decay + 0.03); o3.stop(now + decay * 0.55); noise.stop(now + 0.03);
+        }
+
+        _epiano(freq, pan, vel, now) {
+          const decay = 2.4;
           const env = this.ctx.createGain();
           env.gain.setValueAtTime(0.0001, now);
           env.gain.linearRampToValueAtTime(vel * 0.48, now + 0.003);
-          env.gain.exponentialRampToValueAtTime(vel * 0.24, now + 0.25);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const c = this.ctx.createOscillator(); c.type = 'sine'; c.frequency.setValueAtTime(freq, now);
+          const m = this.ctx.createOscillator(); const mg = this.ctx.createGain();
+          m.type = 'sine'; m.frequency.setValueAtTime(freq * 4, now);
+          mg.gain.setValueAtTime(freq * 1.15, now); mg.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+          m.connect(mg); mg.connect(c.frequency);
+
+          const w = this.ctx.createOscillator(); const wg = this.ctx.createGain();
+          w.type = 'triangle'; w.frequency.setValueAtTime(freq, now); wg.gain.setValueAtTime(0.18, now);
+          w.connect(wg); c.connect(env); wg.connect(env); this._out(env, pan);
+          c.start(now); m.start(now); w.start(now);
+          c.stop(now + decay + 0.03); m.stop(now + 0.24); w.stop(now + decay + 0.03);
+        }
+
+        _organ(freq, pan, vel, now) {
+          const decay = 1.65;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.36, now + 0.018);
+          env.gain.exponentialRampToValueAtTime(vel * 0.24, now + 0.7);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const lpf = this.ctx.createBiquadFilter(); lpf.type = 'lowpass'; lpf.frequency.setValueAtTime(2400, now);
+          const o1 = this.ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.setValueAtTime(freq, now);
+          const o2 = this.ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.setValueAtTime(freq * 2.003, now);
+          const g2 = this.ctx.createGain(); g2.gain.value = 0.32;
+          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); lpf.connect(env); this._out(env, pan);
+          o1.start(now); o2.start(now); o1.stop(now + decay + 0.03); o2.stop(now + decay + 0.03);
+        }
+
+        _guitar(freq, pan, vel, now, mode) {
+          const isUke = mode === 'ukulele';
+          const isElec = mode === 'electric';
+          const decay = isUke ? 1.55 : isElec ? 2.5 : 2.15;
+
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.48, now + 0.002);
+          env.gain.exponentialRampToValueAtTime(vel * 0.20, now + 0.22);
           env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
 
           const lpf = this.ctx.createBiquadFilter();
           lpf.type = 'lowpass';
-          lpf.frequency.setValueAtTime(Math.min(12000, freq * 8), now);
-          lpf.frequency.exponentialRampToValueAtTime(Math.min(4500, freq * 2.2), now + 0.45);
+          lpf.Q.value = isElec ? 2.2 : 1.1;
+          lpf.frequency.setValueAtTime(Math.min(10000, freq * (isUke ? 7.5 : isElec ? 9 : 6.5)), now);
+          lpf.frequency.exponentialRampToValueAtTime(Math.max(420, freq * (isElec ? 2.6 : 1.7)), now + (isUke ? 0.35 : 0.55));
 
-          const o1 = this.ctx.createOscillator(); o1.type = 'triangle'; o1.frequency.setValueAtTime(freq, now);
-          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
-          o2.type = 'sawtooth'; o2.frequency.setValueAtTime(freq * 1.0012, now);
-          g2.gain.setValueAtTime(0.26, now); g2.gain.exponentialRampToValueAtTime(0.03, now + 0.6);
+          const o1 = this.ctx.createOscillator();
+          o1.type = 'sawtooth';
+          o1.frequency.setValueAtTime(freq, now);
 
-          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
-          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * 2.0, now);
-          g3.gain.setValueAtTime(0.28, now); g3.gain.exponentialRampToValueAtTime(0.001, now + decay * 0.55);
+          const o2 = this.ctx.createOscillator();
+          const g2 = this.ctx.createGain();
+          o2.type = 'triangle';
+          o2.frequency.setValueAtTime(freq * (isElec ? 1.0025 : 2.0), now);
+          g2.gain.setValueAtTime(isElec ? 0.45 : 0.25, now);
 
+          // Pick / nail pluck transient
           const noise = this.ctx.createBufferSource(); noise.buffer = this.noiseBuffer;
-          const hlp = this.ctx.createBiquadFilter(); hlp.type = 'lowpass'; hlp.frequency.setValueAtTime(1100, now);
-          const hg = this.ctx.createGain(); hg.gain.setValueAtTime(vel * 0.22, now); hg.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
-          noise.connect(hlp); hlp.connect(hg); hg.connect(env);
+          const bp = this.ctx.createBiquadFilter(); bp.type = 'bandpass';
+          bp.frequency.setValueAtTime(isUke ? 2800 : isElec ? 3200 : 2100, now);
+          const ng = this.ctx.createGain(); ng.gain.setValueAtTime(vel * 0.28, now); ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
+          noise.connect(bp); bp.connect(ng); ng.connect(lpf);
 
-          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); o3.connect(g3); g3.connect(lpf);
-          lpf.connect(env); this._connectVoice(env, pan);
+          o1.connect(lpf); o2.connect(g2); g2.connect(lpf);
 
-          o1.start(now); o2.start(now); o3.start(now); noise.start(now);
-          o1.stop(now + decay + 0.03); o2.stop(now + decay + 0.03); o3.stop(now + decay * 0.6); noise.stop(now + 0.03);
+          if (!isElec) {
+            const body = this.ctx.createBiquadFilter(); body.type = 'peaking';
+            body.frequency.setValueAtTime(isUke ? 440 : 230, now); body.Q.value = 1.4; body.gain.setValueAtTime(3.6, now);
+            lpf.connect(body); body.connect(env);
+          } else {
+            lpf.connect(env);
+          }
+
+          this._out(env, pan);
+          o1.start(now); o2.start(now); noise.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + decay + 0.03); noise.stop(now + 0.03);
         }
 
-        _playEPiano(freq, pan, vel, now) {
-          const decay = 2.4;
+        _harp(freq, pan, vel, now) {
+          const decay = 2.6;
           const env = this.ctx.createGain();
           env.gain.setValueAtTime(0.0001, now);
-          env.gain.linearRampToValueAtTime(vel * 0.48, now + 0.004);
+          env.gain.linearRampToValueAtTime(vel * 0.45, now + 0.003);
           env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
 
-          const carrier = this.ctx.createOscillator(); carrier.type = 'sine'; carrier.frequency.setValueAtTime(freq, now);
-          const mod = this.ctx.createOscillator(); const modGain = this.ctx.createGain();
-          mod.type = 'sine'; mod.frequency.setValueAtTime(freq * 4, now);
-          modGain.gain.setValueAtTime(freq * 1.15, now); modGain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-          mod.connect(modGain); modGain.connect(carrier.frequency);
-
-          const warm = this.ctx.createOscillator(); const wg = this.ctx.createGain();
-          warm.type = 'triangle'; warm.frequency.setValueAtTime(freq, now); wg.gain.setValueAtTime(0.18, now);
-          warm.connect(wg);
-
-          carrier.connect(env); wg.connect(env); this._connectVoice(env, pan);
-          carrier.start(now); mod.start(now); warm.start(now);
-          carrier.stop(now + decay + 0.03); mod.stop(now + 0.25); warm.stop(now + decay + 0.03);
-        }
-
-        _playHarp(freq, pan, vel, now) {
-          const decay = 2.5;
-          const env = this.ctx.createGain();
-          env.gain.setValueAtTime(0.0001, now);
-          env.gain.linearRampToValueAtTime(vel * 0.45, now + 0.004);
-          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
-
-          const lpf = this.ctx.createBiquadFilter();
-          lpf.type = 'lowpass'; lpf.Q.value = 1.4;
+          const lpf = this.ctx.createBiquadFilter(); lpf.type = 'lowpass'; lpf.Q.value = 1.4;
           lpf.frequency.setValueAtTime(Math.min(9000, freq * 6.5), now);
           lpf.frequency.exponentialRampToValueAtTime(freq * 1.4, now + 0.65);
 
           const o1 = this.ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.setValueAtTime(freq, now);
           const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
-          o2.type = 'triangle'; o2.frequency.setValueAtTime(freq * 2, now);
-          g2.gain.setValueAtTime(0.22, now); g2.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); lpf.connect(env); this._connectVoice(env, pan);
+          o2.type = 'triangle'; o2.frequency.setValueAtTime(freq * 2, now); g2.gain.setValueAtTime(0.22, now);
+          g2.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); lpf.connect(env); this._out(env, pan);
           o1.start(now); o2.start(now); o1.stop(now + decay + 0.03); o2.stop(now + 0.5);
         }
 
-        _playMusicBox(freq, pan, vel, now) {
+        _musicbox(freq, pan, vel, now) {
           const decay = 2.7;
           const env = this.ctx.createGain();
           env.gain.setValueAtTime(0.0001, now);
-          env.gain.linearRampToValueAtTime(vel * 0.42, now + 0.0015);
+          env.gain.linearRampToValueAtTime(vel * 0.40, now + 0.0015);
           env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
 
           const o1 = this.ctx.createOscillator(); o1.type = 'sine'; o1.frequency.setValueAtTime(freq * 2, now);
           const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
           o2.type = 'sine'; o2.frequency.setValueAtTime(freq * 4, now);
-          g2.gain.setValueAtTime(0.25, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
-
-          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
-          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * 6, now);
-          g3.gain.setValueAtTime(0.12, now); g3.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
-
-          o1.connect(env); o2.connect(g2); g2.connect(env); o3.connect(g3); g3.connect(env);
-          this._connectVoice(env, pan);
-          o1.start(now); o2.start(now); o3.start(now);
-          o1.stop(now + decay + 0.03); o2.stop(now + 0.5); o3.stop(now + 0.15);
+          g2.gain.setValueAtTime(0.24, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+          o1.connect(env); o2.connect(g2); g2.connect(env); this._out(env, pan);
+          o1.start(now); o2.start(now); o1.stop(now + decay + 0.03); o2.stop(now + 0.5);
         }
 
-        _playMarimba(freq, pan, vel, now) {
+        _marimba(freq, pan, vel, now) {
           const decay = 0.85;
           const env = this.ctx.createGain();
           env.gain.setValueAtTime(0.0001, now);
@@ -1430,15 +1646,30 @@
           const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
           o2.type = 'sine'; o2.frequency.setValueAtTime(freq * 3.98, now);
           g2.gain.setValueAtTime(0.28, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+          o1.connect(env); o2.connect(g2); g2.connect(env); this._out(env, pan);
+          o1.start(now); o2.start(now); o1.stop(now + decay + 0.03); o2.stop(now + 0.14);
+        }
 
-          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
-          o3.type = 'triangle'; o3.frequency.setValueAtTime(freq * 0.5, now);
-          g3.gain.setValueAtTime(0.14, now); g3.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+        _vibraphone(freq, pan, vel, now) {
+          const decay = 2.6;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.45, now + 0.002);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
 
-          o1.connect(env); o2.connect(g2); g2.connect(env); o3.connect(g3); g3.connect(env);
-          this._connectVoice(env, pan);
-          o1.start(now); o2.start(now); o3.start(now);
-          o1.stop(now + decay + 0.03); o2.stop(now + 0.14); o3.stop(now + 0.08);
+          const trem = this.ctx.createGain(); trem.gain.value = 0.85;
+          const lfo = this.ctx.createOscillator(); const lfoG = this.ctx.createGain();
+          lfo.frequency.value = 5.4; lfoG.gain.value = 0.15;
+          lfo.connect(lfoG); lfoG.connect(trem.gain);
+
+          const o1 = this.ctx.createOscillator(); o1.type = 'sine'; o1.frequency.setValueAtTime(freq, now);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
+          o2.type = 'sine'; o2.frequency.setValueAtTime(freq * 4, now);
+          g2.gain.setValueAtTime(0.18, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+          o1.connect(trem); o2.connect(g2); g2.connect(trem); trem.connect(env); this._out(env, pan);
+          o1.start(now); o2.start(now); lfo.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + 0.4); lfo.stop(now + decay + 0.03);
         }
       }
 
@@ -1452,23 +1683,18 @@
       window.addEventListener('keydown', unlockOnce, { passive: true });
 
       // ============================================================
-      // 5. STATE + LOCAL BEST SCORES
+      // 4. STATE
       // ============================================================
-      function loadBestScores() {
-        try { return JSON.parse(localStorage.getItem('keylimba_best_v1') || '{}'); }
-        catch (e) { return {}; }
-      }
-      function saveBestScore(songId, acc) {
+      function loadBestScores() { try { return JSON.parse(localStorage.getItem('keylimba_best_v1') || '{}'); } catch (e) { return {}; } }
+      function saveBestScore(id, acc) {
         try {
-          const map = loadBestScores();
-          if (!map[songId] || acc > map[songId]) {
-            map[songId] = acc;
-            localStorage.setItem('keylimba_best_v1', JSON.stringify(map));
-          }
+          const m = loadBestScores();
+          if (!m[id] || acc > m[id]) { m[id] = acc; localStorage.setItem('keylimba_best_v1', JSON.stringify(m)); }
         } catch (e) {}
       }
 
       const state = {
+        instrument: 'kalimba',
         keyCount: 17,
         activeTab: 'chords',
         notationMode: 'both',
@@ -1480,7 +1706,7 @@
         activeProgressionTimer: null,
         activeProgressionId: null,
 
-        selectedSongId: 'vierra-rasaini',
+        selectedSongId: 'vierra-takut',
         songRegionFilter: 'all',
         songSearch: '',
         learnMode: 'practice',
@@ -1490,7 +1716,7 @@
         learnAttempts: 0,
         learnCorrect: 0,
         combo: 0,
-        bpm: 96,
+        bpm: 94,
         speedMult: 1,
         demoTimer: null,
         demoWithChords: true,
@@ -1506,19 +1732,28 @@
         playbackTimers: [],
 
         isPointerDown: false,
-        lastGlissIdx: -1,
+        lastPointerKey: '',
       };
 
+      // Active playable items on the current stage:
+      // TOKEN_TO_NODE[token] = { el, midi, pan, token, side, ... }
+      // KEY_TO_ACTION[char] = () => void
+      let ACTIVE_NOTES = [];
+      let TOKEN_TO_NOTE = {};
+      let KEY_TO_TOKEN = {};
+      let GUITAR_CELLS = []; // [{ el, strIdx, fret, midi, token }]
+
       // ============================================================
-      // 6. DOM REFERENCES
+      // 5. DOM REFERENCES
       // ============================================================
       const els = {
-        tinesGrid: document.getElementById('tines-grid'),
+        stageTopRail: document.getElementById('stage-top-rail'),
+        stageBody: document.getElementById('instrument-stage-body'),
         cueTitle: document.getElementById('cue-title'),
         cueNotes: document.getElementById('cue-notes'),
         comboPill: document.getElementById('combo-pill'),
-        soundholeBtn: document.getElementById('soundhole-btn'),
 
+        keyStepperWrap: document.getElementById('key-stepper-wrap'),
         btnKeyMinus: document.getElementById('btn-key-minus'),
         btnKeyPlus: document.getElementById('btn-key-plus'),
         labelKeyCount: document.getElementById('label-key-count'),
@@ -1602,7 +1837,7 @@
       };
 
       // ============================================================
-      // 7. HELPERS
+      // 6. HELPERS
       // ============================================================
       let toastTimer = null;
       function showToast(msg) {
@@ -1613,138 +1848,505 @@
         toastTimer = setTimeout(() => {
           els.toast.classList.add('opacity-0', 'translate-y-2');
           els.toast.classList.remove('opacity-100', 'translate-y-0');
-        }, 2100);
+        }, 2000);
       }
 
       function getChordById(id) { return CHORDS.find(c => c.id === id) || null; }
       function getSongById(id) { return SONGS.find(s => s.id === id) || SONGS[0]; }
-
-      function getChordIndices(chord) {
-        if (!chord) return [];
-        return chord.tokens.map(tok => TOKEN_TO_IDX[tok]).filter(idx => idx !== undefined);
-      }
+      function findNoteByToken(tok) { return BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok) || null; }
+      function findTokenByMidi(midi) { const n = ALL_DIATONIC_ASC.find(x => x.midi === midi); return n ? n.token : null; }
 
       function renderMiniNoteHTML(tok) {
-        const found = BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok);
-        if (!found) return tok;
+        const f = findNoteByToken(tok);
+        if (!f) return tok;
         let dots = '';
-        for (let i = 0; i < found.dots; i++) dots += '<span class="mini-dot"></span>';
-        const top = found.dots > 0 ? `<span class="mini-dots">${dots}</span>` : '';
-        const bot = found.lowDot ? '<span class="mini-dots" style="margin-bottom:0;margin-top:1px"><span class="mini-dot"></span></span>' : '';
-        return `<span class="mini-note">${top}<span>${found.num}</span>${bot}</span>`;
+        for (let i = 0; i < f.dots; i++) dots += '<span class="mini-dot"></span>';
+        const top = f.dots > 0 ? `<span class="mini-dots">${dots}</span>` : '';
+        const bot = f.lowDot ? '<span class="mini-dots" style="margin-bottom:0;margin-top:1px"><span class="mini-dot"></span></span>' : '';
+        return `<span class="mini-note">${top}<span>${f.num}</span>${bot}</span>`;
       }
 
-      function tokenToLabel(tok) {
-        const found = BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok);
-        return found ? found.label : tok;
-      }
+      function tokenToLabel(tok) { const f = findNoteByToken(tok); return f ? f.label : tok; }
+      function tokenToNote(tok)  { const f = findNoteByToken(tok); return f ? f.note : tok; }
 
-      function tokenToNote(tok) {
-        const found = BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok);
-        return found ? found.note : tok;
-      }
-
-      function renderDotStackHTML(tine) {
+      function renderDotStackHTML(n) {
         let topDots = '';
-        for (let i = 0; i < tine.dots; i++) topDots += '<span class="note-dot"></span>';
-        const botDot = tine.lowDot ? '<span class="note-dots-below"><span class="note-dot"></span></span>' : '';
-        return `
-          <span class="note-dot-stack">
-            <span class="note-dots">${topDots}</span>
-            <span>${tine.num}</span>
-            ${botDot}
-          </span>
-        `;
+        for (let i = 0; i < n.dots; i++) topDots += '<span class="note-dot"></span>';
+        const botDot = n.lowDot ? '<span class="note-dots-below"><span class="note-dot"></span></span>' : '';
+        return `<span class="note-dot-stack"><span class="note-dots">${topDots}</span><span>${n.num}</span>${botDot}</span>`;
+      }
+
+      function getSliceForCount(count, isKalimbaV) {
+        const c = Math.max(5, Math.min(21, Number(count) || 17));
+        if (isKalimbaV) {
+          if (c <= 17) {
+            const left = Math.floor((c - 1) / 2);
+            const right = c - 1 - left;
+            return BASE_17.slice(8 - left, 8 + right + 1);
+          }
+          const left = Math.floor((c - 1) / 2);
+          const right = c - 1 - left;
+          return FULL_21_KALIMBA.slice(10 - left, 10 + right + 1);
+        } else {
+          // Linear ascending from C4 (index 4 in ALL_DIATONIC_ASC) or lower if > 17
+          if (c <= 17) return ALL_DIATONIC_ASC.slice(4, 4 + c);
+          const start = Math.max(0, 21 - c);
+          return ALL_DIATONIC_ASC.slice(start, start + c);
+        }
       }
 
       // ============================================================
-      // 8. BUILD DYNAMIC TINES (5–21 KEYS)
+      // 7. ADAPTIVE MULTI-INSTRUMENT STAGE RENDERER
       // ============================================================
-      const tineElements = [];
+      function buildStage() {
+        const meta = INSTRUMENTS[state.instrument] || INSTRUMENTS.kalimba;
+        const stageType = meta.stage;
 
-      function buildTines() {
-        ACTIVE_TINES = getTineLayout(state.keyCount);
-        rebuildTineMaps();
+        // Show key-count stepper for Kalimba, Piano, Harp, Percussion; hide on fixed-string Guitar/Ukulele
+        els.keyStepperWrap.classList.toggle('hidden', stageType === 'guitar');
+        els.stageTopRail.classList.toggle('hidden', stageType !== 'kalimba');
 
-        const n = ACTIVE_TINES.length;
-        els.tinesGrid.innerHTML = '';
-        els.tinesGrid.style.gridTemplateColumns = `repeat(${n}, minmax(0, 1fr))`;
-        els.tinesGrid.style.maxWidth = n <= 9 ? `${Math.max(320, n * 68)}px` : n <= 13 ? '780px' : '100%';
-        tineElements.length = 0;
+        ACTIVE_NOTES = [];
+        TOKEN_TO_NOTE = {};
+        KEY_TO_TOKEN = {};
+        GUITAR_CELLS = [];
+        els.stageBody.innerHTML = '';
 
-        ACTIVE_TINES.forEach((tine) => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.dataset.idx = tine.idx;
-          btn.setAttribute('aria-label', `Bilah ${tine.label} (${tine.note})`);
-          btn.className = 'tine w-full select-none focus:outline-none';
-
-          const desktopPx = Math.round(225 * (tine.heightPct / 100));
-          const mobilePx = Math.round(146 * (tine.heightPct / 100));
-          btn.style.height = `clamp(${mobilePx}px, ${Math.round(23 * (tine.heightPct / 100))}vw, ${desktopPx}px)`;
-
-          const numSize = n >= 19 ? 'text-[10px] sm:text-[12px]' : 'text-[11px] sm:text-[13px] md:text-[14px]';
-          const keyBadgeColor = tine.side === 'left'
-            ? 'bg-[#CCFBF1]/80 text-[#0F766E]'
-            : tine.side === 'right'
-              ? 'bg-[#FEF3C7]/90 text-[#B45309]'
-              : 'bg-[#181512] text-white';
-
-          btn.innerHTML = `
-            <span class="tine-key-hint hidden text-[9px] font-mono font-semibold uppercase px-1 py-0.5 rounded ${keyBadgeColor} mb-auto mt-1.5">${tine.key}</span>
-            <span class="tine-num font-mono font-semibold ${numSize} text-[#181512] leading-none">
-              ${renderDotStackHTML(tine)}
-            </span>
-            <span class="tine-letter font-sans text-[8px] sm:text-[10px] font-medium text-[#6E685F] mt-1 leading-none">${tine.note}</span>
-          `;
-
-          btn.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            state.isPointerDown = true;
-            state.lastGlissIdx = tine.idx;
-            triggerTine(tine.idx, true);
-          });
-
-          btn.addEventListener('pointerenter', () => {
-            if (state.isPointerDown && state.lastGlissIdx !== tine.idx) {
-              state.lastGlissIdx = tine.idx;
-              triggerTine(tine.idx, true);
-            }
-          });
-
-          els.tinesGrid.appendChild(btn);
-          tineElements.push(btn);
-        });
+        if (stageType === 'kalimba') buildKalimbaStage(meta);
+        else if (stageType === 'piano') buildPianoStage(meta);
+        else if (stageType === 'guitar') buildGuitarStage(meta);
+        else if (stageType === 'harp') buildHarpStage(meta);
+        else if (stageType === 'percussion') buildPercussionStage(meta);
 
         updateNotationDisplay();
-        updateTineHighlights();
+        updateHighlights();
+        updateCuePill();
       }
 
-      els.tinesGrid.addEventListener('pointermove', (e) => {
-        if (!state.isPointerDown) return;
-        const el = document.elementFromPoint(e.clientX, e.clientY);
-        const tineBtn = el ? el.closest('.tine') : null;
-        if (tineBtn) {
-          const idx = Number(tineBtn.dataset.idx);
-          if (idx !== state.lastGlissIdx) {
-            state.lastGlissIdx = idx;
-            triggerTine(idx, true);
+      // ---------- STAGE A: KALIMBA ----------
+      function buildKalimbaStage(meta) {
+        const raw = getSliceForCount(state.keyCount, true);
+        const centerIdx = Math.floor((raw.length - 1) / 2);
+        const n = raw.length;
+
+        const grid = document.createElement('div');
+        grid.id = 'active-play-grid';
+        grid.className = 'grid gap-[2px] sm:gap-1.5 md:gap-2 items-start mx-auto';
+        grid.style.gridTemplateColumns = `repeat(${n}, minmax(0, 1fr))`;
+        grid.style.maxWidth = n <= 9 ? `${Math.max(320, n * 68)}px` : n <= 13 ? '780px' : '100%';
+
+        raw.forEach((item, idx) => {
+          const offset = idx - centerIdx;
+          const dist = Math.abs(offset) / Math.max(1, centerIdx);
+          const heightPct = Math.round(100 - dist * 42);
+          let key = '', side = 'center';
+          if (offset === 0) { key = 'g'; side = 'center'; }
+          else if (offset < 0) { key = LEFT_KEYS_KALIMBA[Math.abs(offset) - 1] || ''; side = 'left'; }
+          else { key = RIGHT_KEYS_KALIMBA[offset - 1] || ''; side = 'right'; }
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.token = item.token;
+          btn.className = `tine w-full select-none focus:outline-none ${meta.theme === 'crystal' ? 'theme-crystal' : meta.theme === 'musicbox' ? 'theme-musicbox' : ''}`;
+          const desktopPx = Math.round(220 * (heightPct / 100));
+          const mobilePx = Math.round(142 * (heightPct / 100));
+          btn.style.height = `clamp(${mobilePx}px, ${Math.round(23 * (heightPct / 100))}vw, ${desktopPx}px)`;
+
+          const badgeCls = side === 'left' ? 'bg-[#CCFBF1]/80 text-[#0F766E]' : side === 'right' ? 'bg-[#FEF3C7]/90 text-[#B45309]' : 'bg-[#181512] text-white';
+          const numSize = n >= 19 ? 'text-[10px] sm:text-[12px]' : 'text-[11px] sm:text-[13px] md:text-[14px]';
+
+          btn.innerHTML = `
+            <span class="key-hint hidden text-[9px] font-mono font-semibold uppercase px-1 py-0.5 rounded ${badgeCls} mb-auto mt-1.5">${key}</span>
+            <span class="note-num font-mono font-semibold ${numSize} text-[#181512] leading-none">${renderDotStackHTML(item)}</span>
+            <span class="note-letter font-sans text-[8px] sm:text-[10px] font-medium text-[#6E685F] mt-1 leading-none">${item.note}</span>
+          `;
+
+          const pan = n > 1 ? ((idx / (n - 1)) * 2 - 1) * 0.58 : 0;
+          const noteObj = { ...item, idx, key, side, pan, el: btn };
+          ACTIVE_NOTES.push(noteObj);
+          TOKEN_TO_NOTE[item.token] = noteObj;
+          if (key) KEY_TO_TOKEN[key] = item.token;
+          if (side === 'center') KEY_TO_TOKEN['h'] = item.token;
+
+          bindPlayPointer(btn, item.token, item.midi, pan);
+          grid.appendChild(btn);
+        });
+
+        const holeWrap = document.createElement('div');
+        holeWrap.className = 'pt-3 flex items-center justify-center';
+        holeWrap.innerHTML = `<button id="stage-soundhole" title="Strum chord (Spasi)" aria-label="Strum chord" class="soundhole flex items-center justify-center cursor-pointer focus:outline-none"><div class="w-5 h-5 rounded-full border border-white/10 flex items-center justify-center"><div class="w-1.5 h-1.5 rounded-full bg-[#D97706]/60"></div></div></button>`;
+        holeWrap.querySelector('button').addEventListener('click', () => playChordArpeggio(getChordById(state.selectedChordId || 'C')));
+
+        els.stageBody.appendChild(grid);
+        els.stageBody.appendChild(holeWrap);
+      }
+
+      // ---------- STAGE B: PIANO KEYBOARD ----------
+      function buildPianoStage() {
+        const whites = getSliceForCount(Math.max(8, state.keyCount), false);
+        const n = whites.length;
+
+        const bed = document.createElement('div');
+        bed.id = 'active-play-grid';
+        bed.className = 'piano-bed mx-auto';
+        bed.style.maxWidth = n <= 10 ? '720px' : '100%';
+
+        whites.forEach((item, idx) => {
+          const key = LINEAR_KEYS[idx] || '';
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.token = item.token;
+          btn.className = 'piano-white focus:outline-none';
+          const badgeCls = idx < Math.floor(n / 2) ? 'bg-[#CCFBF1]/80 text-[#0F766E]' : 'bg-[#FEF3C7]/90 text-[#B45309]';
+
+          btn.innerHTML = `
+            <span class="key-hint hidden text-[9px] font-mono font-semibold uppercase px-1 py-0.5 rounded ${badgeCls} mb-1">${key}</span>
+            <span class="note-num font-mono font-semibold text-[11px] sm:text-xs text-[#181512] leading-none">${renderDotStackHTML(item)}</span>
+            <span class="note-letter font-sans text-[8px] sm:text-[10px] font-medium text-[#6E685F] mt-0.5 leading-none">${item.note}</span>
+          `;
+
+          const pan = n > 1 ? ((idx / (n - 1)) * 2 - 1) * 0.52 : 0;
+          const noteObj = { ...item, idx, key, side: 'linear', pan, el: btn };
+          ACTIVE_NOTES.push(noteObj);
+          TOKEN_TO_NOTE[item.token] = noteObj;
+          if (key) KEY_TO_TOKEN[key] = item.token;
+
+          bindPlayPointer(btn, item.token, item.midi, pan);
+          bed.appendChild(btn);
+
+          // Add authentic black sharp key after C, D, F, G, A (if not last key)
+          const pc = item.midi % 12;
+          if (idx < n - 1 && [0, 2, 5, 7, 9].includes(pc)) {
+            const sharpMidi = item.midi + 1;
+            const blackBtn = document.createElement('button');
+            blackBtn.type = 'button';
+            blackBtn.className = 'piano-black focus:outline-none';
+            const leftPct = ((idx + 1) / n) * 100;
+            const widthPct = (1 / n) * 62;
+            blackBtn.style.left = `calc(${leftPct}% - ${widthPct / 2}%)`;
+            blackBtn.style.width = `${widthPct}%`;
+            blackBtn.setAttribute('aria-label', `Tuts hitam MIDI ${sharpMidi}`);
+            bindPlayPointer(blackBtn, null, sharpMidi, pan);
+            bed.appendChild(blackBtn);
           }
+        });
+
+        els.stageBody.appendChild(bed);
+      }
+
+      // ---------- STAGE C: GUITAR / UKULELE FRETBOARD ----------
+      function buildGuitarStage(meta) {
+        const isUke = meta.strings === 4;
+        const strings = isUke ? UKULELE_STRINGS : GUITAR_STRINGS;
+        const fretCount = 7; // Open (0) + Frets 1..7
+
+        const wrap = document.createElement('div');
+        wrap.className = 'space-y-2.5';
+
+        const board = document.createElement('div');
+        board.id = 'active-play-grid';
+        board.className = 'fretboard px-2 sm:px-3 py-3';
+
+        // Fret number header
+        const headRow = document.createElement('div');
+        headRow.className = 'grid items-center mb-1.5 text-[10px] font-mono text-white/45';
+        headRow.style.gridTemplateColumns = `36px repeat(${fretCount + 1}, minmax(0, 1fr))`;
+        headRow.innerHTML = '<span></span><span class="text-center">Open</span>' +
+          Array.from({ length: fretCount }, (_, i) => `<span class="text-center">${i + 1}</span>`).join('');
+        board.appendChild(headRow);
+
+        strings.forEach((str, sIdx) => {
+          const row = document.createElement('div');
+          row.className = 'guitar-string-row relative grid items-center';
+          row.style.gridTemplateColumns = `36px repeat(${fretCount + 1}, minmax(0, 1fr))`;
+          row.style.height = isUke ? '40px' : '32px';
+
+          const line = document.createElement('div');
+          line.className = 'guitar-string-line';
+          line.style.height = `${str.gauge}px`;
+          row.appendChild(line);
+
+          const label = document.createElement('div');
+          label.className = 'relative z-10 text-[11px] font-mono font-semibold text-[#FDE68A] pr-2 text-right';
+          label.textContent = str.name;
+          row.appendChild(label);
+
+          for (let fret = 0; fret <= fretCount; fret++) {
+            const midi = str.openMidi + fret;
+            const tok = findTokenByMidi(midi);
+            const cell = document.createElement('button');
+            cell.type = 'button';
+            cell.className = `fret-cell h-full ${fret > 0 ? 'fret-wire' : 'border-r-[3px] border-[#E7DEC8]/75'}`;
+            cell.dataset.midi = midi;
+            if (tok) cell.dataset.token = tok;
+            cell.innerHTML = `<span class="fret-dot">${tok ? tokenToLabel(tok) : fret}</span>`;
+
+            const pan = ((sIdx / Math.max(1, strings.length - 1)) - 0.5) * 0.4;
+            cell.addEventListener('pointerdown', (e) => {
+              e.preventDefault();
+              state.isPointerDown = true;
+              state.lastPointerKey = `g-${sIdx}-${fret}`;
+              triggerDirectMidi(midi, tok, pan, cell, row, true);
+            });
+            cell.addEventListener('pointerenter', () => {
+              const pk = `g-${sIdx}-${fret}`;
+              if (state.isPointerDown && state.lastPointerKey !== pk) {
+                state.lastPointerKey = pk;
+                triggerDirectMidi(midi, tok, pan, cell, row, true);
+              }
+            });
+
+            GUITAR_CELLS.push({ el: cell, row, strIdx: sIdx, fret, midi, token: tok });
+            row.appendChild(cell);
+          }
+
+          board.appendChild(row);
+        });
+
+        // Map diatonic tokens to the best fret cell + keyboard keys so Learn & Keyboard work seamlessly!
+        const scale17 = getSliceForCount(17, false);
+        scale17.forEach((item, idx) => {
+          const match = GUITAR_CELLS.find(c => c.midi === item.midi) ||
+                        GUITAR_CELLS.find(c => c.midi === item.midi - 12) ||
+                        GUITAR_CELLS.find(c => c.midi === item.midi + 12);
+          const key = LINEAR_KEYS[idx] || '';
+          const noteObj = { ...item, idx, key, pan: 0, el: match ? match.el : null, row: match ? match.row : null };
+          ACTIVE_NOTES.push(noteObj);
+          TOKEN_TO_NOTE[item.token] = noteObj;
+          if (key) KEY_TO_TOKEN[key] = item.token;
+        });
+
+        wrap.appendChild(board);
+        els.stageBody.appendChild(wrap);
+      }
+
+      // ---------- STAGE D: CONCERT HARP ----------
+      function buildHarpStage() {
+        const notes = getSliceForCount(state.keyCount, false);
+        const n = notes.length;
+
+        const frame = document.createElement('div');
+        frame.id = 'active-play-grid';
+        frame.className = 'harp-frame mx-auto';
+        frame.style.maxWidth = n <= 10 ? '700px' : '100%';
+
+        notes.forEach((item, idx) => {
+          const key = LINEAR_KEYS[idx] || '';
+          const col = document.createElement('button');
+          col.type = 'button';
+          col.dataset.token = item.token;
+          col.className = 'harp-string-col focus:outline-none';
+
+          const pc = item.midi % 12;
+          const wireCls = pc === 0 ? 'is-c' : pc === 5 ? 'is-f' : 'is-nat';
+          const hPct = Math.round(92 - (idx / Math.max(1, n - 1)) * 34);
+
+          col.innerHTML = `
+            <span class="key-hint hidden text-[9px] font-mono font-semibold uppercase px-1 rounded bg-[#181512]/[0.07] text-[#6E685F] mb-1">${key}</span>
+            <span class="harp-wire ${wireCls}" style="height:${hPct}%"></span>
+            <span class="note-num font-mono font-semibold text-[10px] sm:text-xs text-[#181512] leading-none">${renderDotStackHTML(item)}</span>
+            <span class="note-letter font-sans text-[8px] sm:text-[9px] text-[#6E685F] mt-0.5 leading-none">${item.note}</span>
+          `;
+
+          const pan = n > 1 ? ((idx / (n - 1)) * 2 - 1) * 0.6 : 0;
+          const noteObj = { ...item, idx, key, side: 'linear', pan, el: col };
+          ACTIVE_NOTES.push(noteObj);
+          TOKEN_TO_NOTE[item.token] = noteObj;
+          if (key) KEY_TO_TOKEN[key] = item.token;
+
+          bindPlayPointer(col, item.token, item.midi, pan);
+          frame.appendChild(col);
+        });
+
+        els.stageBody.appendChild(frame);
+      }
+
+      // ---------- STAGE E: MARIMBA / VIBRAPHONE ----------
+      function buildPercussionStage(meta) {
+        const notes = getSliceForCount(state.keyCount, false);
+        const n = notes.length;
+
+        const grid = document.createElement('div');
+        grid.id = 'active-play-grid';
+        grid.className = 'grid gap-1 sm:gap-1.5 items-center mx-auto py-2';
+        grid.style.gridTemplateColumns = `repeat(${n}, minmax(0, 1fr))`;
+        grid.style.maxWidth = n <= 10 ? '700px' : '100%';
+
+        notes.forEach((item, idx) => {
+          const key = LINEAR_KEYS[idx] || '';
+          const hPct = Math.round(100 - (idx / Math.max(1, n - 1)) * 38);
+          const desktopPx = Math.round(205 * (hPct / 100));
+          const mobilePx = Math.round(136 * (hPct / 100));
+
+          const bar = document.createElement('button');
+          bar.type = 'button';
+          bar.dataset.token = item.token;
+          bar.className = `perc-bar focus:outline-none ${meta.theme === 'vibraphone' ? 'theme-vibraphone' : 'theme-marimba'}`;
+          bar.style.height = `clamp(${mobilePx}px, ${Math.round(21 * (hPct / 100))}vw, ${desktopPx}px)`;
+
+          const mutedText = meta.theme === 'vibraphone' ? 'text-[#6E685F]' : 'text-white/65';
+          const badgeBg = meta.theme === 'vibraphone' ? 'bg-[#181512]/10 text-[#181512]' : 'bg-white/15 text-white';
+
+          bar.innerHTML = `
+            <span class="key-hint hidden text-[9px] font-mono font-semibold uppercase px-1 rounded ${badgeBg}">${key}</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-current opacity-25"></span>
+            <div class="flex flex-col items-center">
+              <span class="note-num font-mono font-semibold text-[11px] sm:text-xs leading-none">${renderDotStackHTML(item)}</span>
+              <span class="note-letter font-sans text-[8px] sm:text-[9px] ${mutedText} mt-0.5 leading-none">${item.note}</span>
+            </div>
+          `;
+
+          const pan = n > 1 ? ((idx / (n - 1)) * 2 - 1) * 0.56 : 0;
+          const noteObj = { ...item, idx, key, side: 'linear', pan, el: bar };
+          ACTIVE_NOTES.push(noteObj);
+          TOKEN_TO_NOTE[item.token] = noteObj;
+          if (key) KEY_TO_TOKEN[key] = item.token;
+
+          bindPlayPointer(bar, item.token, item.midi, pan);
+          grid.appendChild(bar);
+        });
+
+        els.stageBody.appendChild(grid);
+      }
+
+      // Shared Zero-Delay Pointer Binding
+      function bindPlayPointer(el, token, midi, pan) {
+        const pk = token || `m-${midi}`;
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          state.isPointerDown = true;
+          state.lastPointerKey = pk;
+          triggerDirectMidi(midi, token, pan, el, null, true);
+        });
+        el.addEventListener('pointerenter', () => {
+          if (state.isPointerDown && state.lastPointerKey !== pk) {
+            state.lastPointerKey = pk;
+            triggerDirectMidi(midi, token, pan, el, null, true);
+          }
+        });
+      }
+
+      // Touch-drag glissando across stage
+      els.stageBody.addEventListener('pointermove', (e) => {
+        if (!state.isPointerDown) return;
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        if (!target) return;
+        const btn = target.closest('[data-token], .piano-black, .fret-cell');
+        if (!btn) return;
+        const tok = btn.dataset.token || null;
+        const midi = btn.dataset.midi ? Number(btn.dataset.midi) : (tok && TOKEN_TO_NOTE[tok] ? TOKEN_TO_NOTE[tok].midi : null);
+        const pk = tok || `m-${midi}`;
+        if (midi && state.lastPointerKey !== pk) {
+          state.lastPointerKey = pk;
+          const row = btn.closest('.guitar-string-row');
+          triggerDirectMidi(midi, tok, 0, btn, row, true);
         }
       });
 
-      window.addEventListener('pointerup', () => { state.isPointerDown = false; state.lastGlissIdx = -1; });
-      window.addEventListener('pointercancel', () => { state.isPointerDown = false; state.lastGlissIdx = -1; });
+      window.addEventListener('pointerup', () => { state.isPointerDown = false; state.lastPointerKey = ''; });
+      window.addEventListener('pointercancel', () => { state.isPointerDown = false; state.lastPointerKey = ''; });
 
+      // ============================================================
+      // 8. ZERO-LATENCY TRIGGER + VISUAL PULSE
+      // ============================================================
+      function triggerDirectMidi(midi, token, pan = 0, el = null, guitarRow = null, fromUser = true, velocity = 0.88) {
+        // 1. AUDIO SYNCHRONOUSLY FIRST (0ms delay)
+        audio.playNote(midi, pan, fromUser ? velocity : velocity * 0.88);
+
+        // 2. Non-blocking visual feedback
+        if (el) {
+          el.classList.add('is-plucked');
+          if (el.classList.contains('tine') && el.animate) {
+            el.animate(
+              [
+                { transform: 'scaleY(1) translateY(0)' },
+                { transform: 'scaleY(1.035) translateY(3px)', offset: 0.2 },
+                { transform: 'scaleY(0.985) translateY(-1.5px)', offset: 0.5 },
+                { transform: 'scaleY(1) translateY(0)' }
+              ],
+              { duration: 250, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+            );
+          }
+          clearTimeout(el._pt);
+          el._pt = setTimeout(() => el.classList.remove('is-plucked'), 210);
+        }
+
+        if (guitarRow) {
+          guitarRow.classList.add('is-vibrating');
+          clearTimeout(guitarRow._vt);
+          guitarRow._vt = setTimeout(() => guitarRow.classList.remove('is-vibrating'), 240);
+        }
+
+        const hole = document.getElementById('stage-soundhole');
+        if (hole) {
+          hole.classList.add('is-resonating');
+          clearTimeout(hole._ht);
+          hole._ht = setTimeout(() => hole.classList.remove('is-resonating'), 130);
+        }
+
+        // 3. Recorder
+        if (fromUser && state.isRecording && token) {
+          state.recordedEvents.push({ token, time: Date.now() - state.recStartTime });
+          renderRecordedNotes();
+        }
+
+        // 4. Learn Practice
+        if (fromUser && state.activeTab === 'learn' && state.learnActive && state.learnMode === 'practice' && token) {
+          handlePracticePluck(token, el);
+        }
+      }
+
+      function triggerToken(token, fromUser = true, velocity = 0.88) {
+        const noteObj = TOKEN_TO_NOTE[token];
+        if (noteObj) {
+          triggerDirectMidi(noteObj.midi, token, noteObj.pan || 0, noteObj.el, noteObj.row || null, fromUser, velocity);
+        } else {
+          const fallback = findNoteByToken(token);
+          if (fallback) audio.playNote(fallback.midi, 0, velocity);
+        }
+      }
+
+      function playChordArpeggio(chord, velocity = 0.82) {
+        if (!chord) return;
+        const meta = INSTRUMENTS[state.instrument];
+        if (meta && meta.stage === 'guitar') {
+          const isUke = meta.strings === 4;
+          const strings = isUke ? UKULELE_STRINGS : GUITAR_STRINGS;
+          const voicing = (isUke ? UKULELE_VOICINGS : GUITAR_VOICINGS)[chord.id];
+          if (voicing) {
+            // Strum from lowest string to highest string (bottom to top index)
+            let delay = 0;
+            for (let s = strings.length - 1; s >= 0; s--) {
+              const fret = voicing[s];
+              if (fret >= 0) {
+                const cell = GUITAR_CELLS.find(c => c.strIdx === s && c.fret === fret);
+                const midi = strings[s].openMidi + fret;
+                const d = delay;
+                setTimeout(() => triggerDirectMidi(midi, cell ? cell.token : null, 0, cell ? cell.el : null, cell ? cell.row : null, false, velocity), d);
+                delay += 42;
+              }
+            }
+            return;
+          }
+        }
+        chord.tokens.forEach((tok, i) => setTimeout(() => triggerToken(tok, false, velocity), i * 62));
+      }
+
+      function playChordBlock(chord, velocity = 0.72) {
+        if (!chord) return;
+        chord.tokens.forEach(tok => triggerToken(tok, false, velocity));
+      }
+
+      // ============================================================
+      // 9. NOTATION & HIGHLIGHTS
+      // ============================================================
       function updateNotationDisplay() {
         const modeMap = { both: '1·C', number: '1–7', letter: 'C–B' };
         els.labelNotation.textContent = modeMap[state.notationMode];
 
-        tineElements.forEach((btn) => {
-          btn.querySelector('.tine-num').classList.toggle('hidden', state.notationMode === 'letter');
-          btn.querySelector('.tine-letter').classList.toggle('hidden', state.notationMode === 'number');
-          btn.querySelector('.tine-key-hint').classList.toggle('hidden', !state.showKeyHints);
-        });
+        els.stageBody.querySelectorAll('.note-num').forEach(el => el.classList.toggle('hidden', state.notationMode === 'letter'));
+        els.stageBody.querySelectorAll('.note-letter').forEach(el => el.classList.toggle('hidden', state.notationMode === 'number'));
+        els.stageBody.querySelectorAll('.key-hint').forEach(el => el.classList.toggle('hidden', !state.showKeyHints));
 
         els.btnKeysToggle.classList.toggle('bg-[#181512]', state.showKeyHints);
         els.btnKeysToggle.classList.toggle('text-white', state.showKeyHints);
@@ -1754,100 +2356,50 @@
         els.btnKeysToggle.classList.toggle('border-[#181512]/10', !state.showKeyHints);
       }
 
-      function updateTineHighlights() {
-        tineElements.forEach((btn) => btn.classList.remove('is-chord', 'is-left-hint', 'is-target'));
+      function updateHighlights() {
+        els.stageBody.querySelectorAll('.is-chord, .is-left-hint, .is-target').forEach(el => {
+          el.classList.remove('is-chord', 'is-left-hint', 'is-target');
+        });
+
+        const meta = INSTRUMENTS[state.instrument];
 
         if (state.activeTab === 'learn' && state.learnActive) {
           const song = getSongById(state.selectedSongId);
           if (state.learnStep < song.notes.length) {
-            const targetIdx = TOKEN_TO_IDX[song.notes[state.learnStep]];
-            if (targetIdx !== undefined && tineElements[targetIdx]) {
-              tineElements[targetIdx].classList.add('is-target');
-            }
+            const targetTok = song.notes[state.learnStep];
+            const node = TOKEN_TO_NOTE[targetTok];
+            if (node && node.el) node.el.classList.add('is-target');
           }
           return;
         }
 
         if (state.selectedChordId) {
           const chord = getChordById(state.selectedChordId);
-          getChordIndices(chord).forEach((idx) => {
-            const btn = tineElements[idx];
-            if (!btn) return;
-            btn.classList.add('is-chord');
-            if (ACTIVE_TINES[idx].side === 'left') btn.classList.add('is-left-hint');
-          });
-        }
-      }
+          if (!chord) return;
 
-      // ============================================================
-      // 9. ZERO-DELAY PLUCK TRIGGER
-      // ============================================================
-      let holeTimer = null;
-
-      function triggerTine(idx, fromUser = true, velocity = 0.88) {
-        const tine = ACTIVE_TINES[idx];
-        if (!tine) return;
-
-        // 1. AUDIO IMMEDIATELY (0ms before DOM)
-        const panVal = ACTIVE_TINES.length > 1 ? ((idx / (ACTIVE_TINES.length - 1)) * 2 - 1) * 0.58 : 0;
-        audio.playNote(tine.midi, panVal, fromUser ? velocity : velocity * 0.88);
-
-        // 2. Non-blocking spring animation
-        const btn = tineElements[idx];
-        if (btn) {
-          btn.classList.add('is-plucked');
-          if (btn.animate) {
-            btn.animate(
-              [
-                { transform: 'scaleY(1) translateY(0)' },
-                { transform: 'scaleY(1.035) translateY(3px)', offset: 0.2 },
-                { transform: 'scaleY(0.985) translateY(-1.5px)', offset: 0.5 },
-                { transform: 'scaleY(1) translateY(0)' }
-              ],
-              { duration: 260, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
-            );
+          if (meta && meta.stage === 'guitar') {
+            const isUke = meta.strings === 4;
+            const voicing = (isUke ? UKULELE_VOICINGS : GUITAR_VOICINGS)[chord.id];
+            if (voicing) {
+              voicing.forEach((fret, sIdx) => {
+                if (fret >= 0) {
+                  const cell = GUITAR_CELLS.find(c => c.strIdx === sIdx && c.fret === fret);
+                  if (cell) cell.el.classList.add('is-chord');
+                }
+              });
+            }
+            return;
           }
-          clearTimeout(btn._pluckTimer);
-          btn._pluckTimer = setTimeout(() => btn.classList.remove('is-plucked'), 220);
-        }
 
-        els.soundholeBtn.classList.add('is-resonating');
-        clearTimeout(holeTimer);
-        holeTimer = setTimeout(() => els.soundholeBtn.classList.remove('is-resonating'), 130);
-
-        // 3. Recorder
-        if (fromUser && state.isRecording) {
-          state.recordedEvents.push({ token: tine.token, time: Date.now() - state.recStartTime });
-          renderRecordedNotes();
-        }
-
-        // 4. Learn Practice
-        if (fromUser && state.activeTab === 'learn' && state.learnActive && state.learnMode === 'practice') {
-          handlePracticePluck(idx);
-        }
-      }
-
-      function playChordArpeggio(chord, velocity = 0.82) {
-        if (!chord) return;
-        const indices = getChordIndices(chord);
-        if (indices.length === 0) {
-          chord.tokens.forEach((tok, i) => {
-            const t = BASE_17.find(x => x.token === tok);
-            if (t) setTimeout(() => audio.playNote(t.midi, 0, velocity), i * 62);
+          chord.tokens.forEach((tok) => {
+            const node = TOKEN_TO_NOTE[tok];
+            if (!node || !node.el) return;
+            node.el.classList.add('is-chord');
+            if (node.side === 'left') node.el.classList.add('is-left-hint');
           });
-          return;
         }
-        indices.forEach((idx, i) => setTimeout(() => triggerTine(idx, false, velocity), i * 62));
       }
 
-      function playChordBlock(chord, velocity = 0.72) {
-        if (!chord) return;
-        getChordIndices(chord).forEach(idx => triggerTine(idx, false, velocity));
-      }
-
-      // ============================================================
-      // 10. CUE PILL & COMBO
-      // ============================================================
       function updateCuePill() {
         if (state.activeTab === 'learn') {
           const song = getSongById(state.selectedSongId);
@@ -1867,41 +2419,44 @@
         }
 
         els.comboPill.classList.add('hidden');
+        const instName = INSTRUMENTS[state.instrument]?.name || 'Kalimba';
         if (state.selectedChordId) {
           const chord = getChordById(state.selectedChordId);
-          els.cueTitle.textContent = chord.name;
+          els.cueTitle.textContent = `${chord.name}`;
           els.cueNotes.innerHTML = chord.tokens
             .map(tok => `<span class="text-white">${renderMiniNoteHTML(tok)}</span>`)
             .join('<span class="text-white/30">·</span>');
         } else {
-          els.cueTitle.textContent = 'Main Bebas';
-          els.cueNotes.innerHTML = `<span class="text-white/70 text-xs font-sans">${state.keyCount} Key</span>`;
+          els.cueTitle.textContent = instName;
+          els.cueNotes.innerHTML = `<span class="text-white/70 text-xs font-sans">Main Bebas</span>`;
         }
       }
 
       // ============================================================
-      // 11. CHORD EXPLORER
+      // 10. CHORD EXPLORER
       // ============================================================
       function selectChord(id, shouldPlay = false) {
         const chord = getChordById(id);
         if (!chord) return;
 
-        const missing = chord.tokens.some(tok => TOKEN_TO_IDX[tok] === undefined);
-        if (missing && state.keyCount < 17) {
-          setKeyCount(17, false);
-          showToast(`Otomatis ke 17 Key untuk chord ${chord.symbol}`);
+        const meta = INSTRUMENTS[state.instrument];
+        if (meta.stage !== 'guitar') {
+          const missing = chord.tokens.some(tok => !TOKEN_TO_NOTE[tok]);
+          if (missing && state.keyCount < 17) {
+            setKeyCount(17, false);
+          }
         }
 
         state.selectedChordId = id;
         els.chordBadgeBig.textContent = chord.symbol;
         els.chordDetailName.textContent = chord.name;
-        els.chordDetailTechnique.textContent = chord.technique;
+        els.chordDetailTechnique.textContent = meta.stage === 'guitar' ? (meta.strings === 4 ? 'Strum 4 Senar' : 'Strum 6 Senar') : meta.stage === 'piano' ? 'Tekan Tuts' : chord.technique;
         els.chordDetailNumbers.innerHTML = chord.tokens.map(renderMiniNoteHTML).join(' · ');
         els.chordDetailLetters.textContent = chord.tokens.map(tokenToNote).join(' · ');
-        els.chordDetailThumb.textContent = chord.thumb;
+        els.chordDetailThumb.textContent = meta.stage === 'kalimba' ? chord.thumb : meta.name;
 
         renderChordGrid();
-        updateTineHighlights();
+        updateHighlights();
         updateCuePill();
         if (shouldPlay) playChordArpeggio(chord);
       }
@@ -1924,9 +2479,7 @@
           const nums = c.tokens.map(renderMiniNoteHTML).join(' ');
           return `
             <button data-chord="${c.id}" class="chord-card text-left p-3 rounded-2xl border transition-all ${
-              active
-                ? 'bg-[#181512] text-[#FAF8F4] border-[#181512] shadow-sm'
-                : 'bg-white text-[#181512] border-[#181512]/[0.08] hover:border-[#D97706]/50'
+              active ? 'bg-[#181512] text-[#FAF8F4] border-[#181512] shadow-sm' : 'bg-white text-[#181512] border-[#181512]/[0.08] hover:border-[#D97706]/50'
             }">
               <div class="flex items-center justify-between gap-1">
                 <span class="font-serif text-xl sm:text-2xl leading-none ${active ? 'text-[#FBBF24]' : 'text-[#181512]'}">${c.symbol}</span>
@@ -1938,10 +2491,7 @@
         }).join('');
 
         els.chordGrid.querySelectorAll('.chord-card').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            stopProgression();
-            selectChord(btn.dataset.chord, true);
-          });
+          btn.addEventListener('click', () => { stopProgression(); selectChord(btn.dataset.chord, true); });
         });
       }
 
@@ -1975,13 +2525,7 @@
         });
       }
 
-      function stopProgression() {
-        clearInterval(state.activeProgressionTimer);
-        state.activeProgressionTimer = null;
-        state.activeProgressionId = null;
-        renderProgressions();
-      }
-
+      function stopProgression() { clearInterval(state.activeProgressionTimer); state.activeProgressionTimer = null; state.activeProgressionId = null; renderProgressions(); }
       function playProgression(id) {
         stopProgression();
         const prog = PROGRESSIONS.find(p => p.id === id);
@@ -1995,7 +2539,7 @@
       }
 
       // ============================================================
-      // 12. LEARN MODE + METRONOME + CUSTOM TAB
+      // 11. LEARN MODE
       // ============================================================
       function getSongChordAtStep(song, step) {
         let current = song.chordList[0] || 'C';
@@ -2009,21 +2553,17 @@
         state.selectedSongId = songId;
         const song = getSongById(songId);
 
-        const missing = song.notes.some(tok => TOKEN_TO_IDX[tok] === undefined);
-        if (missing && state.keyCount < 17) {
-          setKeyCount(17, false);
-          showToast('Otomatis ke 17 Key agar semua nada lagu tersedia');
+        if (INSTRUMENTS[state.instrument].stage !== 'guitar') {
+          const missing = song.notes.some(tok => !TOKEN_TO_NOTE[tok]);
+          if (missing && state.keyCount < 17) setKeyCount(17, false);
         }
 
         state.bpm = song.bpm;
         state.speedMult = 1;
-        state.learnStep = 0;
-        state.learnAttempts = 0;
-        state.learnCorrect = 0;
-        state.combo = 0;
+        state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0;
         state.activeSongChordId = getSongChordAtStep(song, 0);
 
-        els.learnSongTag.textContent = song.viral ? 'Viral 2026' : song.region;
+        els.learnSongTag.textContent = song.artist === 'Vierra' ? 'Vierra' : song.viral ? 'Viral 2026' : song.region;
         els.learnSongLevel.textContent = song.level;
         els.learnSongTitle.textContent = song.title;
         els.learnSongArtist.textContent = song.artist || '';
@@ -2043,18 +2583,16 @@
         renderSongTabStrip();
         updateLearnProgress();
         updateCuePill();
-        updateTineHighlights();
+        updateHighlights();
       }
 
       function renderSongChordStrip() {
         const song = getSongById(state.selectedSongId);
         els.songChordStrip.innerHTML = song.chordList.map((cid) => {
           const isCurr = cid === state.activeSongChordId;
-          return `
-            <button data-song-chord="${cid}" class="song-chord-btn px-2.5 py-1 rounded-lg font-mono text-xs font-medium border transition-all ${
-              isCurr ? 'bg-[#D97706] text-white border-[#B45309] shadow-xs' : 'bg-white text-[#181512] border-[#181512]/10 hover:border-[#D97706]'
-            }">${cid}</button>
-          `;
+          return `<button data-song-chord="${cid}" class="song-chord-btn px-2.5 py-1 rounded-lg font-mono text-xs font-medium border transition-all ${
+            isCurr ? 'bg-[#D97706] text-white border-[#B45309] shadow-xs' : 'bg-white text-[#181512] border-[#181512]/10 hover:border-[#D97706]'
+          }">${cid}</button>`;
         }).join('');
 
         els.songChordStrip.querySelectorAll('.song-chord-btn').forEach((btn) => {
@@ -2063,7 +2601,7 @@
             state.activeSongChordId = cid;
             state.selectedChordId = cid;
             renderSongChordStrip();
-            updateTineHighlights();
+            updateHighlights();
             playChordArpeggio(getChordById(cid), 0.78);
           });
         });
@@ -2073,11 +2611,12 @@
         const bestScores = loadBestScores();
         const q = state.songSearch.trim().toLowerCase();
         const filtered = SONGS.filter((s) => {
-          const regionOk =
+          const rOk =
             state.songRegionFilter === 'all' ||
-            (state.songRegionFilter === 'Viral 2026' ? s.viral : s.region === state.songRegionFilter);
+            (state.songRegionFilter === 'Vierra' ? s.artist === 'Vierra' :
+             state.songRegionFilter === 'Viral 2026' ? s.viral : s.region === state.songRegionFilter);
           const qOk = !q || s.title.toLowerCase().includes(q) || (s.artist || '').toLowerCase().includes(q);
-          return regionOk && qOk;
+          return rOk && qOk;
         });
 
         if (filtered.length === 0) {
@@ -2088,13 +2627,14 @@
         els.songGrid.innerHTML = filtered.map((s) => {
           const active = s.id === state.selectedSongId;
           const best = bestScores[s.id];
+          const badgeTxt = s.artist === 'Vierra' ? 'Vierra' : s.viral ? 'Viral 2026' : s.region;
           return `
             <button data-song="${s.id}" class="song-card text-left p-3.5 rounded-2xl border transition-all ${
               active ? 'bg-[#181512] text-[#FAF8F4] border-[#181512] shadow-sm' : 'bg-white text-[#181512] border-[#181512]/[0.08] hover:border-[#D97706]/50'
             }">
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${active ? 'bg-[#D97706] text-white' : s.viral ? 'bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]' : 'bg-[#F2EFE9] text-[#6E685F]'}">${s.viral ? 'Viral 2026' : s.region}</span>
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${active ? 'bg-[#D97706] text-white' : s.viral ? 'bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]' : 'bg-[#F2EFE9] text-[#6E685F]'}">${badgeTxt}</span>
                   ${best ? `<span class="text-[10px] font-mono ${active ? 'text-[#34D399]' : 'text-[#047857]'}">${best}%</span>` : ''}
                 </div>
                 <span class="text-[10px] font-mono ${active ? 'text-white/60' : 'text-[#6E685F]'}">${s.bpm} BPM</span>
@@ -2108,9 +2648,7 @@
           `;
         }).join('');
 
-        els.songGrid.querySelectorAll('.song-card').forEach((btn) => {
-          btn.addEventListener('click', () => selectSong(btn.dataset.song));
-        });
+        els.songGrid.querySelectorAll('.song-card').forEach(btn => btn.addEventListener('click', () => selectSong(btn.dataset.song)));
       }
 
       function renderSongTabStrip() {
@@ -2121,11 +2659,9 @@
           const chordTag = song.chordChanges && song.chordChanges[i] ? song.chordChanges[i] : '';
           return `
             <div data-step="${i}" class="shrink-0 min-w-[34px] px-1.5 py-1 rounded-xl font-mono text-xs flex flex-col items-center justify-center border transition-all ${
-              curr
-                ? 'bg-[#D97706] text-white border-[#B45309] scale-105 shadow-xs font-semibold'
-                : done
-                  ? 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]'
-                  : 'bg-[#FAF8F4] text-[#181512] border-[#181512]/[0.08]'
+              curr ? 'bg-[#D97706] text-white border-[#B45309] scale-105 shadow-xs font-semibold'
+                   : done ? 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]'
+                          : 'bg-[#FAF8F4] text-[#181512] border-[#181512]/[0.08]'
             }">
               <span class="text-[9px] leading-none h-2.5 ${curr ? 'text-[#FEF3C7]' : 'text-[#D97706]'}">${chordTag}</span>
               <span class="mt-0.5">${renderMiniNoteHTML(tok)}</span>
@@ -2149,32 +2685,21 @@
 
       function startLearn() {
         const song = getSongById(state.selectedSongId);
-        if (state.learnStep >= song.notes.length) {
-          state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0;
-        }
+        if (state.learnStep >= song.notes.length) { state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0; }
         state.learnActive = true;
         state.activeSongChordId = getSongChordAtStep(song, state.learnStep);
         setSolarIcon(els.iconLearnPlay, 'solar:pause-bold');
         els.labelLearnPlay.textContent = 'Jeda';
-
-        renderSongChordStrip();
-        updateLearnProgress();
-        renderSongTabStrip();
-        updateCuePill();
-        updateTineHighlights();
-
+        renderSongChordStrip(); updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateHighlights();
         if (state.learnMode === 'demo') runDemoLoop();
       }
 
       function stopLearn() {
         state.learnActive = false;
-        clearTimeout(state.demoTimer);
-        state.demoTimer = null;
+        clearTimeout(state.demoTimer); state.demoTimer = null;
         setSolarIcon(els.iconLearnPlay, 'solar:play-bold');
         els.labelLearnPlay.textContent = state.learnMode === 'practice' ? 'Mulai' : 'Putar';
-        renderSongTabStrip();
-        updateCuePill();
-        updateTineHighlights();
+        renderSongTabStrip(); updateCuePill(); updateHighlights();
       }
 
       function runDemoLoop() {
@@ -2183,13 +2708,8 @@
 
         const song = getSongById(state.selectedSongId);
         if (state.learnStep >= song.notes.length) {
-          if (state.learnLoop) {
-            state.learnStep = 0;
-          } else {
-            stopLearn();
-            showToast(`"${song.title}" selesai`);
-            return;
-          }
+          if (state.learnLoop) state.learnStep = 0;
+          else { stopLearn(); showToast(`"${song.title}" selesai`); return; }
         }
 
         if (song.chordChanges && song.chordChanges[state.learnStep]) {
@@ -2197,143 +2717,101 @@
           renderSongChordStrip();
           if (state.demoWithChords) {
             const c = getChordById(state.activeSongChordId);
-            if (c) {
-              c.tokens.forEach((tok) => {
-                const t = BASE_17.find(x => x.token === tok);
-                if (t) audio.playNote(t.midi - 12, 0, 0.26);
-              });
-            }
+            if (c) c.tokens.forEach(tok => { const t = findNoteByToken(tok); if (t) audio.playNote(t.midi - 12, 0, 0.25); });
           }
         }
 
-        const idx = TOKEN_TO_IDX[song.notes[state.learnStep]];
-        updateTineHighlights();
-        renderSongTabStrip();
-        updateCuePill();
-        if (idx !== undefined) triggerTine(idx, false, 0.9);
+        const tok = song.notes[state.learnStep];
+        updateHighlights(); renderSongTabStrip(); updateCuePill();
+        triggerToken(tok, false, 0.9);
 
         state.learnStep++;
         updateLearnProgress();
-
-        const effectiveBpm = Math.max(35, state.bpm * state.speedMult);
-        state.demoTimer = setTimeout(runDemoLoop, Math.round(60000 / effectiveBpm));
+        state.demoTimer = setTimeout(runDemoLoop, Math.round(60000 / Math.max(35, state.bpm * state.speedMult)));
       }
 
-      function handlePracticePluck(idx) {
+      function handlePracticePluck(token, el) {
         const song = getSongById(state.selectedSongId);
         if (state.learnStep >= song.notes.length) return;
 
-        const expectedIdx = TOKEN_TO_IDX[song.notes[state.learnStep]];
+        const expected = song.notes[state.learnStep];
         state.learnAttempts++;
 
-        if (idx === expectedIdx) {
-          state.learnCorrect++;
-          state.combo++;
-          state.learnStep++;
+        if (token === expected) {
+          state.learnCorrect++; state.combo++; state.learnStep++;
           state.activeSongChordId = getSongChordAtStep(song, state.learnStep);
-          renderSongChordStrip();
-          updateLearnProgress();
-          renderSongTabStrip();
-          updateCuePill();
-          updateTineHighlights();
+          renderSongChordStrip(); updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateHighlights();
 
           if (state.learnStep >= song.notes.length) {
             const acc = Math.round((state.learnCorrect / state.learnAttempts) * 100);
-            saveBestScore(song.id, acc);
-            renderSongGrid();
+            saveBestScore(song.id, acc); renderSongGrid();
             if (state.learnLoop) {
               showToast(`Mantap (${acc}%)! Mengulang...`);
               state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0;
-              updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateTineHighlights();
+              updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateHighlights();
             } else {
-              stopLearn();
-              showToast(`"${song.title}" selesai · Akurasi ${acc}%`);
+              stopLearn(); showToast(`"${song.title}" selesai · Akurasi ${acc}%`);
             }
           }
         } else {
           state.combo = 0;
-          const btn = tineElements[idx];
-          if (btn) {
-            btn.classList.add('is-wrong');
-            setTimeout(() => btn.classList.remove('is-wrong'), 240);
-          }
-          updateLearnProgress();
-          updateCuePill();
+          if (el) { el.classList.add('is-wrong'); setTimeout(() => el.classList.remove('is-wrong'), 240); }
+          updateLearnProgress(); updateCuePill();
         }
       }
 
-      // Metronome
       function stopMetronome() {
-        state.metroOn = false;
-        clearInterval(state.metroTimer);
-        state.metroTimer = null;
+        state.metroOn = false; clearInterval(state.metroTimer); state.metroTimer = null;
         els.btnMetronome.classList.remove('bg-[#181512]', 'text-white');
         els.btnMetronome.classList.add('bg-[#F5F2EC]', 'text-[#6E685F]');
         els.metroDot.className = 'w-2 h-2 rounded-full bg-[#6E685F]/40 transition-colors';
       }
 
       function startMetronome() {
-        stopMetronome();
-        state.metroOn = true;
-        state.metroBeat = 0;
+        stopMetronome(); state.metroOn = true; state.metroBeat = 0;
         els.btnMetronome.classList.add('bg-[#181512]', 'text-white');
         els.btnMetronome.classList.remove('bg-[#F5F2EC]', 'text-[#6E685F]');
         const tick = () => {
           const isAccent = state.metroBeat % 4 === 0;
           audio.playMetronomeClick(isAccent);
-          els.metroDot.className = isAccent
-            ? 'w-2 h-2 rounded-full bg-[#FBBF24] scale-125 transition-all'
-            : 'w-2 h-2 rounded-full bg-white transition-all';
-          setTimeout(() => {
-            if (state.metroOn) els.metroDot.className = 'w-2 h-2 rounded-full bg-white/40 transition-all';
-          }, 110);
+          els.metroDot.className = isAccent ? 'w-2 h-2 rounded-full bg-[#FBBF24] scale-125 transition-all' : 'w-2 h-2 rounded-full bg-white transition-all';
+          setTimeout(() => { if (state.metroOn) els.metroDot.className = 'w-2 h-2 rounded-full bg-white/40 transition-all'; }, 110);
           state.metroBeat++;
         };
         tick();
-        const effectiveBpm = Math.max(35, state.bpm * state.speedMult);
-        state.metroTimer = setInterval(tick, Math.round(60000 / effectiveBpm));
+        state.metroTimer = setInterval(tick, Math.round(60000 / Math.max(35, state.bpm * state.speedMult)));
       }
 
       // ============================================================
-      // 13. RECORDER
+      // 12. RECORDER
       // ============================================================
       function renderRecordedNotes() {
-        const hasNotes = state.recordedEvents.length > 0;
-        els.btnRecPlay.disabled = !hasNotes || state.isRecording;
-        els.btnRecCopy.disabled = !hasNotes;
-        els.btnRecClear.disabled = !hasNotes;
-
-        if (!hasNotes) {
-          els.recNotesDisplay.innerHTML = '<span class="text-xs text-[#6E685F] font-sans italic">Tekan Rekam lalu mainkan Keylimba di atas.</span>';
+        const has = state.recordedEvents.length > 0;
+        els.btnRecPlay.disabled = !has || state.isRecording;
+        els.btnRecCopy.disabled = !has;
+        els.btnRecClear.disabled = !has;
+        if (!has) {
+          els.recNotesDisplay.innerHTML = '<span class="text-xs text-[#6E685F] font-sans italic">Tekan Rekam lalu mainkan alat musik di atas.</span>';
           return;
         }
         els.recNotesDisplay.innerHTML = state.recordedEvents
-          .map(ev => `<span class="px-2 py-0.5 rounded-md bg-white border border-[#181512]/10 text-xs font-mono text-[#181512]">${renderMiniNoteHTML(ev.token)}</span>`)
-          .join('');
+          .map(ev => `<span class="px-2 py-0.5 rounded-md bg-white border border-[#181512]/10 text-xs font-mono text-[#181512]">${renderMiniNoteHTML(ev.token)}</span>`).join('');
       }
 
-      function stopRecordingPlayback() {
-        state.playbackTimers.forEach(clearTimeout);
-        state.playbackTimers = [];
-      }
-
+      function stopRecordingPlayback() { state.playbackTimers.forEach(clearTimeout); state.playbackTimers = []; }
       function toggleRecording() {
         stopRecordingPlayback();
         if (!state.isRecording) {
-          state.isRecording = true;
-          state.recordedEvents = [];
-          state.recStartTime = Date.now();
+          state.isRecording = true; state.recordedEvents = []; state.recStartTime = Date.now();
           els.recStatus.textContent = 'Merekam...';
           els.recStatus.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#FEF2F2] text-[#DC2626]';
-          els.labelRec.textContent = 'Berhenti';
-          setSolarIcon(els.iconRec, 'solar:stop-circle-bold');
+          els.labelRec.textContent = 'Berhenti'; setSolarIcon(els.iconRec, 'solar:stop-circle-bold');
           renderRecordedNotes();
         } else {
           state.isRecording = false;
           els.recStatus.textContent = `${state.recordedEvents.length} nada`;
           els.recStatus.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#047857]';
-          els.labelRec.textContent = 'Rekam';
-          setSolarIcon(els.iconRec, 'solar:record-circle-bold');
+          els.labelRec.textContent = 'Rekam'; setSolarIcon(els.iconRec, 'solar:record-circle-bold');
           renderRecordedNotes();
         }
       }
@@ -2343,11 +2821,7 @@
         if (state.recordedEvents.length === 0) return;
         const t0 = state.recordedEvents[0].time;
         state.recordedEvents.forEach((ev) => {
-          const id = setTimeout(() => {
-            const idx = TOKEN_TO_IDX[ev.token];
-            if (idx !== undefined) triggerTine(idx, false);
-          }, Math.max(0, ev.time - t0));
-          state.playbackTimers.push(id);
+          state.playbackTimers.push(setTimeout(() => triggerToken(ev.token, false), Math.max(0, ev.time - t0)));
         });
       }
 
@@ -2368,7 +2842,7 @@
       }
 
       // ============================================================
-      // 14. CONTROLS & EVENTS
+      // 13. CONTROLS & EVENTS
       // ============================================================
       function setKeyCount(count, notify = true) {
         const next = Math.max(5, Math.min(21, Number(count) || 17));
@@ -2379,40 +2853,37 @@
         els.btnKeyPlus.disabled = state.keyCount >= 21;
         els.btnKeyMinus.classList.toggle('opacity-30', state.keyCount <= 5);
         els.btnKeyPlus.classList.toggle('opacity-30', state.keyCount >= 21);
-        buildTines();
-        updateCuePill();
+        buildStage();
         if (notify) showToast(`${state.keyCount} Key aktif`);
       }
 
       function switchTab(tab) {
-        stopProgression();
-        stopLearn();
-        state.activeTab = tab;
-
+        stopProgression(); stopLearn(); state.activeTab = tab;
         els.panelChords.classList.toggle('hidden', tab !== 'chords');
         els.panelLearn.classList.toggle('hidden', tab !== 'learn');
         els.panelStudio.classList.toggle('hidden', tab !== 'studio');
-
         document.querySelectorAll('.tab-btn').forEach((btn) => {
           const m = btn.dataset.tab === tab;
-          btn.classList.toggle('bg-white', m);
-          btn.classList.toggle('text-[#181512]', m);
-          btn.classList.toggle('shadow-xs', m);
-          btn.classList.toggle('text-[#6E685F]', !m);
+          btn.classList.toggle('bg-white', m); btn.classList.toggle('text-[#181512]', m);
+          btn.classList.toggle('shadow-xs', m); btn.classList.toggle('text-[#6E685F]', !m);
         });
-
-        updateTineHighlights();
-        updateCuePill();
+        updateHighlights(); updateCuePill();
       }
 
       document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
-
       els.btnKeyMinus.addEventListener('click', () => setKeyCount(state.keyCount - 1, false));
       els.btnKeyPlus.addEventListener('click', () => setKeyCount(state.keyCount + 1, false));
 
+      // SWITCH INSTRUMENT -> AUTOMATICALLY MORPH VISUAL STAGE + AUDIO ENGINE!
       els.selectInstrument.addEventListener('change', (e) => {
-        audio.instrument = e.target.value;
-        triggerTine(Math.floor(ACTIVE_TINES.length / 2), false);
+        state.instrument = e.target.value;
+        audio.instrument = state.instrument;
+        buildStage();
+        if (state.selectedChordId) selectChord(state.selectedChordId, false);
+        const meta = INSTRUMENTS[state.instrument];
+        showToast(`Instrumen: ${meta.name}`);
+        // Preview instrument immediately
+        triggerToken("1", false, 0.82);
       });
 
       els.btnNotation.addEventListener('click', () => {
@@ -2421,10 +2892,7 @@
         updateNotationDisplay();
       });
 
-      els.btnKeysToggle.addEventListener('click', () => {
-        state.showKeyHints = !state.showKeyHints;
-        updateNotationDisplay();
-      });
+      els.btnKeysToggle.addEventListener('click', () => { state.showKeyHints = !state.showKeyHints; updateNotationDisplay(); });
 
       els.btnMute.addEventListener('click', () => {
         const nextMuted = !audio.muted;
@@ -2433,7 +2901,6 @@
         els.btnMute.classList.toggle('text-[#DC2626]', nextMuted);
       });
 
-      // Modals
       els.btnGuide.addEventListener('click', () => els.modalGuide.classList.remove('hidden'));
       els.btnCloseGuide.addEventListener('click', () => els.modalGuide.classList.add('hidden'));
       els.modalGuide.addEventListener('click', (e) => { if (e.target === els.modalGuide) els.modalGuide.classList.add('hidden'); });
@@ -2449,37 +2916,22 @@
         const raw = els.customTabNotes.value.trim().replace(/[°*]/g, "'").replace(/["”]/g, "''");
         const validSet = new Set(BASE_17.map(t => t.token));
         const parsed = raw.split(/[\s,\-\n]+/).filter(tok => validSet.has(tok));
-        if (parsed.length < 2) {
-          showToast('Masukkan minimal 2 nada valid (mis. 1 3 5 1\')');
-          return;
-        }
+        if (parsed.length < 2) { showToast('Masukkan minimal 2 nada valid (mis. 1 3 5 1\')'); return; }
         const customId = 'custom-' + Date.now();
         SONGS.unshift({
-          id: customId,
-          title,
-          artist: 'Tab Sendiri',
-          region: 'Indonesia',
-          viral: false,
-          level: 'Kustom',
-          bpm: 92,
-          chordList: ['C', 'G', 'Am', 'F'],
-          chordChanges: { 0: 'C' },
-          notes: parsed
+          id: customId, title, artist: 'Tab Sendiri', region: 'Indonesia', viral: false, level: 'Kustom',
+          bpm: 92, chordList: ['C', 'G', 'Am', 'F'], chordChanges: { 0: 'C' }, notes: parsed
         });
-        closeCustom();
-        els.customTabTitle.value = '';
-        els.customTabNotes.value = '';
-        state.songRegionFilter = 'all';
-        selectSong(customId);
+        closeCustom(); els.customTabTitle.value = ''; els.customTabNotes.value = '';
+        state.songRegionFilter = 'all'; selectSong(customId);
         showToast(`"${title}" siap dilatih (${parsed.length} nada)`);
       });
 
-      els.soundholeBtn.addEventListener('click', () => playChordArpeggio(getChordById(state.selectedChordId || 'C')));
       els.btnPlayArpeggio.addEventListener('click', () => playChordArpeggio(getChordById(state.selectedChordId || 'C')));
       els.btnPlayBlock.addEventListener('click', () => playChordBlock(getChordById(state.selectedChordId || 'C')));
       els.btnClearHighlight.addEventListener('click', () => {
         stopProgression(); stopLearn(); state.selectedChordId = null;
-        renderChordGrid(); updateTineHighlights(); updateCuePill();
+        renderChordGrid(); updateHighlights(); updateCuePill();
       });
 
       document.querySelectorAll('.cat-pill').forEach((btn) => {
@@ -2536,16 +2988,12 @@
         els.btnLearnLoop.classList.toggle('text-[#6E685F]', !state.learnLoop);
       });
 
-      els.btnMetronome.addEventListener('click', () => {
-        if (state.metroOn) stopMetronome();
-        else startMetronome();
-      });
+      els.btnMetronome.addEventListener('click', () => { if (state.metroOn) stopMetronome(); else startMetronome(); });
 
       els.btnLearnRestart.addEventListener('click', () => {
-        stopLearn();
-        state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0;
+        stopLearn(); state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0;
         state.activeSongChordId = getSongChordAtStep(getSongById(state.selectedSongId), 0);
-        renderSongChordStrip(); updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateTineHighlights();
+        renderSongChordStrip(); updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateHighlights();
       });
 
       els.toggleDemoChords.addEventListener('change', (e) => { state.demoWithChords = e.target.checked; });
@@ -2555,9 +3003,7 @@
           state.speedMult = Number(btn.dataset.speed);
           document.querySelectorAll('.speed-btn').forEach((b) => {
             const act = Number(b.dataset.speed) === state.speedMult;
-            b.className = act
-              ? 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#181512] text-white'
-              : 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]';
+            b.className = act ? 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#181512] text-white' : 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]';
           });
           if (state.metroOn) startMetronome();
         });
@@ -2577,21 +3023,14 @@
           els.transposeLabel.textContent = btn.dataset.name;
           document.querySelectorAll('.tuning-btn').forEach((b) => {
             const act = Number(b.dataset.semitone) === st;
-            b.className = act
-              ? 'tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#181512] text-white'
-              : 'tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]';
+            b.className = act ? 'tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#181512] text-white' : 'tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]';
           });
-          triggerTine(Math.floor(ACTIVE_TINES.length / 2), false);
+          triggerToken("1", false);
         });
       });
 
-      els.volSlider.addEventListener('input', (e) => {
-        const v = Number(e.target.value); els.volValue.textContent = `${v}%`; audio.setVolume(v / 100);
-      });
-
-      els.reverbSlider.addEventListener('input', (e) => {
-        const r = Number(e.target.value); els.reverbValue.textContent = `${r}%`; audio.setReverb(r / 100);
-      });
+      els.volSlider.addEventListener('input', (e) => { const v = Number(e.target.value); els.volValue.textContent = `${v}%`; audio.setVolume(v / 100); });
+      els.reverbSlider.addEventListener('input', (e) => { const r = Number(e.target.value); els.reverbValue.textContent = `${r}%`; audio.setReverb(r / 100); });
 
       els.btnRecToggle.addEventListener('click', toggleRecording);
       els.btnRecPlay.addEventListener('click', playRecorded);
@@ -2603,7 +3042,7 @@
         renderRecordedNotes();
       });
 
-      // ZERO-DELAY 2-HAND KEYBOARD PLAY + SPACE STRUM
+      // ZERO-DELAY KEYBOARD PLAY + SPACE STRUM
       window.addEventListener('keydown', (e) => {
         if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
         if (e.repeat) return;
@@ -2614,20 +3053,20 @@
           return;
         }
         const k = e.key.toLowerCase();
-        if (KEY_TO_IDX[k] !== undefined) {
+        if (KEY_TO_TOKEN[k]) {
           e.preventDefault();
-          triggerTine(KEY_TO_IDX[k], true);
+          triggerToken(KEY_TO_TOKEN[k], true);
         }
       });
 
       // ============================================================
-      // 15. INIT
+      // 14. INIT
       // ============================================================
       syncSolarIcons(document);
-      buildTines();
+      buildStage();
       renderProgressions();
       selectChord('C', false);
-      selectSong('vierra-rasaini');
+      selectSong('vierra-takut');
       renderRecordedNotes();
     })();
   </script>
