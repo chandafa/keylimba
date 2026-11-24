@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Keylimba Atelier — Chord, Belajar &amp; Mainkan Kalimba</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --bg-canvas: #FAF8F4;
+      --ink-primary: #181512;
+      --ink-muted: #6E685F;
+      --accent-amber: #D97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .atelier-grain {
+      background-image: radial-gradient(rgba(24, 21, 18, 0.024) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    .soundboard {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F7F3EC 64%, #EFE9DF 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 20px 50px -20px rgba(24, 21, 18, 0.10),
+        0 4px 14px -4px rgba(24, 21, 18, 0.05);
+      border: 1px solid rgba(24, 21, 18, 0.09);
+      position: relative;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .bridge-bar {
+      background: linear-gradient(180deg, #E5E0D7 0%, #D5CFC4 50%, #C6BFB2 100%);
+      box-shadow:
+        0 2px 6px rgba(24, 21, 18, 0.12),
+        0 1px 0 rgba(255, 255, 255, 0.65) inset;
+    }
+
+    .tine {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      border-radius: 0 0 999px 999px;
+      background: linear-gradient(180deg,
+        #E4E2DD 0%,
+        #F3F2EE 28%,
+        #FFFFFF 72%,
+        #ECEAE4 94%,
+        #DCD8CF 100%
+      );
+      border: 1px solid rgba(24, 21, 18, 0.11);
+      border-top: none;
+      box-shadow:
+        0 8px 16px -6px rgba(24, 21, 18, 0.14),
+        0 2px 4px rgba(24, 21, 18, 0.06),
+        inset 1px 0 0 rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      transform-origin: top center;
+      will-change: transform;
+      padding-bottom: 9px;
+      transition: background 110ms ease, border-color 110ms ease, box-shadow 110ms ease;
+    }
+
+    .tine::before {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 16%;
+      right: 16%;
+      height: 22%;
+      border-radius: 0 0 999px 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.75) 100%);
+      pointer-events: none;
+    }
+
+    .tine:hover {
+      border-color: rgba(24, 21, 18, 0.24);
+    }
+
+    .tine.is-chord {
+      background: linear-gradient(180deg, #FDE68A 0%, #FEF3C7 35%, #FFFBEB 75%, #FCD34D 100%);
+      border-color: rgba(217, 119, 6, 0.55);
+      box-shadow: 0 10px 22px -6px rgba(217, 119, 6, 0.30), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    }
+
+    .tine.is-chord.is-left-hint {
+      background: linear-gradient(180deg, #CCFBF1 0%, #E6FFFA 40%, #F0FDFA 78%, #99F6E4 100%);
+      border-color: rgba(13, 148, 136, 0.52);
+      box-shadow: 0 10px 22px -6px rgba(13, 148, 136, 0.26), inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+    }
+
+    .tine.is-target {
+      background: linear-gradient(180deg, #F59E0B 0%, #FBBF24 45%, #FDE68A 85%, #F59E0B 100%);
+      border-color: #B45309;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.30), 0 12px 24px -6px rgba(217, 119, 6, 0.45);
+    }
+
+    .tine.is-target .tine-num,
+    .tine.is-target .tine-letter {
+      color: #451A03 !important;
+    }
+
+    .tine.is-plucked {
+      background: linear-gradient(180deg, #F59E0B 0%, #FDE68A 48%, #FFFBEB 85%, #F59E0B 100%) !important;
+      border-color: #D97706 !important;
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.24), 0 4px 10px rgba(217, 119, 6, 0.35) !important;
+    }
+
+    .tine.is-wrong {
+      background: linear-gradient(180deg, #FECACA 0%, #FEE2E2 70%, #FCA5A5 100%) !important;
+      border-color: #DC2626 !important;
+    }
+
+    .soundhole {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 38% 35%, #2B2622 0%, #14110F 72%, #0B0908 100%);
+      box-shadow:
+        0 8px 18px rgba(24, 21, 18, 0.16) inset,
+        0 1px 0 rgba(255, 255, 255, 0.9),
+        0 0 0 5px rgba(24, 21, 18, 0.035);
+      transition: transform 110ms ease;
+    }
+
+    .soundhole.is-resonating {
+      transform: scale(1.06);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    input[type="range"].atelier-range {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: #E5E0D7;
+      outline: none;
+    }
+    input[type="range"].atelier-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 999px;
+      background: #181512;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(24, 21, 18, 0.25);
+      cursor: pointer;
+    }
+
+    .mini-note {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .mini-dots {
+      display: inline-flex;
+      gap: 1.5px;
+      height: 4px;
+      align-items: center;
+      margin-bottom: 1px;
+    }
+    .mini-dot {
+      width: 2.5px;
+      height: 2.5px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .note-dot-stack {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+    .note-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+      min-height: 7px;
+      justify-content: flex-end;
+      margin-bottom: 1.5px;
+    }
+    .note-dots-below {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+      margin-top: 1.5px;
+    }
+    .note-dot {
+      width: 2.8px;
+      height: 2.8px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    @media (max-width: 640px) {
+      .tine { padding-bottom: 6px; }
+      .soundhole { width: 44px; height: 44px; }
+    }
+  </style>
+</head>
+<body class="atelier-grain min-h-screen flex flex-col">
+
+  <!-- CLEAN MINIMAL HEADER -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-[#FAF8F4]/90 border-b border-[#181512]/[0.07]">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-2">
+      <!-- Brand -->
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="w-8 h-8 rounded-xl bg-[#181512] text-[#FAF8F4] flex items-center justify-center shadow-xs">
+          <iconify-icon icon="solar:music-note-2-bold-duotone" width="18" height="18"></iconify-icon>
+        </div>
+        <div class="hidden xs:flex sm:flex items-baseline gap-1">
+          <span class="font-semibold tracking-tight text-sm text-[#181512]">Keylimba</span>
+          <span class="font-serif italic text-base text-[#D97706]">Atelier</span>
+        </div>
+      </div>
+
+      <!-- Mode Switcher (Desktop) -->
+      <nav aria-label="Mode utama" class="hidden md:flex items-center bg-[#EFECE6] p-1 rounded-full border border-[#181512]/[0.06]">
+        <button data-tab="chords" class="tab-btn px-3.5 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 bg-white text-[#181512] shadow-xs">
+          <iconify-icon icon="solar:library-bold-duotone" width="14" height="14"></iconify-icon>
+          <span>Chord</span>
+        </button>
+        <button data-tab="learn" class="tab-btn px-3.5 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 text-[#6E685F] hover:text-[#181512]">
+          <iconify-icon icon="solar:academic-cap-bold-duotone" width="14" height="14"></iconify-icon>
+          <span>Belajar</span>
+        </button>
+        <button data-tab="studio" class="tab-btn px-3.5 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 text-[#6E685F] hover:text-[#181512]">
+          <iconify-icon icon="solar:soundwave-bold-duotone" width="14" height="14"></iconify-icon>
+          <span>Rekam</span>
+        </button>
+      </nav>
+
+      <!-- Essential Quick Controls -->
+      <div class="flex items-center gap-1.5">
+        <!-- Tactile Key Count Stepper (5–21 Keys) -->
+        <div class="h-8 inline-flex items-center rounded-full bg-white border border-[#181512]/10 px-1" title="Atur jumlah bilah kalimba (5–21)">
+          <button id="btn-key-minus" aria-label="Kurangi bilah" class="w-6 h-6 rounded-full hover:bg-[#F2EFE9] flex items-center justify-center text-[#181512] transition-colors">
+            <iconify-icon icon="solar:minus-linear" width="13" height="13"></iconify-icon>
+          </button>
+          <span id="label-key-count" class="px-1.5 text-[11px] font-mono font-semibold text-[#181512] min-w-[46px] text-center select-none">17 Key</span>
+          <button id="btn-key-plus" aria-label="Tambah bilah" class="w-6 h-6 rounded-full hover:bg-[#F2EFE9] flex items-center justify-center text-[#181512] transition-colors">
+            <iconify-icon icon="solar:add-linear" width="13" height="13"></iconify-icon>
+          </button>
+        </div>
+
+        <!-- Instrument Sound Selector -->
+        <select id="select-instrument" aria-label="Pilih suara instrumen" class="h-8 pl-2.5 pr-5 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 text-[11px] sm:text-xs font-medium text-[#181512] focus:outline-none focus:border-[#D97706] cursor-pointer max-w-[108px] sm:max-w-none">
+          <option value="kalimba" selected>Kalimba Asli</option>
+          <option value="crystal">Kalimba Kristal</option>
+          <option value="piano">Grand Piano</option>
+          <option value="epiano">Electric Piano</option>
+          <option value="harp">Harpa</option>
+          <option value="musicbox">Music Box</option>
+          <option value="marimba">Marimba</option>
+        </select>
+
+        <!-- Notation Toggle -->
+        <button id="btn-notation" title="Ubah notasi (Angka / Huruf)" class="h-8 px-2.5 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 text-[11px] font-mono font-medium text-[#181512] transition-colors">
+          <span id="label-notation">1·C</span>
+        </button>
+
+        <!-- Keyboard Hints Toggle (Desktop) -->
+        <button id="btn-keys-toggle" title="Tampilkan panduan tombol keyboard 2 tangan" class="h-8 px-2.5 rounded-full bg-[#181512] text-white border border-[#181512] text-[11px] font-medium hidden sm:flex items-center gap-1 transition-colors">
+          <iconify-icon icon="solar:keyboard-linear" width="14" height="14"></iconify-icon>
+          <span>Keys</span>
+        </button>
+
+        <!-- Quick Guide Modal Button -->
+        <button id="btn-guide" title="Panduan bermain &amp; keyboard 2 tangan" class="w-8 h-8 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 flex items-center justify-center text-[#6E685F] hover:text-[#181512] transition-colors shrink-0">
+          <iconify-icon icon="solar:question-circle-linear" width="16" height="16"></iconify-icon>
+        </button>
+
+        <!-- Mute -->
+        <button id="btn-mute" title="Bisukan / Nyalakan suara" class="w-8 h-8 rounded-full bg-white border border-[#181512]/10 hover:border-[#181512]/25 flex items-center justify-center text-[#181512] transition-colors shrink-0">
+          <iconify-icon id="icon-mute" icon="solar:volume-loud-bold-duotone" width="16" height="16"></iconify-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Mode Switcher -->
+    <div class="md:hidden px-3 pb-2">
+      <div class="grid grid-cols-3 bg-[#EFECE6] p-0.5 rounded-full border border-[#181512]/[0.06]">
+        <button data-tab="chords" class="tab-btn py-1.5 rounded-full text-[11px] font-medium transition-all flex items-center justify-center gap-1 bg-white text-[#181512] shadow-xs">
+          <iconify-icon icon="solar:library-bold-duotone" width="13" height="13"></iconify-icon>
+          <span>Chord</span>
+        </button>
+        <button data-tab="learn" class="tab-btn py-1.5 rounded-full text-[11px] font-medium transition-all flex items-center justify-center gap-1 text-[#6E685F]">
+          <iconify-icon icon="solar:academic-cap-bold-duotone" width="13" height="13"></iconify-icon>
+          <span>Belajar</span>
+        </button>
+        <button data-tab="studio" class="tab-btn py-1.5 rounded-full text-[11px] font-medium transition-all flex items-center justify-center gap-1 text-[#6E685F]">
+          <iconify-icon icon="solar:soundwave-bold-duotone" width="13" height="13"></iconify-icon>
+          <span>Rekam</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-5 space-y-5">
+
+    <!-- INTERACTIVE KEYLIMBA STAGE -->
+    <section aria-label="Instrumen Keylimba" class="soundboard rounded-3xl overflow-hidden">
+      <div class="bridge-bar h-3 sm:h-3.5 w-full flex items-center justify-between px-5 sm:px-8">
+        <div class="w-1.5 h-1.5 rounded-full bg-[#181512]/25"></div>
+        <div class="w-1.5 h-1.5 rounded-full bg-[#181512]/25"></div>
+        <div class="w-1.5 h-1.5 rounded-full bg-[#181512]/25"></div>
+      </div>
+
+      <!-- Minimal Floating Cue Pill + Combo Badge -->
+      <div class="px-3 sm:px-6 pt-3 pb-1 flex items-center justify-center gap-2">
+        <div id="cue-pill" class="bg-[#181512] text-[#FAF8F4] px-4 py-1.5 rounded-full shadow-sm flex items-center gap-2.5 min-h-[32px] max-w-full overflow-x-auto no-scrollbar">
+          <span id="cue-title" class="text-[11px] font-medium text-[#FBBF24] uppercase tracking-wider shrink-0">C Mayor</span>
+          <span class="w-px h-3 bg-white/15 shrink-0"></span>
+          <div id="cue-notes" class="flex items-center gap-2 font-mono text-xs sm:text-sm tracking-wide shrink-0"></div>
+        </div>
+        <div id="combo-pill" class="hidden px-2.5 py-1 rounded-full bg-[#FEF3C7] border border-[#FDE68A] text-[#B45309] font-mono text-[11px] font-semibold shrink-0">
+          x0
+        </div>
+      </div>
+
+      <!-- DYNAMIC TINES GRID -->
+      <div class="px-2 sm:px-6 md:px-8 pt-1 pb-2">
+        <div id="tines-grid" class="grid gap-[2px] sm:gap-1.5 md:gap-2 items-start mx-auto"></div>
+      </div>
+
+      <!-- Minimal Soundhole -->
+      <div class="pb-4 pt-1 flex items-center justify-center">
+        <button id="soundhole-btn" title="Strum chord aktif (Spasi)" aria-label="Strum chord aktif" class="soundhole flex items-center justify-center cursor-pointer focus:outline-none">
+          <div class="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#D97706]/60"></div>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- PANEL 1: PUSTAKA CHORD -->
+    <section id="panel-chords" class="space-y-4">
+      <div class="bg-white rounded-2xl border border-[#181512]/[0.08] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 shadow-[0_2px_10px_rgba(24,21,18,0.03)]">
+        <div class="flex items-center gap-3.5">
+          <div id="chord-badge-big" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center font-serif text-2xl sm:text-3xl text-[#B45309] shrink-0">
+            C
+          </div>
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 id="chord-detail-name" class="text-base sm:text-lg font-semibold tracking-tight text-[#181512]">C Mayor</h2>
+              <span id="chord-detail-technique" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#ECFDF5] text-[#047857]">Glissando</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5 mt-1 text-xs font-mono text-[#6E685F]">
+              <span id="chord-detail-numbers" class="text-[#D97706] font-semibold">1 · 3 · 5</span>
+              <span class="text-[#181512]/20">|</span>
+              <span id="chord-detail-letters" class="text-[#181512]">C4 · E4 · G4</span>
+              <span class="text-[#181512]/20">|</span>
+              <span id="chord-detail-thumb">Kanan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="btn-play-arpeggio" class="h-9 px-3.5 rounded-xl bg-[#181512] hover:bg-[#2E2924] text-[#FAF8F4] text-xs font-medium flex items-center gap-1.5 transition-all active:scale-95">
+            <iconify-icon icon="solar:play-bold" width="13" height="13"></iconify-icon>
+            <span>Strum</span>
+          </button>
+          <button id="btn-play-block" class="h-9 px-3.5 rounded-xl bg-[#F5F2EC] hover:bg-[#EBE6DC] text-[#181512] text-xs font-medium flex items-center gap-1.5 transition-all active:scale-95">
+            <iconify-icon icon="solar:soundwave-square-bold-duotone" width="15" height="15" class="text-[#D97706]"></iconify-icon>
+            <span>Serempak</span>
+          </button>
+          <button id="btn-clear-highlight" title="Hapus sorotan chord" class="w-9 h-9 rounded-xl bg-white border border-[#181512]/10 hover:bg-[#F5F2EC] text-[#6E685F] flex items-center justify-center transition-colors">
+            <iconify-icon icon="solar:eraser-linear" width="15" height="15"></iconify-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div id="chord-filters" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <button data-cat="all" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#181512] text-white shrink-0 transition-colors">Semua</button>
+          <button data-cat="Mayor" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Mayor</button>
+          <button data-cat="Minor" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Minor</button>
+          <button data-cat="7th" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">7th &amp; Maj7</button>
+          <button data-cat="Sus & Add" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Sus &amp; Add</button>
+        </div>
+
+        <div class="relative w-full sm:w-56">
+          <iconify-icon icon="solar:magnifer-linear" width="15" height="15" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#6E685F]"></iconify-icon>
+          <input id="chord-search" type="text" placeholder="Cari chord..." class="w-full h-9 pl-8 pr-3 rounded-full bg-white border border-[#181512]/10 focus:border-[#D97706] focus:outline-none text-xs text-[#181512] placeholder-[#6E685F]/70" />
+        </div>
+      </div>
+
+      <div id="chord-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5"></div>
+
+      <div class="bg-white rounded-2xl border border-[#181512]/[0.08] p-4 space-y-3">
+        <div class="flex items-center gap-2">
+          <iconify-icon icon="solar:routing-2-bold-duotone" width="17" height="17" class="text-[#D97706]"></iconify-icon>
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-[#6E685F]">Progresi Populer</h3>
+        </div>
+        <div id="progression-list" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
+      </div>
+    </section>
+
+    <!-- PANEL 2: BELAJAR LAGU (VIRAL TIKTOK 2026 + INDONESIA + BARAT + CUSTOM TAB) -->
+    <section id="panel-learn" class="hidden space-y-4">
+      <!-- Active Lesson Card -->
+      <div class="bg-white rounded-2xl border border-[#181512]/[0.08] p-4 sm:p-5 space-y-3.5 shadow-[0_2px_10px_rgba(24,21,18,0.03)]">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span id="learn-song-tag" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#181512] text-white">Indonesia</span>
+              <span id="learn-song-level" class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]">Menengah</span>
+              <span id="learn-song-bpm-badge" class="text-[11px] font-mono text-[#6E685F]">96 BPM</span>
+            </div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <h2 id="learn-song-title" class="text-xl sm:text-2xl font-serif text-[#181512]">Rasa Ini</h2>
+              <span id="learn-song-artist" class="text-xs text-[#6E685F]">Vierra</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <div class="inline-flex bg-[#F2EFE9] p-0.5 rounded-xl border border-[#181512]/[0.06]">
+              <button id="mode-practice-btn" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-white text-[#181512] shadow-xs flex items-center gap-1.5">
+                <iconify-icon icon="solar:target-bold-duotone" width="14" height="14" class="text-[#D97706]"></iconify-icon>
+                <span>Latihan</span>
+              </button>
+              <button id="mode-demo-btn" class="px-3 py-1.5 rounded-lg text-xs font-medium text-[#6E685F] hover:text-[#181512] flex items-center gap-1.5">
+                <iconify-icon icon="solar:play-circle-bold-duotone" width="14" height="14"></iconify-icon>
+                <span>Demo</span>
+              </button>
+            </div>
+
+            <button id="btn-learn-play-toggle" class="h-9 px-3.5 rounded-xl bg-[#181512] hover:bg-[#2E2924] text-[#FAF8F4] text-xs font-medium flex items-center gap-1.5 transition-all active:scale-95">
+              <iconify-icon id="icon-learn-play" icon="solar:play-bold" width="13" height="13"></iconify-icon>
+              <span id="label-learn-play">Mulai</span>
+            </button>
+
+            <button id="btn-learn-loop" title="Ulang otomatis (Loop)" class="w-9 h-9 rounded-xl bg-[#F5F2EC] hover:bg-[#EBE6DC] text-[#6E685F] flex items-center justify-center transition-colors">
+              <iconify-icon icon="solar:repeat-linear" width="16" height="16"></iconify-icon>
+            </button>
+
+            <button id="btn-metronome" title="Metronome" class="h-9 px-2.5 rounded-xl bg-[#F5F2EC] hover:bg-[#EBE6DC] text-[#6E685F] text-xs font-medium flex items-center gap-1.5 transition-colors">
+              <span id="metro-dot" class="w-2 h-2 rounded-full bg-[#6E685F]/40 transition-colors"></span>
+              <span class="hidden sm:inline">Metro</span>
+            </button>
+
+            <button id="btn-learn-restart" title="Ulang dari awal" class="w-9 h-9 rounded-xl bg-[#F5F2EC] hover:bg-[#EBE6DC] text-[#181512] flex items-center justify-center">
+              <iconify-icon icon="solar:restart-linear" width="16" height="16"></iconify-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Synced Chords Row -->
+        <div class="flex flex-wrap items-center justify-between gap-2 py-2 px-3 rounded-xl bg-[#FAF8F4] border border-[#181512]/[0.06]">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="text-[11px] font-medium text-[#6E685F] mr-1">Chord:</span>
+            <div id="song-chord-strip" class="flex flex-wrap items-center gap-1.5"></div>
+          </div>
+          <label class="inline-flex items-center gap-1.5 text-[11px] text-[#6E685F] cursor-pointer select-none">
+            <input id="toggle-demo-chords" type="checkbox" checked class="accent-[#D97706] rounded" />
+            <span>Iringan chord</span>
+          </label>
+        </div>
+
+        <!-- Progress + Speed Trainer -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+          <div class="sm:col-span-6 space-y-1">
+            <div class="flex items-center justify-between text-[11px] font-mono text-[#6E685F]">
+              <span id="learn-progress-text">0 / 24 nada</span>
+              <span id="learn-accuracy-text" class="text-[#0D9488]">100%</span>
+            </div>
+            <div class="w-full h-1.5 rounded-full bg-[#F2EFE9] overflow-hidden">
+              <div id="learn-progress-bar" class="h-full bg-[#D97706] rounded-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="sm:col-span-6 flex items-center gap-2">
+            <div class="inline-flex items-center gap-1 shrink-0">
+              <button data-speed="0.75" class="speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]">0.75x</button>
+              <button data-speed="1" class="speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#181512] text-white">1x</button>
+              <button data-speed="1.25" class="speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]">1.25x</button>
+            </div>
+            <input id="bpm-slider" type="range" min="50" max="150" value="96" class="atelier-range flex-1" />
+            <span id="bpm-value" class="text-xs font-mono text-[#181512] w-14 text-right">96 BPM</span>
+          </div>
+        </div>
+
+        <!-- Note Tab Strip -->
+        <div id="song-tab-strip" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1"></div>
+      </div>
+
+      <!-- Song Filters + Search + Custom Tab Trigger -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div id="song-region-filters" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <button data-region="all" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#181512] text-white shrink-0 transition-colors">Semua</button>
+          <button data-region="Viral 2026" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Viral TikTok 2026</button>
+          <button data-region="Indonesia" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Indonesia</button>
+          <button data-region="Barat" class="region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors">Barat</button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1 sm:w-48">
+            <iconify-icon icon="solar:magnifer-linear" width="15" height="15" class="absolute left-3 top-1/2 -translate-y-1/2 text-[#6E685F]"></iconify-icon>
+            <input id="song-search" type="text" placeholder="Cari lagu / artis..." class="w-full h-9 pl-8 pr-3 rounded-full bg-white border border-[#181512]/10 focus:border-[#D97706] focus:outline-none text-xs text-[#181512] placeholder-[#6E685F]/70" />
+          </div>
+          <button id="btn-open-custom-tab" class="h-9 px-3.5 rounded-full bg-[#FFFBEB] hover:bg-[#FEF3C7] border border-[#FDE68A] text-[#B45309] text-xs font-medium flex items-center gap-1.5 shrink-0 transition-colors">
+            <iconify-icon icon="solar:pen-new-square-linear" width="14" height="14"></iconify-icon>
+            <span>Tab Sendiri</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="song-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    </section>
+
+    <!-- PANEL 3: STUDIO & REKAM -->
+    <section id="panel-studio" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div class="lg:col-span-5 bg-white rounded-2xl border border-[#181512]/[0.08] p-4 sm:p-5 space-y-4">
+        <div class="flex items-center gap-2">
+          <iconify-icon icon="solar:tuning-bold-duotone" width="18" height="18" class="text-[#D97706]"></iconify-icon>
+          <h2 class="text-sm font-semibold text-[#181512]">Tuning &amp; Akustik</h2>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-[#6E685F]">Transposisi Nada</span>
+            <span id="transpose-label" class="font-mono text-[#D97706]">C Mayor</span>
+          </div>
+          <div id="tuning-pills" class="grid grid-cols-5 gap-1.5">
+            <button data-semitone="0" data-name="C Mayor" class="tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#181512] text-white">C</button>
+            <button data-semitone="-5" data-name="G Mayor" class="tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]">G</button>
+            <button data-semitone="5" data-name="F Mayor" class="tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]">F</button>
+            <button data-semitone="2" data-name="D Mayor" class="tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]">D</button>
+            <button data-semitone="-2" data-name="Bb Mayor" class="tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]">Bb</button>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span class="text-[#6E685F]">Volume</span>
+              <span id="vol-value" class="font-mono text-[#181512]">85%</span>
+            </div>
+            <input id="vol-slider" type="range" min="0" max="100" value="85" class="atelier-range w-full" />
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span class="text-[#6E685F]">Reverb</span>
+              <span id="reverb-value" class="font-mono text-[#181512]">30%</span>
+            </div>
+            <input id="reverb-slider" type="range" min="0" max="100" value="30" class="atelier-range w-full" />
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 bg-white rounded-2xl border border-[#181512]/[0.08] p-4 sm:p-5 flex flex-col justify-between gap-4">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <iconify-icon icon="solar:record-circle-bold-duotone" width="18" height="18" class="text-[#DC2626]"></iconify-icon>
+              <h2 class="text-sm font-semibold text-[#181512]">Perekam Melodi</h2>
+            </div>
+            <span id="rec-status" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#F2EFE9] text-[#6E685F]">Siap</span>
+          </div>
+
+          <div class="min-h-[96px] p-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/[0.08] font-mono text-sm">
+            <div id="rec-notes-display" class="flex flex-wrap gap-1.5 items-center">
+              <span class="text-xs text-[#6E685F] font-sans italic">Tekan Rekam lalu mainkan Keylimba di atas.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#181512]/[0.06]">
+          <div class="flex items-center gap-2">
+            <button id="btn-rec-toggle" class="h-9 px-3.5 rounded-xl bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-medium flex items-center gap-1.5 transition-all active:scale-95">
+              <iconify-icon id="icon-rec" icon="solar:record-circle-bold" width="15" height="15"></iconify-icon>
+              <span id="label-rec">Rekam</span>
+            </button>
+            <button id="btn-rec-play" disabled class="h-9 px-3.5 rounded-xl bg-[#181512] hover:bg-[#2E2924] disabled:opacity-35 disabled:pointer-events-none text-white text-xs font-medium flex items-center gap-1.5">
+              <iconify-icon icon="solar:play-bold" width="13" height="13"></iconify-icon>
+              <span>Putar</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-rec-copy" disabled class="h-9 px-3 rounded-xl bg-[#F5F2EC] hover:bg-[#EBE6DC] disabled:opacity-35 disabled:pointer-events-none text-[#181512] text-xs font-medium flex items-center gap-1.5">
+              <iconify-icon icon="solar:copy-linear" width="14" height="14"></iconify-icon>
+              <span>Salin Tab</span>
+            </button>
+            <button id="btn-rec-clear" disabled class="w-9 h-9 rounded-xl bg-white border border-[#181512]/10 hover:text-[#DC2626] disabled:opacity-35 disabled:pointer-events-none text-[#6E685F] flex items-center justify-center">
+              <iconify-icon icon="solar:trash-bin-minimalistic-linear" width="15" height="15"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: PANDUAN SINGKAT & KEYBOARD 2 TANGAN -->
+  <div id="modal-guide" class="hidden fixed inset-0 z-50 bg-[#181512]/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl border border-[#181512]/10 max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 class="font-serif text-2xl text-[#181512]">Panduan Cepat Keylimba</h3>
+        <button id="btn-close-guide" aria-label="Tutup panduan" class="w-8 h-8 rounded-full bg-[#F2EFE9] hover:bg-[#E5E0D7] flex items-center justify-center text-[#181512]">
+          <iconify-icon icon="solar:close-linear" width="16" height="16"></iconify-icon>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs text-[#6E685F] leading-relaxed">
+        <div class="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#181512]/[0.06] space-y-1.5">
+          <div class="font-semibold text-[#181512] flex items-center gap-1.5">
+            <iconify-icon icon="solar:keyboard-linear" width="15" height="15" class="text-[#D97706]"></iconify-icon>
+            <span>Keyboard 2 Tangan (Ergonomis)</span>
+          </div>
+          <p>Letakkan jari kiri di <span class="font-mono text-[#0D9488] font-semibold">A S D F</span> (atas: <span class="font-mono text-[#0D9488]">Q W E R</span>) dan jari kanan di <span class="font-mono text-[#D97706] font-semibold">J K L ;</span> (atas: <span class="font-mono text-[#D97706]">U I O P</span>). Tombol <span class="font-mono text-[#181512] font-semibold">G / H</span> adalah bilah tengah (<span class="font-mono">1</span>). Tekan <span class="font-mono text-[#181512] font-semibold">Spasi</span> untuk strum chord aktif.</p>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#181512]/[0.06] space-y-1.5">
+          <div class="font-semibold text-[#181512]">Membaca Titik Oktaf</div>
+          <p>Angka polos (<span class="font-mono text-[#181512]">1–7</span>) = oktaf tengah, 1 titik atas (<span class="font-mono text-[#181512]">1'</span>) = oktaf tinggi, 2 titik atas (<span class="font-mono text-[#181512]">1''</span>) = oktaf tertinggi, titik bawah = bass (khusus 18–21 Key).</p>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-[#FAF8F4] border border-[#181512]/[0.06] space-y-1.5">
+          <div class="font-semibold text-[#181512]">Tips Cepat Jago</div>
+          <p>Mulai di mode <strong>Latihan</strong> dengan tempo <span class="font-mono text-[#181512]">0.75x</span> dan aktifkan <strong>Metronome</strong>. Setelah lancar, naikkan ke <span class="font-mono text-[#181512]">1x</span> atau tempel tab lagu favoritmu di tombol <strong>Tab Sendiri</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CUSTOM TAB IMPORTER -->
+  <div id="modal-custom-tab" class="hidden fixed inset-0 z-50 bg-[#181512]/40 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl border border-[#181512]/10 max-w-lg w-full p-5 sm:p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 class="font-serif text-2xl text-[#181512]">Tulis / Tempel Tab Sendiri</h3>
+        <button id="btn-close-custom" aria-label="Tutup" class="w-8 h-8 rounded-full bg-[#F2EFE9] hover:bg-[#E5E0D7] flex items-center justify-center text-[#181512]">
+          <iconify-icon icon="solar:close-linear" width="16" height="16"></iconify-icon>
+        </button>
+      </div>
+      <div class="space-y-3">
+        <input id="custom-tab-title" type="text" placeholder="Judul lagu (mis. Melodi Favoritku)" class="w-full h-10 px-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/10 focus:border-[#D97706] focus:outline-none text-xs text-[#181512]" />
+        <textarea id="custom-tab-notes" rows="4" placeholder="Tempel notasi angka dipisah spasi, contoh: 1' 2' 3' 4' 6' 6' 5' 4' 3' 1'" class="w-full p-3.5 rounded-xl bg-[#FAF8F4] border border-[#181512]/10 focus:border-[#D97706] focus:outline-none font-mono text-xs text-[#181512]"></textarea>
+        <p class="text-[11px] text-[#6E685F]">Format didukung: <span class="font-mono text-[#181512]">1–7</span> (tengah), <span class="font-mono text-[#181512]">1'–7'</span> (tinggi), <span class="font-mono text-[#181512]">1''–3''</span> (tertinggi).</p>
+        <div class="flex justify-end gap-2 pt-1">
+          <button id="btn-cancel-custom" class="h-9 px-4 rounded-xl bg-[#F2EFE9] text-[#181512] text-xs font-medium">Batal</button>
+          <button id="btn-save-custom" class="h-9 px-4 rounded-xl bg-[#181512] hover:bg-[#2E2924] text-white text-xs font-medium">Muat ke Latihan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-[#181512] text-[#FAF8F4] text-xs font-medium shadow-xl flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-200 translate-y-2">
+    <iconify-icon icon="solar:check-circle-bold" width="15" height="15" class="text-[#FBBF24]"></iconify-icon>
+    <span id="toast-text">OK</span>
+  </div>
+
+  <script>
+    (() => {
+      // ============================================================
+      // 0. INLINE SOLAR ICONS (ZERO LATENCY)
+      // ============================================================
+      const SOLAR_PATHS = {
+        'solar:music-note-2-bold-duotone': '<path opacity="0.4" d="M13 18V5.5C13 4.1 13 3.4 13.44 2.97C13.88 2.54 14.58 2.66 15.98 2.9L19.98 3.57C20.95 3.73 21.44 3.81 21.72 4.16C22 4.5 22 5 22 6V9.2C22 10.2 22 10.7 21.66 11C21.33 11.3 20.84 11.22 19.86 11.05L13 9.9" fill="currentColor"/><circle cx="9" cy="18" r="4" fill="currentColor"/><path d="M13 18V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+        'solar:library-bold-duotone': '<rect x="3" y="4" width="4" height="16" rx="1.5" fill="currentColor"/><rect x="9.5" y="6" width="4" height="14" rx="1.5" fill="currentColor" opacity="0.45"/><path d="M15.8 5.4L19.6 4.4C20.2 4.25 20.8 4.6 20.95 5.2L23.1 18.1C23.22 18.7 22.82 19.28 22.22 19.4L18.4 20.1C17.8 20.22 17.22 19.82 17.1 19.22L14.9 6.6C14.78 6 15.2 5.55 15.8 5.4Z" fill="currentColor" opacity="0.75"/>',
+        'solar:academic-cap-bold-duotone': '<path d="M12 4L2 9L12 14L22 9L12 4Z" fill="currentColor"/><path opacity="0.45" d="M6 11.5V16.5C6 18.1 8.69 19.5 12 19.5C15.31 19.5 18 18.1 18 16.5V11.5L12 14.5L6 11.5Z" fill="currentColor"/><path d="M21 10V16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+        'solar:soundwave-bold-duotone': '<path d="M12 4V20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M8 7V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/><path d="M16 7V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/><path d="M4 10V14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.35"/><path d="M20 10V14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.35"/>',
+        'solar:soundwave-square-bold-duotone': '<rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="currentColor" opacity="0.22"/><path d="M12 7V17M8.5 9.5V14.5M15.5 9.5V14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+        'solar:keyboard-linear': '<rect x="2.5" y="5.5" width="19" height="13" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 10H7.5M10.5 10H11.5M14.5 10H15.5M17.5 10H18M8 14.5H16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+        'solar:volume-loud-bold-duotone': '<path d="M3 10.5C3 9.4 3.9 8.5 5 8.5H7.2L11.6 4.7C12.5 3.9 14 4.5 14 5.8V18.2C14 19.5 12.5 20.1 11.6 19.3L7.2 15.5H5C3.9 15.5 3 14.6 3 13.5V10.5Z" fill="currentColor"/><path d="M17.2 8.2C18.5 9.3 19.2 10.6 19.2 12C19.2 13.4 18.5 14.7 17.2 15.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.65"/><path d="M19.8 5.6C21.6 7.3 22.5 9.5 22.5 12C22.5 14.5 21.6 16.7 19.8 18.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.35"/>',
+        'solar:volume-cross-bold-duotone': '<path d="M3 10.5C3 9.4 3.9 8.5 5 8.5H7.2L11.6 4.7C12.5 3.9 14 4.5 14 5.8V18.2C14 19.5 12.5 20.1 11.6 19.3L7.2 15.5H5C3.9 15.5 3 14.6 3 13.5V10.5Z" fill="currentColor" opacity="0.45"/><path d="M17 9.5L22 14.5M22 9.5L17 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+        'solar:tuning-bold-duotone': '<path d="M7 4V20M17 4V20" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.35"/><circle cx="7" cy="9" r="3" fill="currentColor"/><circle cx="17" cy="15" r="3" fill="currentColor"/>',
+        'solar:play-bold': '<path d="M7 5.2C7 4.05 8.24 3.33 9.24 3.9L19.6 9.8C20.6 10.37 20.6 11.83 19.6 12.4L9.24 18.3C8.24 18.87 7 18.15 7 17V5.2Z" fill="currentColor"/>',
+        'solar:pause-bold': '<rect x="6" y="4.5" width="4.5" height="15" rx="1.8" fill="currentColor"/><rect x="13.5" y="4.5" width="4.5" height="15" rx="1.8" fill="currentColor"/>',
+        'solar:stop-bold': '<rect x="5" y="5" width="14" height="14" rx="3.2" fill="currentColor"/>',
+        'solar:play-circle-bold-duotone': '<circle cx="12" cy="12" r="9.5" fill="currentColor" opacity="0.22"/><path d="M10 8.8C10 8.05 10.8 7.58 11.46 7.95L16.3 10.7C16.96 11.07 16.96 12.03 16.3 12.4L11.46 15.15C10.8 15.52 10 15.05 10 14.3V8.8Z" fill="currentColor"/>',
+        'solar:eraser-linear': '<path d="M14.5 4.5L20 10L11 19H6.5L3.5 16L14.5 4.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10.5 8.5L16 14M11 19H20.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+        'solar:magnifer-linear': '<circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.8"/><path d="M16.8 16.8L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+        'solar:routing-2-bold-duotone': '<circle cx="6.5" cy="6.5" r="3" fill="currentColor"/><circle cx="17.5" cy="17.5" r="3" fill="currentColor"/><path d="M9.5 6.5H14.5C16.2 6.5 17.5 7.8 17.5 9.5C17.5 11.2 16.2 12.5 14.5 12.5H9.5C7.8 12.5 6.5 13.8 6.5 15.5C6.5 17.2 7.8 18.5 9.5 18.5H14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.45"/>',
+        'solar:target-bold-duotone': '<circle cx="12" cy="12" r="9.5" fill="currentColor" opacity="0.2"/><circle cx="12" cy="12" r="5.5" stroke="currentColor" stroke-width="1.8" opacity="0.55"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/>',
+        'solar:restart-linear': '<path d="M19.5 12A7.5 7.5 0 1 1 17.3 6.7L20 9.4M20 4.8V9.4H15.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+        'solar:repeat-linear': '<path d="M17 4L20 7L17 10M4 11V9C4 7.9 4.9 7 6 7H20M7 20L4 17L7 14M20 13V15C20 16.1 19.1 17 18 17H4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+        'solar:record-circle-bold-duotone': '<circle cx="12" cy="12" r="9.5" fill="currentColor" opacity="0.25"/><circle cx="12" cy="12" r="4.5" fill="currentColor"/>',
+        'solar:record-circle-bold': '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.65"/><circle cx="12" cy="12" r="4.2" fill="currentColor"/>',
+        'solar:stop-circle-bold': '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.65"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.5" fill="currentColor"/>',
+        'solar:copy-linear': '<rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 8.5V6.5C15.5 5.1 14.4 4 13 4H6.5C5.1 4 4 5.1 4 6.5V13C4 14.4 5.1 15.5 6.5 15.5H8.5" stroke="currentColor" stroke-width="1.7"/>',
+        'solar:trash-bin-minimalistic-linear': '<path d="M4 7H20M9.5 4H14.5M6.5 7L7.4 18.2C7.5 19.2 8.3 20 9.4 20H14.6C15.7 20 16.5 19.2 16.6 18.2L17.5 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+        'solar:check-circle-bold': '<circle cx="12" cy="12" r="9.5" fill="currentColor"/><path d="M8.5 12.2L10.8 14.5L15.8 9.5" stroke="#181512" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>',
+        'solar:minus-linear': '<path d="M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+        'solar:add-linear': '<path d="M12 6V18M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+        'solar:question-circle-linear': '<circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.7"/><path d="M9.6 9.2C9.8 7.9 10.8 7 12.1 7C13.5 7 14.5 7.9 14.5 9.1C14.5 10.2 13.7 10.8 12.8 11.4C12.2 11.8 12 12.2 12 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="16.2" r="1" fill="currentColor"/>',
+        'solar:close-linear': '<path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
+        'solar:pen-new-square-linear': '<path d="M11 4H6C4.9 4 4 4.9 4 6V18C4 19.1 4.9 20 6 20H18C19.1 20 20 19.1 20 18V13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M18.5 3.5L20.5 5.5L12 14H10V12L18.5 3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+      };
+
+      function renderSolarIconEl(el) {
+        const name = el.getAttribute('icon');
+        const w = el.getAttribute('width') || '16';
+        const h = el.getAttribute('height') || w;
+        const inner = SOLAR_PATHS[name] || SOLAR_PATHS['solar:music-note-2-bold-duotone'];
+        el.style.display = 'inline-flex';
+        el.style.alignItems = 'center';
+        el.style.justifyContent = 'center';
+        el.style.width = `${w}px`;
+        el.style.height = `${h}px`;
+        el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+      }
+
+      function syncSolarIcons(root = document) {
+        root.querySelectorAll('iconify-icon').forEach(renderSolarIconEl);
+      }
+
+      function setSolarIcon(el, iconName) {
+        if (!el) return;
+        el.setAttribute('icon', iconName);
+        renderSolarIconEl(el);
+      }
+
+      // ============================================================
+      // 1. CONTINUOUS 5–21 KEY KALIMBA LAYOUT + 2-HAND KEYBOARD MAP
+      // ============================================================
+      // Canonical ascending scale from C4 upward for 5–17 keys, plus F3–B3 bass for 18–21 keys
+      const BASE_17 = [
+        { token: "2''", num: '2', dots: 2, lowDot: false, label: "2''", note: 'D6', midi: 86 },
+        { token: "7'",  num: '7', dots: 1, lowDot: false, label: "7'",  note: 'B5', midi: 83 },
+        { token: "5'",  num: '5', dots: 1, lowDot: false, label: "5'",  note: 'G5', midi: 79 },
+        { token: "3'",  num: '3', dots: 1, lowDot: false, label: "3'",  note: 'E5', midi: 76 },
+        { token: "1'",  num: '1', dots: 1, lowDot: false, label: "1'",  note: 'C5', midi: 72 },
+        { token: "6",   num: '6', dots: 0, lowDot: false, label: '6',   note: 'A4', midi: 69 },
+        { token: "4",   num: '4', dots: 0, lowDot: false, label: '4',   note: 'F4', midi: 65 },
+        { token: "2",   num: '2', dots: 0, lowDot: false, label: '2',   note: 'D4', midi: 62 },
+        { token: "1",   num: '1', dots: 0, lowDot: false, label: '1',   note: 'C4', midi: 60 },
+        { token: "3",   num: '3', dots: 0, lowDot: false, label: '3',   note: 'E4', midi: 64 },
+        { token: "5",   num: '5', dots: 0, lowDot: false, label: '5',   note: 'G4', midi: 67 },
+        { token: "7",   num: '7', dots: 0, lowDot: false, label: '7',   note: 'B4', midi: 71 },
+        { token: "2'",  num: '2', dots: 1, lowDot: false, label: "2'",  note: 'D5', midi: 74 },
+        { token: "4'",  num: '4', dots: 1, lowDot: false, label: "4'",  note: 'F5', midi: 77 },
+        { token: "6'",  num: '6', dots: 1, lowDot: false, label: "6'",  note: 'A5', midi: 81 },
+        { token: "1''", num: '1', dots: 2, lowDot: false, label: "1''", note: 'C6', midi: 84 },
+        { token: "3''", num: '3', dots: 2, lowDot: false, label: "3''", note: 'E6', midi: 88 },
+      ];
+
+      const BASS_4 = [
+        { token: "7,", num: '7', dots: 0, lowDot: true, label: '7,', note: 'B3', midi: 59 },
+        { token: "5,", num: '5', dots: 0, lowDot: true, label: '5,', note: 'G3', midi: 55 },
+        { token: "4,", num: '4', dots: 0, lowDot: true, label: '4,', note: 'F3', midi: 53 },
+        { token: "6,", num: '6', dots: 0, lowDot: true, label: '6,', note: 'A3', midi: 57 },
+      ];
+
+      const FULL_21 = [...BASE_17.slice(0, 8), ...BASS_4, ...BASE_17.slice(8)];
+
+      // Ergonomic 2-Hand Outward Keymap:
+      // Center = G (and H alias!), Left hand outward = F D S A R E W Q 2 1, Right hand outward = J K L ; U I O P 9 0
+      const LEFT_KEYS  = ['f', 'd', 's', 'a', 'r', 'e', 'w', 'q', '2', '1'];
+      const RIGHT_KEYS = ['j', 'k', 'l', ';', 'u', 'i', 'o', 'p', '9', '0'];
+
+      function getTineLayout(count) {
+        const clamped = Math.max(5, Math.min(21, Number(count) || 17));
+        let raw;
+        if (clamped <= 17) {
+          // Slice symmetrically around center index 8 ('1' C4)
+          const leftCount = Math.floor((clamped - 1) / 2);
+          const rightCount = clamped - 1 - leftCount;
+          raw = BASE_17.slice(8 - leftCount, 8 + rightCount + 1);
+        } else {
+          // Slice symmetrically around center of FULL_21 (index 10 = 4, F3)
+          const leftCount = Math.floor((clamped - 1) / 2);
+          const rightCount = clamped - 1 - leftCount;
+          raw = FULL_21.slice(10 - leftCount, 10 + rightCount + 1);
+        }
+
+        const centerIdx = Math.floor((raw.length - 1) / 2);
+        return raw.map((item, idx) => {
+          const offset = idx - centerIdx;
+          const dist = Math.abs(offset) / Math.max(1, centerIdx);
+          const heightPct = Math.round(100 - dist * 42);
+          let key = '';
+          let side = 'center';
+          if (offset === 0) {
+            key = 'g';
+            side = 'center';
+          } else if (offset < 0) {
+            key = LEFT_KEYS[Math.abs(offset) - 1] || '';
+            side = 'left';
+          } else {
+            key = RIGHT_KEYS[offset - 1] || '';
+            side = 'right';
+          }
+          return { ...item, idx, key, side, heightPct };
+        });
+      }
+
+      let ACTIVE_TINES = getTineLayout(17);
+      let TOKEN_TO_IDX = {};
+      let KEY_TO_IDX = {};
+
+      function rebuildTineMaps() {
+        TOKEN_TO_IDX = {};
+        KEY_TO_IDX = {};
+        ACTIVE_TINES.forEach((t) => {
+          TOKEN_TO_IDX[t.token] = t.idx;
+          if (t.key) KEY_TO_IDX[t.key.toLowerCase()] = t.idx;
+        });
+        // Allow BOTH 'g' and 'h' to pluck the center tine effortlessly!
+        const centerTine = ACTIVE_TINES.find(t => t.side === 'center');
+        if (centerTine) KEY_TO_IDX['h'] = centerTine.idx;
+      }
+
+      // ============================================================
+      // 2. CHORD LIBRARY
+      // ============================================================
+      const CHORDS = [
+        { id: 'C',      symbol: 'C',       name: 'C Mayor',        category: 'Mayor',     tokens: ["1", "3", "5"],          thumb: 'Kanan',        technique: 'Glissando' },
+        { id: 'Chigh',  symbol: 'C (Hi)',  name: 'C Mayor Tinggi', category: 'Mayor',     tokens: ["1'", "3'", "5'"],       thumb: 'Kiri',         technique: 'Glissando' },
+        { id: 'Dm',     symbol: 'Dm',      name: 'D Minor',        category: 'Minor',     tokens: ["2", "4", "6"],          thumb: 'Kiri',         technique: 'Glissando' },
+        { id: 'DmHigh', symbol: 'Dm (Hi)', name: 'D Minor Tinggi', category: 'Minor',     tokens: ["2'", "4'", "6'"],       thumb: 'Kanan',        technique: 'Glissando' },
+        { id: 'Em',     symbol: 'Em',      name: 'E Minor',        category: 'Minor',     tokens: ["3", "5", "7"],          thumb: 'Kanan',        technique: 'Glissando' },
+        { id: 'F',      symbol: 'F',       name: 'F Mayor',        category: 'Mayor',     tokens: ["4", "6", "1'"],         thumb: 'Kiri',         technique: 'Glissando' },
+        { id: 'Fhigh',  symbol: 'F (Hi)',  name: 'F Mayor Tinggi', category: 'Mayor',     tokens: ["4'", "6'", "1''"],      thumb: 'Kanan',        technique: 'Glissando' },
+        { id: 'G',      symbol: 'G',       name: 'G Mayor',        category: 'Mayor',     tokens: ["5", "7", "2'"],         thumb: 'Kanan',        technique: 'Glissando' },
+        { id: 'Am',     symbol: 'Am',      name: 'A Minor',        category: 'Minor',     tokens: ["6", "1'", "3'"],        thumb: 'Kiri',         technique: 'Glissando' },
+        { id: 'Bdim',   symbol: 'Bdim',    name: 'B Diminished',   category: 'Minor',     tokens: ["7", "2'", "4'"],        thumb: 'Kanan',        technique: 'Glissando' },
+        { id: 'Cmaj7',  symbol: 'Cmaj7',   name: 'C Major 7',      category: '7th',       tokens: ["1", "3", "5", "7"],     thumb: 'Kanan',        technique: 'Glissando 4 Bilah' },
+        { id: 'Dm7',    symbol: 'Dm7',     name: 'D Minor 7',      category: '7th',       tokens: ["2", "4", "6", "1'"],    thumb: 'Kiri',         technique: 'Glissando 4 Bilah' },
+        { id: 'Em7',    symbol: 'Em7',     name: 'E Minor 7',      category: '7th',       tokens: ["3", "5", "7", "2'"],    thumb: 'Kanan',        technique: 'Glissando 4 Bilah' },
+        { id: 'Fmaj7',  symbol: 'Fmaj7',   name: 'F Major 7',      category: '7th',       tokens: ["4", "6", "1'", "3'"],   thumb: 'Kiri',         technique: 'Glissando 4 Bilah' },
+        { id: 'G7',     symbol: 'G7',      name: 'G Dominant 7',   category: '7th',       tokens: ["5", "7", "2'", "4'"],   thumb: 'Kanan',        technique: 'Glissando 4 Bilah' },
+        { id: 'Am7',    symbol: 'Am7',     name: 'A Minor 7',      category: '7th',       tokens: ["6", "1'", "3'", "5'"],  thumb: 'Kiri',         technique: 'Glissando 4 Bilah' },
+        { id: 'Csus2',  symbol: 'Csus2',   name: 'C Sus 2',        category: 'Sus & Add', tokens: ["1", "2", "5"],          thumb: 'Kiri + Kanan', technique: '2 Jempol' },
+        { id: 'Csus4',  symbol: 'Csus4',   name: 'C Sus 4',        category: 'Sus & Add', tokens: ["1", "4", "5"],          thumb: 'Kiri + Kanan', technique: '2 Jempol' },
+        { id: 'Cadd9',  symbol: 'Cadd9',   name: 'C Add 9',        category: 'Sus & Add', tokens: ["1", "3", "5", "2'"],    thumb: 'Kanan',        technique: 'Arpeggio' },
+        { id: 'G6',     symbol: 'G6',      name: 'G Major 6',      category: 'Sus & Add', tokens: ["5", "7", "2'", "3'"],   thumb: 'Kiri + Kanan', technique: '2 Jempol' },
+      ];
+
+      const PROGRESSIONS = [
+        { id: 'pop',   name: 'Pop Klasik',  chords: ['C', 'G', 'Am', 'F'] },
+        { id: 'lofi',  name: 'Senja Lo-Fi', chords: ['Fmaj7', 'Em7', 'Dm7', 'Cmaj7'] },
+        { id: 'canon', name: 'Canon',       chords: ['C', 'G', 'Am', 'Em', 'F', 'C', 'F', 'G'] },
+      ];
+
+      // ============================================================
+      // 3. CURATED SONGBOOK (VIERRA, KANGEN, VIRAL TIKTOK 2026, INDO & BARAT)
+      // ============================================================
+      const SONGS = [
+        {
+          id: 'vierra-rasaini',
+          title: 'Rasa Ini',
+          artist: 'Vierra',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Menengah',
+          bpm: 96,
+          chordList: ['C', 'G', 'Am', 'F'],
+          chordChanges: { 0: 'C', 6: 'G', 12: 'Am', 18: 'F', 24: 'C', 28: 'G', 32: 'C' },
+          notes: [
+            "3'", "3'", "2'", "1'", "2'", "3'",
+            "2'", "2'", "1'", "7", "1'", "2'",
+            "1'", "1''", "7'", "6'", "5'", "3'",
+            "4'", "3'", "2'", "1'", "6", "1'",
+            "3'", "2'", "1'", "5", "2'", "3'", "2'", "1'", "1'"
+          ]
+        },
+        {
+          id: 'vierra-seandainya',
+          title: 'Seandainya',
+          artist: 'Vierra',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Menengah',
+          bpm: 86,
+          chordList: ['C', 'Em', 'Am', 'F', 'G'],
+          chordChanges: { 0: 'C', 6: 'Em', 12: 'Am', 18: 'F', 23: 'G', 28: 'C' },
+          notes: [
+            "5", "3'", "2'", "1'", "2'", "3'",
+            "7", "2'", "1'", "7", "1'", "2'",
+            "6", "1'", "7", "6", "5", "6",
+            "4", "6", "1'", "2'", "1'",
+            "5", "7", "2'", "3'", "2'", "1'"
+          ]
+        },
+        {
+          id: 'dewa-kangen',
+          title: 'Kangen',
+          artist: 'Dewa 19',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Menengah',
+          bpm: 84,
+          chordList: ['C', 'Am', 'F', 'G', 'Em', 'Dm'],
+          chordChanges: { 0: 'C', 6: 'Am', 11: 'F', 17: 'G', 25: 'C', 30: 'Am', 34: 'F', 38: 'G', 41: 'C' },
+          notes: [
+            "1", "5", "1'", "5", "2'", "1'",
+            "6", "1'", "6", "2'", "1'",
+            "4", "6", "1'", "6", "2'", "1'",
+            "2", "5", "7", "5", "3'", "2'", "1'", "7",
+            "3", "3", "3", "3", "6", "6",
+            "6", "7", "6", "6", "4", "6", "1'",
+            "5", "2'", "1'", "1'"
+          ]
+        },
+        {
+          id: 'tulus-tehhijau',
+          title: 'Teh Hijau',
+          artist: 'Tulus',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Pemula',
+          bpm: 88,
+          chordList: ['C', 'Fmaj7', 'Am', 'G'],
+          chordChanges: { 0: 'C', 7: 'Fmaj7', 14: 'Am', 21: 'G', 27: 'C' },
+          notes: [
+            "3'", "2'", "1'", "5", "1'", "2'", "3'",
+            "4'", "3'", "2'", "1'", "6", "1'", "3'",
+            "3'", "2'", "1'", "6", "1'", "2'", "1'",
+            "2'", "3'", "2'", "1'", "7", "5", "1'"
+          ]
+        },
+        {
+          id: 'enau-sesipotret',
+          title: 'Sesi Potret',
+          artist: 'eńau ft. Ari Lesmana',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Pemula',
+          bpm: 90,
+          chordList: ['C', 'G', 'Am', 'F'],
+          chordChanges: { 0: 'C', 6: 'G', 12: 'Am', 18: 'F', 24: 'C' },
+          notes: [
+            "5", "1'", "2'", "3'", "5'", "3'",
+            "2'", "3'", "2'", "1'", "7", "5",
+            "6", "1'", "3'", "2'", "1'", "6",
+            "4", "6", "1'", "2'", "1'", "6",
+            "5", "1'", "3'", "2'", "1'"
+          ]
+        },
+        {
+          id: 'piche-bahagialagi',
+          title: 'Bahagia Lagi',
+          artist: 'Piche Kota',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Pemula',
+          bpm: 94,
+          chordList: ['C', 'Em', 'Am', 'F', 'G'],
+          chordChanges: { 0: 'C', 6: 'Em', 12: 'Am', 18: 'F', 24: 'G', 28: 'C' },
+          notes: [
+            "1'", "2'", "3'", "5'", "3'", "2'",
+            "7", "1'", "2'", "3'", "2'", "7",
+            "6", "1'", "2'", "3'", "1'", "6",
+            "4'", "3'", "2'", "1'", "6", "1'",
+            "2'", "3'", "2'", "7", "1'"
+          ]
+        },
+        {
+          id: 'faris-stecu',
+          title: 'Stecu Stecu',
+          artist: 'Faris Adam',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Pemula',
+          bpm: 114,
+          chordList: ['Am', 'F', 'C', 'G'],
+          chordChanges: { 0: 'Am', 7: 'F', 14: 'C', 21: 'G', 27: 'Am' },
+          notes: [
+            "6", "1'", "3'", "3'", "2'", "1'", "6",
+            "4", "6", "1'", "1'", "2'", "1'", "6",
+            "5", "1'", "3'", "3'", "5'", "3'", "2'",
+            "7", "2'", "3'", "2'", "1'", "7", "6"
+          ]
+        },
+        {
+          id: 'raim-iqro',
+          title: "iqro'",
+          artist: 'Raim Laode',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Pemula',
+          bpm: 84,
+          chordList: ['C', 'F', 'Dm', 'G'],
+          chordChanges: { 0: 'C', 7: 'F', 14: 'Dm', 20: 'G', 25: 'C' },
+          notes: [
+            "3", "5", "1'", "2'", "3'", "2'", "1'",
+            "4", "6", "1'", "2'", "1'", "6", "4",
+            "2", "4", "6", "1'", "7", "6",
+            "5", "7", "2'", "3'", "2'", "1'"
+          ]
+        },
+        {
+          id: 'tulus-hatihati',
+          title: 'Hati-Hati di Jalan',
+          artist: 'Tulus',
+          region: 'Indonesia',
+          viral: true,
+          level: 'Menengah',
+          bpm: 82,
+          chordList: ['C', 'Em', 'Am', 'F', 'Dm', 'G'],
+          chordChanges: { 0: 'C', 7: 'Em', 14: 'Am', 20: 'F', 26: 'G', 30: 'C' },
+          notes: [
+            "3'", "5'", "5'", "3'", "7'", "1''", "7'",
+            "5'", "3'", "3'", "1'", "3'", "6'", "5'",
+            "3'", "7'", "1'", "7'", "5'", "3'",
+            "4'", "2'", "1'", "1'", "2'", "3'",
+            "5'", "2'", "2'", "5'", "1'"
+          ]
+        },
+        {
+          id: 'sienna-dieonthishill',
+          title: 'Die On This Hill',
+          artist: 'Sienna Spiro',
+          region: 'Barat',
+          viral: true,
+          level: 'Menengah',
+          bpm: 86,
+          chordList: ['Am', 'F', 'C', 'G'],
+          chordChanges: { 0: 'Am', 7: 'F', 14: 'C', 21: 'G', 27: 'Am' },
+          notes: [
+            "3'", "2'", "1'", "6", "1'", "2'", "3'",
+            "4'", "3'", "2'", "1'", "6", "4", "6",
+            "5", "1'", "3'", "5'", "3'", "2'", "1'",
+            "2'", "3'", "2'", "1'", "7", "5", "6"
+          ]
+        },
+        {
+          id: 'katy-totga',
+          title: 'The One That Got Away',
+          artist: 'Katy Perry',
+          region: 'Barat',
+          viral: true,
+          level: 'Pemula',
+          bpm: 98,
+          chordList: ['C', 'Em', 'Am', 'F', 'G'],
+          chordChanges: { 0: 'C', 7: 'Em', 14: 'Am', 21: 'F', 27: 'G', 31: 'C' },
+          notes: [
+            "3'", "3'", "3'", "2'", "1'", "2'", "3'",
+            "7", "7", "1'", "2'", "3'", "2'", "7",
+            "6", "1'", "1'", "2'", "3'", "2'", "1'",
+            "4'", "4'", "3'", "2'", "1'", "6",
+            "2'", "3'", "2'", "1'"
+          ]
+        },
+        {
+          id: 'sunshine',
+          title: 'You Are My Sunshine',
+          artist: 'Klasik',
+          region: 'Barat',
+          viral: false,
+          level: 'Pemula',
+          bpm: 96,
+          chordList: ['C', 'F', 'G'],
+          chordChanges: { 0: 'C', 13: 'F', 18: 'C', 22: 'F', 27: 'C', 32: 'G', 36: 'C' },
+          notes: [
+            "5", "1'", "2'", "3'", "3'", "3'", "2'", "3'", "1'", "1'",
+            "1'", "2'", "3'", "4'", "6'", "6'", "5'", "4'", "3'",
+            "1'", "2'", "3'", "4'", "6'", "6'", "5'", "4'", "3'", "1'",
+            "1'", "2'", "3'", "4'", "2'", "2'", "3'", "1'"
+          ]
+        },
+        {
+          id: 'kartini',
+          title: 'Ibu Kita Kartini',
+          artist: 'W.R. Supratman',
+          region: 'Indonesia',
+          viral: false,
+          level: 'Pemula',
+          bpm: 92,
+          chordList: ['C', 'F', 'G', 'Dm'],
+          chordChanges: { 0: 'C', 7: 'F', 11: 'C', 12: 'F', 16: 'C', 18: 'G', 22: 'C' },
+          notes: [
+            "1", "2", "3", "4", "5", "3", "1",
+            "6", "1'", "7", "6", "5",
+            "4", "6", "5", "4", "3", "1",
+            "2", "4", "3", "2", "1"
+          ]
+        },
+        {
+          id: 'falling',
+          title: "Can't Help Falling in Love",
+          artist: 'Elvis Presley',
+          region: 'Barat',
+          viral: false,
+          level: 'Menengah',
+          bpm: 78,
+          chordList: ['C', 'Em', 'Am', 'F', 'G'],
+          chordChanges: { 0: 'C', 4: 'Em', 7: 'Am', 11: 'F', 14: 'C', 17: 'G', 18: 'Em', 22: 'Am', 25: 'F', 27: 'G', 28: 'C' },
+          notes: [
+            "1", "5", "1", "2", "3", "4", "3", "2",
+            "5", "6", "7", "1'", "2'", "3'", "4'", "3'", "2'", "1'",
+            "3", "7", "1'", "7", "6", "5", "3", "5", "6", "7", "1'"
+          ]
+        },
+        {
+          id: 'canon',
+          title: 'Canon in D (Versi C)',
+          artist: 'Pachelbel',
+          region: 'Barat',
+          viral: false,
+          level: 'Menengah',
+          bpm: 84,
+          chordList: ['C', 'G', 'Am', 'Em', 'F'],
+          chordChanges: { 0: 'C', 2: 'G', 4: 'Am', 6: 'Em', 8: 'F', 10: 'C', 12: 'F', 14: 'G', 16: 'C', 20: 'G', 22: 'Am', 24: 'F', 27: 'G', 28: 'C' },
+          notes: [
+            "3'", "2'", "1'", "7", "6", "5", "6", "7",
+            "1'", "7", "6", "5", "4", "3", "4", "2",
+            "1", "3", "5", "1'", "7", "5", "6", "3",
+            "4", "1", "4", "5", "1'"
+          ]
+        }
+      ];
+
+      // ============================================================
+      // 4. ZERO-LATENCY MULTI-INSTRUMENT WEB AUDIO ENGINE
+      // ============================================================
+      class StudioAudioEngine {
+        constructor() {
+          this.ctx = null;
+          this.masterGain = null;
+          this.dryGain = null;
+          this.reverbGain = null;
+          this.convolver = null;
+          this.noiseBuffer = null;
+          this.volume = 0.85;
+          this.reverbMix = 0.30;
+          this.muted = false;
+          this.instrument = 'kalimba';
+          this.transpose = 0;
+        }
+
+        warmup() {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioCtx({ latencyHint: 'interactive' });
+
+            const comp = this.ctx.createDynamicsCompressor();
+            comp.threshold.value = -10;
+            comp.knee.value = 18;
+            comp.ratio.value = 4;
+            comp.attack.value = 0.002;
+            comp.release.value = 0.15;
+
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = this.muted ? 0 : this.volume;
+
+            this.dryGain = this.ctx.createGain();
+            this.reverbGain = this.ctx.createGain();
+            this.convolver = this.ctx.createConvolver();
+            this.convolver.buffer = this._makeImpulse(1.5, 2.8);
+            this.noiseBuffer = this._makeNoiseBuffer(0.05);
+
+            this.dryGain.connect(comp);
+            this.convolver.connect(this.reverbGain);
+            this.reverbGain.connect(comp);
+            comp.connect(this.masterGain);
+            this.masterGain.connect(this.ctx.destination);
+            this._syncMix();
+          }
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+        }
+
+        _makeImpulse(dur, decay) {
+          const sr = this.ctx.sampleRate;
+          const len = Math.floor(sr * dur);
+          const buf = this.ctx.createBuffer(2, len, sr);
+          for (let c = 0; c < 2; c++) {
+            const d = buf.getChannelData(c);
+            for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+          }
+          return buf;
+        }
+
+        _makeNoiseBuffer(dur) {
+          const sr = this.ctx.sampleRate;
+          const len = Math.floor(sr * dur);
+          const buf = this.ctx.createBuffer(1, len, sr);
+          const d = buf.getChannelData(0);
+          for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.25));
+          return buf;
+        }
+
+        _syncMix() {
+          if (!this.dryGain || !this.reverbGain) return;
+          this.dryGain.gain.value = 1 - this.reverbMix * 0.4;
+          this.reverbGain.gain.value = this.reverbMix * 0.7;
+        }
+
+        setVolume(v) {
+          this.volume = v;
+          if (this.masterGain && !this.muted) this.masterGain.gain.setValueAtTime(v, this.ctx.currentTime);
+        }
+
+        setReverb(r) { this.reverbMix = r; this._syncMix(); }
+
+        setMuted(m) {
+          this.muted = m;
+          if (this.masterGain) this.masterGain.gain.setValueAtTime(m ? 0 : this.volume, this.ctx.currentTime);
+        }
+
+        midiToFreq(midi) {
+          return 440 * Math.pow(2, (midi + this.transpose - 69) / 12);
+        }
+
+        _connectVoice(node, panVal) {
+          if (this.ctx.createStereoPanner) {
+            const p = this.ctx.createStereoPanner();
+            p.pan.setValueAtTime(panVal, this.ctx.currentTime);
+            node.connect(p);
+            p.connect(this.dryGain);
+            p.connect(this.convolver);
+          } else {
+            node.connect(this.dryGain);
+            node.connect(this.convolver);
+          }
+        }
+
+        playMetronomeClick(accent = false) {
+          this.warmup();
+          const now = this.ctx.currentTime;
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'triangle';
+          o.frequency.setValueAtTime(accent ? 1280 : 880, now);
+          g.gain.setValueAtTime(accent ? 0.22 : 0.12, now);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+          o.connect(g);
+          g.connect(this.masterGain);
+          o.start(now);
+          o.stop(now + 0.04);
+        }
+
+        playNote(midi, panVal = 0, velocity = 0.88) {
+          this.warmup();
+          const now = this.ctx.currentTime;
+          const freq = this.midiToFreq(midi);
+          const inst = this.instrument;
+
+          if (inst === 'piano') this._playPiano(freq, panVal, velocity, now);
+          else if (inst === 'epiano') this._playEPiano(freq, panVal, velocity, now);
+          else if (inst === 'harp') this._playHarp(freq, panVal, velocity, now);
+          else if (inst === 'musicbox') this._playMusicBox(freq, panVal, velocity, now);
+          else if (inst === 'marimba') this._playMarimba(freq, panVal, velocity, now);
+          else if (inst === 'crystal') this._playKalimba(freq, panVal, velocity, now, true);
+          else this._playKalimba(freq, panVal, velocity, now, false);
+        }
+
+        _playKalimba(freq, pan, vel, now, crystal) {
+          const pitchScale = Math.max(0.55, 1.28 - (Math.log2(freq / 261.63)) * 0.28);
+          const decay = (crystal ? 2.6 : 2.15) * pitchScale;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.52, now + 0.002);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const o1 = this.ctx.createOscillator();
+          o1.type = 'sine'; o1.frequency.setValueAtTime(freq, now); o1.connect(env);
+
+          const o2 = this.ctx.createOscillator();
+          const g2 = this.ctx.createGain();
+          o2.type = 'sine'; o2.frequency.setValueAtTime(freq * (crystal ? 3.0 : 2.92), now);
+          g2.gain.setValueAtTime(crystal ? 0.22 : 0.14, now);
+          g2.gain.exponentialRampToValueAtTime(0.0001, now + (crystal ? 0.55 : 0.24));
+          o2.connect(g2); g2.connect(env);
+
+          const o3 = this.ctx.createOscillator();
+          const g3 = this.ctx.createGain();
+          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * (crystal ? 6.02 : 5.42), now);
+          g3.gain.setValueAtTime(crystal ? 0.08 : 0.045, now);
+          g3.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+          o3.connect(g3); g3.connect(env);
+
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = this.noiseBuffer;
+          const bp = this.ctx.createBiquadFilter();
+          bp.type = 'bandpass'; bp.frequency.setValueAtTime(crystal ? 3600 : 1900, now); bp.Q.value = 1.6;
+          const ng = this.ctx.createGain();
+          ng.gain.setValueAtTime(vel * (crystal ? 0.14 : 0.22), now);
+          ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.018);
+          noise.connect(bp); bp.connect(ng); ng.connect(env);
+
+          if (!crystal) {
+            const body = this.ctx.createBiquadFilter();
+            body.type = 'peaking'; body.frequency.setValueAtTime(340, now); body.Q.value = 1.2; body.gain.setValueAtTime(3.2, now);
+            env.connect(body); this._connectVoice(body, pan);
+          } else {
+            this._connectVoice(env, pan);
+          }
+
+          o1.start(now); o2.start(now); o3.start(now); noise.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + 0.6); o3.stop(now + 0.1); noise.stop(now + 0.03);
+        }
+
+        _playPiano(freq, pan, vel, now) {
+          const decay = Math.max(1.2, 2.9 - Math.log2(freq / 261.63) * 0.45);
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.48, now + 0.003);
+          env.gain.exponentialRampToValueAtTime(vel * 0.24, now + 0.25);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const lpf = this.ctx.createBiquadFilter();
+          lpf.type = 'lowpass';
+          lpf.frequency.setValueAtTime(Math.min(12000, freq * 8), now);
+          lpf.frequency.exponentialRampToValueAtTime(Math.min(4500, freq * 2.2), now + 0.45);
+
+          const o1 = this.ctx.createOscillator(); o1.type = 'triangle'; o1.frequency.setValueAtTime(freq, now);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
+          o2.type = 'sawtooth'; o2.frequency.setValueAtTime(freq * 1.0012, now);
+          g2.gain.setValueAtTime(0.26, now); g2.gain.exponentialRampToValueAtTime(0.03, now + 0.6);
+
+          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
+          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * 2.0, now);
+          g3.gain.setValueAtTime(0.28, now); g3.gain.exponentialRampToValueAtTime(0.001, now + decay * 0.55);
+
+          const noise = this.ctx.createBufferSource(); noise.buffer = this.noiseBuffer;
+          const hlp = this.ctx.createBiquadFilter(); hlp.type = 'lowpass'; hlp.frequency.setValueAtTime(1100, now);
+          const hg = this.ctx.createGain(); hg.gain.setValueAtTime(vel * 0.22, now); hg.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+          noise.connect(hlp); hlp.connect(hg); hg.connect(env);
+
+          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); o3.connect(g3); g3.connect(lpf);
+          lpf.connect(env); this._connectVoice(env, pan);
+
+          o1.start(now); o2.start(now); o3.start(now); noise.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + decay + 0.03); o3.stop(now + decay * 0.6); noise.stop(now + 0.03);
+        }
+
+        _playEPiano(freq, pan, vel, now) {
+          const decay = 2.4;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.48, now + 0.004);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const carrier = this.ctx.createOscillator(); carrier.type = 'sine'; carrier.frequency.setValueAtTime(freq, now);
+          const mod = this.ctx.createOscillator(); const modGain = this.ctx.createGain();
+          mod.type = 'sine'; mod.frequency.setValueAtTime(freq * 4, now);
+          modGain.gain.setValueAtTime(freq * 1.15, now); modGain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+          mod.connect(modGain); modGain.connect(carrier.frequency);
+
+          const warm = this.ctx.createOscillator(); const wg = this.ctx.createGain();
+          warm.type = 'triangle'; warm.frequency.setValueAtTime(freq, now); wg.gain.setValueAtTime(0.18, now);
+          warm.connect(wg);
+
+          carrier.connect(env); wg.connect(env); this._connectVoice(env, pan);
+          carrier.start(now); mod.start(now); warm.start(now);
+          carrier.stop(now + decay + 0.03); mod.stop(now + 0.25); warm.stop(now + decay + 0.03);
+        }
+
+        _playHarp(freq, pan, vel, now) {
+          const decay = 2.5;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.45, now + 0.004);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const lpf = this.ctx.createBiquadFilter();
+          lpf.type = 'lowpass'; lpf.Q.value = 1.4;
+          lpf.frequency.setValueAtTime(Math.min(9000, freq * 6.5), now);
+          lpf.frequency.exponentialRampToValueAtTime(freq * 1.4, now + 0.65);
+
+          const o1 = this.ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.setValueAtTime(freq, now);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
+          o2.type = 'triangle'; o2.frequency.setValueAtTime(freq * 2, now);
+          g2.gain.setValueAtTime(0.22, now); g2.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+          o1.connect(lpf); o2.connect(g2); g2.connect(lpf); lpf.connect(env); this._connectVoice(env, pan);
+          o1.start(now); o2.start(now); o1.stop(now + decay + 0.03); o2.stop(now + 0.5);
+        }
+
+        _playMusicBox(freq, pan, vel, now) {
+          const decay = 2.7;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.42, now + 0.0015);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const o1 = this.ctx.createOscillator(); o1.type = 'sine'; o1.frequency.setValueAtTime(freq * 2, now);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
+          o2.type = 'sine'; o2.frequency.setValueAtTime(freq * 4, now);
+          g2.gain.setValueAtTime(0.25, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+
+          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
+          o3.type = 'sine'; o3.frequency.setValueAtTime(freq * 6, now);
+          g3.gain.setValueAtTime(0.12, now); g3.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+          o1.connect(env); o2.connect(g2); g2.connect(env); o3.connect(g3); g3.connect(env);
+          this._connectVoice(env, pan);
+          o1.start(now); o2.start(now); o3.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + 0.5); o3.stop(now + 0.15);
+        }
+
+        _playMarimba(freq, pan, vel, now) {
+          const decay = 0.85;
+          const env = this.ctx.createGain();
+          env.gain.setValueAtTime(0.0001, now);
+          env.gain.linearRampToValueAtTime(vel * 0.56, now + 0.002);
+          env.gain.exponentialRampToValueAtTime(0.0001, now + decay);
+
+          const o1 = this.ctx.createOscillator(); o1.type = 'sine'; o1.frequency.setValueAtTime(freq, now);
+          const o2 = this.ctx.createOscillator(); const g2 = this.ctx.createGain();
+          o2.type = 'sine'; o2.frequency.setValueAtTime(freq * 3.98, now);
+          g2.gain.setValueAtTime(0.28, now); g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+
+          const o3 = this.ctx.createOscillator(); const g3 = this.ctx.createGain();
+          o3.type = 'triangle'; o3.frequency.setValueAtTime(freq * 0.5, now);
+          g3.gain.setValueAtTime(0.14, now); g3.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+          o1.connect(env); o2.connect(g2); g2.connect(env); o3.connect(g3); g3.connect(env);
+          this._connectVoice(env, pan);
+          o1.start(now); o2.start(now); o3.start(now);
+          o1.stop(now + decay + 0.03); o2.stop(now + 0.14); o3.stop(now + 0.08);
+        }
+      }
+
+      const audio = new StudioAudioEngine();
+      const unlockOnce = () => {
+        audio.warmup();
+        window.removeEventListener('pointerdown', unlockOnce);
+        window.removeEventListener('keydown', unlockOnce);
+      };
+      window.addEventListener('pointerdown', unlockOnce, { passive: true });
+      window.addEventListener('keydown', unlockOnce, { passive: true });
+
+      // ============================================================
+      // 5. STATE + LOCAL BEST SCORES
+      // ============================================================
+      function loadBestScores() {
+        try { return JSON.parse(localStorage.getItem('keylimba_best_v1') || '{}'); }
+        catch (e) { return {}; }
+      }
+      function saveBestScore(songId, acc) {
+        try {
+          const map = loadBestScores();
+          if (!map[songId] || acc > map[songId]) {
+            map[songId] = acc;
+            localStorage.setItem('keylimba_best_v1', JSON.stringify(map));
+          }
+        } catch (e) {}
+      }
+
+      const state = {
+        keyCount: 17,
+        activeTab: 'chords',
+        notationMode: 'both',
+        showKeyHints: window.innerWidth >= 768,
+
+        selectedChordId: 'C',
+        chordCategory: 'all',
+        chordSearch: '',
+        activeProgressionTimer: null,
+        activeProgressionId: null,
+
+        selectedSongId: 'vierra-rasaini',
+        songRegionFilter: 'all',
+        songSearch: '',
+        learnMode: 'practice',
+        learnActive: false,
+        learnLoop: false,
+        learnStep: 0,
+        learnAttempts: 0,
+        learnCorrect: 0,
+        combo: 0,
+        bpm: 96,
+        speedMult: 1,
+        demoTimer: null,
+        demoWithChords: true,
+        activeSongChordId: 'C',
+
+        metroOn: false,
+        metroTimer: null,
+        metroBeat: 0,
+
+        isRecording: false,
+        recStartTime: 0,
+        recordedEvents: [],
+        playbackTimers: [],
+
+        isPointerDown: false,
+        lastGlissIdx: -1,
+      };
+
+      // ============================================================
+      // 6. DOM REFERENCES
+      // ============================================================
+      const els = {
+        tinesGrid: document.getElementById('tines-grid'),
+        cueTitle: document.getElementById('cue-title'),
+        cueNotes: document.getElementById('cue-notes'),
+        comboPill: document.getElementById('combo-pill'),
+        soundholeBtn: document.getElementById('soundhole-btn'),
+
+        btnKeyMinus: document.getElementById('btn-key-minus'),
+        btnKeyPlus: document.getElementById('btn-key-plus'),
+        labelKeyCount: document.getElementById('label-key-count'),
+        selectInstrument: document.getElementById('select-instrument'),
+        btnNotation: document.getElementById('btn-notation'),
+        labelNotation: document.getElementById('label-notation'),
+        btnKeysToggle: document.getElementById('btn-keys-toggle'),
+        btnGuide: document.getElementById('btn-guide'),
+        btnMute: document.getElementById('btn-mute'),
+        iconMute: document.getElementById('icon-mute'),
+
+        panelChords: document.getElementById('panel-chords'),
+        panelLearn: document.getElementById('panel-learn'),
+        panelStudio: document.getElementById('panel-studio'),
+
+        chordBadgeBig: document.getElementById('chord-badge-big'),
+        chordDetailName: document.getElementById('chord-detail-name'),
+        chordDetailTechnique: document.getElementById('chord-detail-technique'),
+        chordDetailNumbers: document.getElementById('chord-detail-numbers'),
+        chordDetailLetters: document.getElementById('chord-detail-letters'),
+        chordDetailThumb: document.getElementById('chord-detail-thumb'),
+        btnPlayArpeggio: document.getElementById('btn-play-arpeggio'),
+        btnPlayBlock: document.getElementById('btn-play-block'),
+        btnClearHighlight: document.getElementById('btn-clear-highlight'),
+        chordSearch: document.getElementById('chord-search'),
+        chordGrid: document.getElementById('chord-grid'),
+        progressionList: document.getElementById('progression-list'),
+
+        learnSongTag: document.getElementById('learn-song-tag'),
+        learnSongLevel: document.getElementById('learn-song-level'),
+        learnSongBpmBadge: document.getElementById('learn-song-bpm-badge'),
+        learnSongTitle: document.getElementById('learn-song-title'),
+        learnSongArtist: document.getElementById('learn-song-artist'),
+        modePracticeBtn: document.getElementById('mode-practice-btn'),
+        modeDemoBtn: document.getElementById('mode-demo-btn'),
+        btnLearnPlayToggle: document.getElementById('btn-learn-play-toggle'),
+        iconLearnPlay: document.getElementById('icon-learn-play'),
+        labelLearnPlay: document.getElementById('label-learn-play'),
+        btnLearnLoop: document.getElementById('btn-learn-loop'),
+        btnMetronome: document.getElementById('btn-metronome'),
+        metroDot: document.getElementById('metro-dot'),
+        btnLearnRestart: document.getElementById('btn-learn-restart'),
+        songChordStrip: document.getElementById('song-chord-strip'),
+        toggleDemoChords: document.getElementById('toggle-demo-chords'),
+        learnProgressText: document.getElementById('learn-progress-text'),
+        learnAccuracyText: document.getElementById('learn-accuracy-text'),
+        learnProgressBar: document.getElementById('learn-progress-bar'),
+        bpmSlider: document.getElementById('bpm-slider'),
+        bpmValue: document.getElementById('bpm-value'),
+        songTabStrip: document.getElementById('song-tab-strip'),
+        songSearch: document.getElementById('song-search'),
+        songGrid: document.getElementById('song-grid'),
+
+        btnOpenCustomTab: document.getElementById('btn-open-custom-tab'),
+        modalCustomTab: document.getElementById('modal-custom-tab'),
+        btnCloseCustom: document.getElementById('btn-close-custom'),
+        btnCancelCustom: document.getElementById('btn-cancel-custom'),
+        btnSaveCustom: document.getElementById('btn-save-custom'),
+        customTabTitle: document.getElementById('custom-tab-title'),
+        customTabNotes: document.getElementById('custom-tab-notes'),
+
+        modalGuide: document.getElementById('modal-guide'),
+        btnCloseGuide: document.getElementById('btn-close-guide'),
+
+        transposeLabel: document.getElementById('transpose-label'),
+        volSlider: document.getElementById('vol-slider'),
+        volValue: document.getElementById('vol-value'),
+        reverbSlider: document.getElementById('reverb-slider'),
+        reverbValue: document.getElementById('reverb-value'),
+        recStatus: document.getElementById('rec-status'),
+        recNotesDisplay: document.getElementById('rec-notes-display'),
+        btnRecToggle: document.getElementById('btn-rec-toggle'),
+        iconRec: document.getElementById('icon-rec'),
+        labelRec: document.getElementById('label-rec'),
+        btnRecPlay: document.getElementById('btn-rec-play'),
+        btnRecCopy: document.getElementById('btn-rec-copy'),
+        btnRecClear: document.getElementById('btn-rec-clear'),
+
+        toast: document.getElementById('toast'),
+        toastText: document.getElementById('toast-text'),
+      };
+
+      // ============================================================
+      // 7. HELPERS
+      // ============================================================
+      let toastTimer = null;
+      function showToast(msg) {
+        els.toastText.textContent = msg;
+        els.toast.classList.remove('opacity-0', 'translate-y-2');
+        els.toast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          els.toast.classList.add('opacity-0', 'translate-y-2');
+          els.toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2100);
+      }
+
+      function getChordById(id) { return CHORDS.find(c => c.id === id) || null; }
+      function getSongById(id) { return SONGS.find(s => s.id === id) || SONGS[0]; }
+
+      function getChordIndices(chord) {
+        if (!chord) return [];
+        return chord.tokens.map(tok => TOKEN_TO_IDX[tok]).filter(idx => idx !== undefined);
+      }
+
+      function renderMiniNoteHTML(tok) {
+        const found = BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok);
+        if (!found) return tok;
+        let dots = '';
+        for (let i = 0; i < found.dots; i++) dots += '<span class="mini-dot"></span>';
+        const top = found.dots > 0 ? `<span class="mini-dots">${dots}</span>` : '';
+        const bot = found.lowDot ? '<span class="mini-dots" style="margin-bottom:0;margin-top:1px"><span class="mini-dot"></span></span>' : '';
+        return `<span class="mini-note">${top}<span>${found.num}</span>${bot}</span>`;
+      }
+
+      function tokenToLabel(tok) {
+        const found = BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok);
+        return found ? found.label : tok;
+      }
+
+      function tokenToNote(tok) {
+        const found = BASE_17.find(t => t.token === tok) || BASS_4.find(t => t.token === tok);
+        return found ? found.note : tok;
+      }
+
+      function renderDotStackHTML(tine) {
+        let topDots = '';
+        for (let i = 0; i < tine.dots; i++) topDots += '<span class="note-dot"></span>';
+        const botDot = tine.lowDot ? '<span class="note-dots-below"><span class="note-dot"></span></span>' : '';
+        return `
+          <span class="note-dot-stack">
+            <span class="note-dots">${topDots}</span>
+            <span>${tine.num}</span>
+            ${botDot}
+          </span>
+        `;
+      }
+
+      // ============================================================
+      // 8. BUILD DYNAMIC TINES (5–21 KEYS)
+      // ============================================================
+      const tineElements = [];
+
+      function buildTines() {
+        ACTIVE_TINES = getTineLayout(state.keyCount);
+        rebuildTineMaps();
+
+        const n = ACTIVE_TINES.length;
+        els.tinesGrid.innerHTML = '';
+        els.tinesGrid.style.gridTemplateColumns = `repeat(${n}, minmax(0, 1fr))`;
+        els.tinesGrid.style.maxWidth = n <= 9 ? `${Math.max(320, n * 68)}px` : n <= 13 ? '780px' : '100%';
+        tineElements.length = 0;
+
+        ACTIVE_TINES.forEach((tine) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.dataset.idx = tine.idx;
+          btn.setAttribute('aria-label', `Bilah ${tine.label} (${tine.note})`);
+          btn.className = 'tine w-full select-none focus:outline-none';
+
+          const desktopPx = Math.round(225 * (tine.heightPct / 100));
+          const mobilePx = Math.round(146 * (tine.heightPct / 100));
+          btn.style.height = `clamp(${mobilePx}px, ${Math.round(23 * (tine.heightPct / 100))}vw, ${desktopPx}px)`;
+
+          const numSize = n >= 19 ? 'text-[10px] sm:text-[12px]' : 'text-[11px] sm:text-[13px] md:text-[14px]';
+          const keyBadgeColor = tine.side === 'left'
+            ? 'bg-[#CCFBF1]/80 text-[#0F766E]'
+            : tine.side === 'right'
+              ? 'bg-[#FEF3C7]/90 text-[#B45309]'
+              : 'bg-[#181512] text-white';
+
+          btn.innerHTML = `
+            <span class="tine-key-hint hidden text-[9px] font-mono font-semibold uppercase px-1 py-0.5 rounded ${keyBadgeColor} mb-auto mt-1.5">${tine.key}</span>
+            <span class="tine-num font-mono font-semibold ${numSize} text-[#181512] leading-none">
+              ${renderDotStackHTML(tine)}
+            </span>
+            <span class="tine-letter font-sans text-[8px] sm:text-[10px] font-medium text-[#6E685F] mt-1 leading-none">${tine.note}</span>
+          `;
+
+          btn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            state.isPointerDown = true;
+            state.lastGlissIdx = tine.idx;
+            triggerTine(tine.idx, true);
+          });
+
+          btn.addEventListener('pointerenter', () => {
+            if (state.isPointerDown && state.lastGlissIdx !== tine.idx) {
+              state.lastGlissIdx = tine.idx;
+              triggerTine(tine.idx, true);
+            }
+          });
+
+          els.tinesGrid.appendChild(btn);
+          tineElements.push(btn);
+        });
+
+        updateNotationDisplay();
+        updateTineHighlights();
+      }
+
+      els.tinesGrid.addEventListener('pointermove', (e) => {
+        if (!state.isPointerDown) return;
+        const el = document.elementFromPoint(e.clientX, e.clientY);
+        const tineBtn = el ? el.closest('.tine') : null;
+        if (tineBtn) {
+          const idx = Number(tineBtn.dataset.idx);
+          if (idx !== state.lastGlissIdx) {
+            state.lastGlissIdx = idx;
+            triggerTine(idx, true);
+          }
+        }
+      });
+
+      window.addEventListener('pointerup', () => { state.isPointerDown = false; state.lastGlissIdx = -1; });
+      window.addEventListener('pointercancel', () => { state.isPointerDown = false; state.lastGlissIdx = -1; });
+
+      function updateNotationDisplay() {
+        const modeMap = { both: '1·C', number: '1–7', letter: 'C–B' };
+        els.labelNotation.textContent = modeMap[state.notationMode];
+
+        tineElements.forEach((btn) => {
+          btn.querySelector('.tine-num').classList.toggle('hidden', state.notationMode === 'letter');
+          btn.querySelector('.tine-letter').classList.toggle('hidden', state.notationMode === 'number');
+          btn.querySelector('.tine-key-hint').classList.toggle('hidden', !state.showKeyHints);
+        });
+
+        els.btnKeysToggle.classList.toggle('bg-[#181512]', state.showKeyHints);
+        els.btnKeysToggle.classList.toggle('text-white', state.showKeyHints);
+        els.btnKeysToggle.classList.toggle('border-[#181512]', state.showKeyHints);
+        els.btnKeysToggle.classList.toggle('bg-white', !state.showKeyHints);
+        els.btnKeysToggle.classList.toggle('text-[#6E685F]', !state.showKeyHints);
+        els.btnKeysToggle.classList.toggle('border-[#181512]/10', !state.showKeyHints);
+      }
+
+      function updateTineHighlights() {
+        tineElements.forEach((btn) => btn.classList.remove('is-chord', 'is-left-hint', 'is-target'));
+
+        if (state.activeTab === 'learn' && state.learnActive) {
+          const song = getSongById(state.selectedSongId);
+          if (state.learnStep < song.notes.length) {
+            const targetIdx = TOKEN_TO_IDX[song.notes[state.learnStep]];
+            if (targetIdx !== undefined && tineElements[targetIdx]) {
+              tineElements[targetIdx].classList.add('is-target');
+            }
+          }
+          return;
+        }
+
+        if (state.selectedChordId) {
+          const chord = getChordById(state.selectedChordId);
+          getChordIndices(chord).forEach((idx) => {
+            const btn = tineElements[idx];
+            if (!btn) return;
+            btn.classList.add('is-chord');
+            if (ACTIVE_TINES[idx].side === 'left') btn.classList.add('is-left-hint');
+          });
+        }
+      }
+
+      // ============================================================
+      // 9. ZERO-DELAY PLUCK TRIGGER
+      // ============================================================
+      let holeTimer = null;
+
+      function triggerTine(idx, fromUser = true, velocity = 0.88) {
+        const tine = ACTIVE_TINES[idx];
+        if (!tine) return;
+
+        // 1. AUDIO IMMEDIATELY (0ms before DOM)
+        const panVal = ACTIVE_TINES.length > 1 ? ((idx / (ACTIVE_TINES.length - 1)) * 2 - 1) * 0.58 : 0;
+        audio.playNote(tine.midi, panVal, fromUser ? velocity : velocity * 0.88);
+
+        // 2. Non-blocking spring animation
+        const btn = tineElements[idx];
+        if (btn) {
+          btn.classList.add('is-plucked');
+          if (btn.animate) {
+            btn.animate(
+              [
+                { transform: 'scaleY(1) translateY(0)' },
+                { transform: 'scaleY(1.035) translateY(3px)', offset: 0.2 },
+                { transform: 'scaleY(0.985) translateY(-1.5px)', offset: 0.5 },
+                { transform: 'scaleY(1) translateY(0)' }
+              ],
+              { duration: 260, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+            );
+          }
+          clearTimeout(btn._pluckTimer);
+          btn._pluckTimer = setTimeout(() => btn.classList.remove('is-plucked'), 220);
+        }
+
+        els.soundholeBtn.classList.add('is-resonating');
+        clearTimeout(holeTimer);
+        holeTimer = setTimeout(() => els.soundholeBtn.classList.remove('is-resonating'), 130);
+
+        // 3. Recorder
+        if (fromUser && state.isRecording) {
+          state.recordedEvents.push({ token: tine.token, time: Date.now() - state.recStartTime });
+          renderRecordedNotes();
+        }
+
+        // 4. Learn Practice
+        if (fromUser && state.activeTab === 'learn' && state.learnActive && state.learnMode === 'practice') {
+          handlePracticePluck(idx);
+        }
+      }
+
+      function playChordArpeggio(chord, velocity = 0.82) {
+        if (!chord) return;
+        const indices = getChordIndices(chord);
+        if (indices.length === 0) {
+          chord.tokens.forEach((tok, i) => {
+            const t = BASE_17.find(x => x.token === tok);
+            if (t) setTimeout(() => audio.playNote(t.midi, 0, velocity), i * 62);
+          });
+          return;
+        }
+        indices.forEach((idx, i) => setTimeout(() => triggerTine(idx, false, velocity), i * 62));
+      }
+
+      function playChordBlock(chord, velocity = 0.72) {
+        if (!chord) return;
+        getChordIndices(chord).forEach(idx => triggerTine(idx, false, velocity));
+      }
+
+      // ============================================================
+      // 10. CUE PILL & COMBO
+      // ============================================================
+      function updateCuePill() {
+        if (state.activeTab === 'learn') {
+          const song = getSongById(state.selectedSongId);
+          els.cueTitle.textContent = `${song.title} · ${state.activeSongChordId}`;
+          const windowNotes = song.notes.slice(Math.max(0, state.learnStep), Math.max(0, state.learnStep) + 7);
+          if (windowNotes.length === 0) {
+            els.cueNotes.innerHTML = '<span class="text-[#34D399]">Selesai!</span>';
+          } else {
+            els.cueNotes.innerHTML = windowNotes.map((tok, i) => {
+              const isCurr = i === 0 && state.learnActive;
+              return `<span class="${isCurr ? 'text-[#FBBF24] font-bold' : 'text-white/75'}">${renderMiniNoteHTML(tok)}</span>`;
+            }).join('');
+          }
+          els.comboPill.classList.toggle('hidden', state.combo < 3 || !state.learnActive);
+          els.comboPill.textContent = `Combo x${state.combo}`;
+          return;
+        }
+
+        els.comboPill.classList.add('hidden');
+        if (state.selectedChordId) {
+          const chord = getChordById(state.selectedChordId);
+          els.cueTitle.textContent = chord.name;
+          els.cueNotes.innerHTML = chord.tokens
+            .map(tok => `<span class="text-white">${renderMiniNoteHTML(tok)}</span>`)
+            .join('<span class="text-white/30">·</span>');
+        } else {
+          els.cueTitle.textContent = 'Main Bebas';
+          els.cueNotes.innerHTML = `<span class="text-white/70 text-xs font-sans">${state.keyCount} Key</span>`;
+        }
+      }
+
+      // ============================================================
+      // 11. CHORD EXPLORER
+      // ============================================================
+      function selectChord(id, shouldPlay = false) {
+        const chord = getChordById(id);
+        if (!chord) return;
+
+        const missing = chord.tokens.some(tok => TOKEN_TO_IDX[tok] === undefined);
+        if (missing && state.keyCount < 17) {
+          setKeyCount(17, false);
+          showToast(`Otomatis ke 17 Key untuk chord ${chord.symbol}`);
+        }
+
+        state.selectedChordId = id;
+        els.chordBadgeBig.textContent = chord.symbol;
+        els.chordDetailName.textContent = chord.name;
+        els.chordDetailTechnique.textContent = chord.technique;
+        els.chordDetailNumbers.innerHTML = chord.tokens.map(renderMiniNoteHTML).join(' · ');
+        els.chordDetailLetters.textContent = chord.tokens.map(tokenToNote).join(' · ');
+        els.chordDetailThumb.textContent = chord.thumb;
+
+        renderChordGrid();
+        updateTineHighlights();
+        updateCuePill();
+        if (shouldPlay) playChordArpeggio(chord);
+      }
+
+      function renderChordGrid() {
+        const q = state.chordSearch.trim().toLowerCase();
+        const filtered = CHORDS.filter((c) => {
+          const catOk = state.chordCategory === 'all' || c.category === state.chordCategory;
+          const qOk = !q || c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q);
+          return catOk && qOk;
+        });
+
+        if (filtered.length === 0) {
+          els.chordGrid.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-[#6E685F] bg-white rounded-2xl border border-[#181512]/[0.06]">Chord tidak ditemukan.</div>';
+          return;
+        }
+
+        els.chordGrid.innerHTML = filtered.map((c) => {
+          const active = c.id === state.selectedChordId;
+          const nums = c.tokens.map(renderMiniNoteHTML).join(' ');
+          return `
+            <button data-chord="${c.id}" class="chord-card text-left p-3 rounded-2xl border transition-all ${
+              active
+                ? 'bg-[#181512] text-[#FAF8F4] border-[#181512] shadow-sm'
+                : 'bg-white text-[#181512] border-[#181512]/[0.08] hover:border-[#D97706]/50'
+            }">
+              <div class="flex items-center justify-between gap-1">
+                <span class="font-serif text-xl sm:text-2xl leading-none ${active ? 'text-[#FBBF24]' : 'text-[#181512]'}">${c.symbol}</span>
+                <span class="text-[10px] font-mono ${active ? 'text-white/80' : 'text-[#D97706]'}">${nums}</span>
+              </div>
+              <div class="mt-1 text-[11px] truncate ${active ? 'text-white/60' : 'text-[#6E685F]'}">${c.name}</div>
+            </button>
+          `;
+        }).join('');
+
+        els.chordGrid.querySelectorAll('.chord-card').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            stopProgression();
+            selectChord(btn.dataset.chord, true);
+          });
+        });
+      }
+
+      function renderProgressions() {
+        els.progressionList.innerHTML = PROGRESSIONS.map((p) => {
+          const isPlaying = state.activeProgressionId === p.id;
+          return `
+            <button data-prog="${p.id}" class="prog-card text-left p-3 rounded-xl border transition-all flex items-center justify-between gap-2.5 ${
+              isPlaying ? 'bg-[#FFFBEB] border-[#D97706]' : 'bg-[#FAF8F4] border-[#181512]/[0.07] hover:border-[#181512]/25'
+            }">
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-[#181512]">${p.name}</div>
+                <div class="mt-1 flex flex-wrap gap-1">
+                  ${p.chords.map(cid => `<span class="px-1.5 py-0.5 rounded bg-white border border-[#181512]/[0.07] font-mono text-[10px] text-[#181512]">${cid}</span>`).join('')}
+                </div>
+              </div>
+              <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isPlaying ? 'bg-[#D97706] text-white' : 'bg-white text-[#181512] border border-[#181512]/10'}">
+                <iconify-icon icon="${isPlaying ? 'solar:stop-bold' : 'solar:play-bold'}" width="12" height="12"></iconify-icon>
+              </div>
+            </button>
+          `;
+        }).join('');
+
+        syncSolarIcons(els.progressionList);
+        els.progressionList.querySelectorAll('.prog-card').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.prog;
+            if (state.activeProgressionId === id) stopProgression();
+            else playProgression(id);
+          });
+        });
+      }
+
+      function stopProgression() {
+        clearInterval(state.activeProgressionTimer);
+        state.activeProgressionTimer = null;
+        state.activeProgressionId = null;
+        renderProgressions();
+      }
+
+      function playProgression(id) {
+        stopProgression();
+        const prog = PROGRESSIONS.find(p => p.id === id);
+        if (!prog) return;
+        state.activeProgressionId = id;
+        renderProgressions();
+        let step = 0;
+        const runStep = () => { selectChord(prog.chords[step % prog.chords.length], true); step++; };
+        runStep();
+        state.activeProgressionTimer = setInterval(runStep, 1400);
+      }
+
+      // ============================================================
+      // 12. LEARN MODE + METRONOME + CUSTOM TAB
+      // ============================================================
+      function getSongChordAtStep(song, step) {
+        let current = song.chordList[0] || 'C';
+        const keys = Object.keys(song.chordChanges || {}).map(Number).sort((a, b) => a - b);
+        for (const k of keys) if (k <= step) current = song.chordChanges[k];
+        return current;
+      }
+
+      function selectSong(songId) {
+        stopLearn();
+        state.selectedSongId = songId;
+        const song = getSongById(songId);
+
+        const missing = song.notes.some(tok => TOKEN_TO_IDX[tok] === undefined);
+        if (missing && state.keyCount < 17) {
+          setKeyCount(17, false);
+          showToast('Otomatis ke 17 Key agar semua nada lagu tersedia');
+        }
+
+        state.bpm = song.bpm;
+        state.speedMult = 1;
+        state.learnStep = 0;
+        state.learnAttempts = 0;
+        state.learnCorrect = 0;
+        state.combo = 0;
+        state.activeSongChordId = getSongChordAtStep(song, 0);
+
+        els.learnSongTag.textContent = song.viral ? 'Viral 2026' : song.region;
+        els.learnSongLevel.textContent = song.level;
+        els.learnSongTitle.textContent = song.title;
+        els.learnSongArtist.textContent = song.artist || '';
+        els.learnSongBpmBadge.textContent = `${song.bpm} BPM`;
+        els.bpmSlider.value = song.bpm;
+        els.bpmValue.textContent = `${song.bpm} BPM`;
+
+        document.querySelectorAll('.speed-btn').forEach(b => {
+          const isOne = Number(b.dataset.speed) === 1;
+          b.className = isOne
+            ? 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#181512] text-white'
+            : 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]';
+        });
+
+        renderSongChordStrip();
+        renderSongGrid();
+        renderSongTabStrip();
+        updateLearnProgress();
+        updateCuePill();
+        updateTineHighlights();
+      }
+
+      function renderSongChordStrip() {
+        const song = getSongById(state.selectedSongId);
+        els.songChordStrip.innerHTML = song.chordList.map((cid) => {
+          const isCurr = cid === state.activeSongChordId;
+          return `
+            <button data-song-chord="${cid}" class="song-chord-btn px-2.5 py-1 rounded-lg font-mono text-xs font-medium border transition-all ${
+              isCurr ? 'bg-[#D97706] text-white border-[#B45309] shadow-xs' : 'bg-white text-[#181512] border-[#181512]/10 hover:border-[#D97706]'
+            }">${cid}</button>
+          `;
+        }).join('');
+
+        els.songChordStrip.querySelectorAll('.song-chord-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const cid = btn.dataset.songChord;
+            state.activeSongChordId = cid;
+            state.selectedChordId = cid;
+            renderSongChordStrip();
+            updateTineHighlights();
+            playChordArpeggio(getChordById(cid), 0.78);
+          });
+        });
+      }
+
+      function renderSongGrid() {
+        const bestScores = loadBestScores();
+        const q = state.songSearch.trim().toLowerCase();
+        const filtered = SONGS.filter((s) => {
+          const regionOk =
+            state.songRegionFilter === 'all' ||
+            (state.songRegionFilter === 'Viral 2026' ? s.viral : s.region === state.songRegionFilter);
+          const qOk = !q || s.title.toLowerCase().includes(q) || (s.artist || '').toLowerCase().includes(q);
+          return regionOk && qOk;
+        });
+
+        if (filtered.length === 0) {
+          els.songGrid.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-[#6E685F] bg-white rounded-2xl border border-[#181512]/[0.06]">Lagu tidak ditemukan.</div>';
+          return;
+        }
+
+        els.songGrid.innerHTML = filtered.map((s) => {
+          const active = s.id === state.selectedSongId;
+          const best = bestScores[s.id];
+          return `
+            <button data-song="${s.id}" class="song-card text-left p-3.5 rounded-2xl border transition-all ${
+              active ? 'bg-[#181512] text-[#FAF8F4] border-[#181512] shadow-sm' : 'bg-white text-[#181512] border-[#181512]/[0.08] hover:border-[#D97706]/50'
+            }">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded-full ${active ? 'bg-[#D97706] text-white' : s.viral ? 'bg-[#FFFBEB] text-[#B45309] border border-[#FDE68A]' : 'bg-[#F2EFE9] text-[#6E685F]'}">${s.viral ? 'Viral 2026' : s.region}</span>
+                  ${best ? `<span class="text-[10px] font-mono ${active ? 'text-[#34D399]' : 'text-[#047857]'}">${best}%</span>` : ''}
+                </div>
+                <span class="text-[10px] font-mono ${active ? 'text-white/60' : 'text-[#6E685F]'}">${s.bpm} BPM</span>
+              </div>
+              <h4 class="font-serif text-xl mt-1.5 leading-tight">${s.title}</h4>
+              <div class="text-[11px] ${active ? 'text-white/65' : 'text-[#6E685F]'}">${s.artist || ''}</div>
+              <div class="mt-2 flex flex-wrap items-center gap-1">
+                ${s.chordList.map(c => `<span class="px-1.5 py-0.5 rounded font-mono text-[10px] ${active ? 'bg-white/10 text-[#FBBF24]' : 'bg-[#FAF8F4] text-[#D97706] border border-[#181512]/[0.06]'}">${c}</span>`).join('')}
+              </div>
+            </button>
+          `;
+        }).join('');
+
+        els.songGrid.querySelectorAll('.song-card').forEach((btn) => {
+          btn.addEventListener('click', () => selectSong(btn.dataset.song));
+        });
+      }
+
+      function renderSongTabStrip() {
+        const song = getSongById(state.selectedSongId);
+        els.songTabStrip.innerHTML = song.notes.map((tok, i) => {
+          const done = i < state.learnStep;
+          const curr = i === state.learnStep && state.learnActive;
+          const chordTag = song.chordChanges && song.chordChanges[i] ? song.chordChanges[i] : '';
+          return `
+            <div data-step="${i}" class="shrink-0 min-w-[34px] px-1.5 py-1 rounded-xl font-mono text-xs flex flex-col items-center justify-center border transition-all ${
+              curr
+                ? 'bg-[#D97706] text-white border-[#B45309] scale-105 shadow-xs font-semibold'
+                : done
+                  ? 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]'
+                  : 'bg-[#FAF8F4] text-[#181512] border-[#181512]/[0.08]'
+            }">
+              <span class="text-[9px] leading-none h-2.5 ${curr ? 'text-[#FEF3C7]' : 'text-[#D97706]'}">${chordTag}</span>
+              <span class="mt-0.5">${renderMiniNoteHTML(tok)}</span>
+            </div>
+          `;
+        }).join('');
+
+        const activeChip = els.songTabStrip.querySelector(`[data-step="${state.learnStep}"]`);
+        if (activeChip) activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      function updateLearnProgress() {
+        const song = getSongById(state.selectedSongId);
+        const total = song.notes.length;
+        const pct = Math.round((state.learnStep / total) * 100);
+        const acc = state.learnAttempts === 0 ? 100 : Math.round((state.learnCorrect / state.learnAttempts) * 100);
+        els.learnProgressText.textContent = `${state.learnStep} / ${total} nada`;
+        els.learnAccuracyText.textContent = `${acc}%`;
+        els.learnProgressBar.style.width = `${pct}%`;
+      }
+
+      function startLearn() {
+        const song = getSongById(state.selectedSongId);
+        if (state.learnStep >= song.notes.length) {
+          state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0;
+        }
+        state.learnActive = true;
+        state.activeSongChordId = getSongChordAtStep(song, state.learnStep);
+        setSolarIcon(els.iconLearnPlay, 'solar:pause-bold');
+        els.labelLearnPlay.textContent = 'Jeda';
+
+        renderSongChordStrip();
+        updateLearnProgress();
+        renderSongTabStrip();
+        updateCuePill();
+        updateTineHighlights();
+
+        if (state.learnMode === 'demo') runDemoLoop();
+      }
+
+      function stopLearn() {
+        state.learnActive = false;
+        clearTimeout(state.demoTimer);
+        state.demoTimer = null;
+        setSolarIcon(els.iconLearnPlay, 'solar:play-bold');
+        els.labelLearnPlay.textContent = state.learnMode === 'practice' ? 'Mulai' : 'Putar';
+        renderSongTabStrip();
+        updateCuePill();
+        updateTineHighlights();
+      }
+
+      function runDemoLoop() {
+        clearTimeout(state.demoTimer);
+        if (!state.learnActive || state.learnMode !== 'demo') return;
+
+        const song = getSongById(state.selectedSongId);
+        if (state.learnStep >= song.notes.length) {
+          if (state.learnLoop) {
+            state.learnStep = 0;
+          } else {
+            stopLearn();
+            showToast(`"${song.title}" selesai`);
+            return;
+          }
+        }
+
+        if (song.chordChanges && song.chordChanges[state.learnStep]) {
+          state.activeSongChordId = song.chordChanges[state.learnStep];
+          renderSongChordStrip();
+          if (state.demoWithChords) {
+            const c = getChordById(state.activeSongChordId);
+            if (c) {
+              c.tokens.forEach((tok) => {
+                const t = BASE_17.find(x => x.token === tok);
+                if (t) audio.playNote(t.midi - 12, 0, 0.26);
+              });
+            }
+          }
+        }
+
+        const idx = TOKEN_TO_IDX[song.notes[state.learnStep]];
+        updateTineHighlights();
+        renderSongTabStrip();
+        updateCuePill();
+        if (idx !== undefined) triggerTine(idx, false, 0.9);
+
+        state.learnStep++;
+        updateLearnProgress();
+
+        const effectiveBpm = Math.max(35, state.bpm * state.speedMult);
+        state.demoTimer = setTimeout(runDemoLoop, Math.round(60000 / effectiveBpm));
+      }
+
+      function handlePracticePluck(idx) {
+        const song = getSongById(state.selectedSongId);
+        if (state.learnStep >= song.notes.length) return;
+
+        const expectedIdx = TOKEN_TO_IDX[song.notes[state.learnStep]];
+        state.learnAttempts++;
+
+        if (idx === expectedIdx) {
+          state.learnCorrect++;
+          state.combo++;
+          state.learnStep++;
+          state.activeSongChordId = getSongChordAtStep(song, state.learnStep);
+          renderSongChordStrip();
+          updateLearnProgress();
+          renderSongTabStrip();
+          updateCuePill();
+          updateTineHighlights();
+
+          if (state.learnStep >= song.notes.length) {
+            const acc = Math.round((state.learnCorrect / state.learnAttempts) * 100);
+            saveBestScore(song.id, acc);
+            renderSongGrid();
+            if (state.learnLoop) {
+              showToast(`Mantap (${acc}%)! Mengulang...`);
+              state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0;
+              updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateTineHighlights();
+            } else {
+              stopLearn();
+              showToast(`"${song.title}" selesai · Akurasi ${acc}%`);
+            }
+          }
+        } else {
+          state.combo = 0;
+          const btn = tineElements[idx];
+          if (btn) {
+            btn.classList.add('is-wrong');
+            setTimeout(() => btn.classList.remove('is-wrong'), 240);
+          }
+          updateLearnProgress();
+          updateCuePill();
+        }
+      }
+
+      // Metronome
+      function stopMetronome() {
+        state.metroOn = false;
+        clearInterval(state.metroTimer);
+        state.metroTimer = null;
+        els.btnMetronome.classList.remove('bg-[#181512]', 'text-white');
+        els.btnMetronome.classList.add('bg-[#F5F2EC]', 'text-[#6E685F]');
+        els.metroDot.className = 'w-2 h-2 rounded-full bg-[#6E685F]/40 transition-colors';
+      }
+
+      function startMetronome() {
+        stopMetronome();
+        state.metroOn = true;
+        state.metroBeat = 0;
+        els.btnMetronome.classList.add('bg-[#181512]', 'text-white');
+        els.btnMetronome.classList.remove('bg-[#F5F2EC]', 'text-[#6E685F]');
+        const tick = () => {
+          const isAccent = state.metroBeat % 4 === 0;
+          audio.playMetronomeClick(isAccent);
+          els.metroDot.className = isAccent
+            ? 'w-2 h-2 rounded-full bg-[#FBBF24] scale-125 transition-all'
+            : 'w-2 h-2 rounded-full bg-white transition-all';
+          setTimeout(() => {
+            if (state.metroOn) els.metroDot.className = 'w-2 h-2 rounded-full bg-white/40 transition-all';
+          }, 110);
+          state.metroBeat++;
+        };
+        tick();
+        const effectiveBpm = Math.max(35, state.bpm * state.speedMult);
+        state.metroTimer = setInterval(tick, Math.round(60000 / effectiveBpm));
+      }
+
+      // ============================================================
+      // 13. RECORDER
+      // ============================================================
+      function renderRecordedNotes() {
+        const hasNotes = state.recordedEvents.length > 0;
+        els.btnRecPlay.disabled = !hasNotes || state.isRecording;
+        els.btnRecCopy.disabled = !hasNotes;
+        els.btnRecClear.disabled = !hasNotes;
+
+        if (!hasNotes) {
+          els.recNotesDisplay.innerHTML = '<span class="text-xs text-[#6E685F] font-sans italic">Tekan Rekam lalu mainkan Keylimba di atas.</span>';
+          return;
+        }
+        els.recNotesDisplay.innerHTML = state.recordedEvents
+          .map(ev => `<span class="px-2 py-0.5 rounded-md bg-white border border-[#181512]/10 text-xs font-mono text-[#181512]">${renderMiniNoteHTML(ev.token)}</span>`)
+          .join('');
+      }
+
+      function stopRecordingPlayback() {
+        state.playbackTimers.forEach(clearTimeout);
+        state.playbackTimers = [];
+      }
+
+      function toggleRecording() {
+        stopRecordingPlayback();
+        if (!state.isRecording) {
+          state.isRecording = true;
+          state.recordedEvents = [];
+          state.recStartTime = Date.now();
+          els.recStatus.textContent = 'Merekam...';
+          els.recStatus.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#FEF2F2] text-[#DC2626]';
+          els.labelRec.textContent = 'Berhenti';
+          setSolarIcon(els.iconRec, 'solar:stop-circle-bold');
+          renderRecordedNotes();
+        } else {
+          state.isRecording = false;
+          els.recStatus.textContent = `${state.recordedEvents.length} nada`;
+          els.recStatus.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#ECFDF5] text-[#047857]';
+          els.labelRec.textContent = 'Rekam';
+          setSolarIcon(els.iconRec, 'solar:record-circle-bold');
+          renderRecordedNotes();
+        }
+      }
+
+      function playRecorded() {
+        stopRecordingPlayback();
+        if (state.recordedEvents.length === 0) return;
+        const t0 = state.recordedEvents[0].time;
+        state.recordedEvents.forEach((ev) => {
+          const id = setTimeout(() => {
+            const idx = TOKEN_TO_IDX[ev.token];
+            if (idx !== undefined) triggerTine(idx, false);
+          }, Math.max(0, ev.time - t0));
+          state.playbackTimers.push(id);
+        });
+      }
+
+      function copyRecordedTabs() {
+        if (state.recordedEvents.length === 0) return;
+        const text = state.recordedEvents.map(ev => tokenToLabel(ev.token)).join(' ');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast('Tab disalin')).catch(() => fallbackCopy(text));
+        } else fallbackCopy(text);
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); showToast('Tab disalin'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+
+      // ============================================================
+      // 14. CONTROLS & EVENTS
+      // ============================================================
+      function setKeyCount(count, notify = true) {
+        const next = Math.max(5, Math.min(21, Number(count) || 17));
+        if (next === state.keyCount) return;
+        state.keyCount = next;
+        els.labelKeyCount.textContent = `${state.keyCount} Key`;
+        els.btnKeyMinus.disabled = state.keyCount <= 5;
+        els.btnKeyPlus.disabled = state.keyCount >= 21;
+        els.btnKeyMinus.classList.toggle('opacity-30', state.keyCount <= 5);
+        els.btnKeyPlus.classList.toggle('opacity-30', state.keyCount >= 21);
+        buildTines();
+        updateCuePill();
+        if (notify) showToast(`${state.keyCount} Key aktif`);
+      }
+
+      function switchTab(tab) {
+        stopProgression();
+        stopLearn();
+        state.activeTab = tab;
+
+        els.panelChords.classList.toggle('hidden', tab !== 'chords');
+        els.panelLearn.classList.toggle('hidden', tab !== 'learn');
+        els.panelStudio.classList.toggle('hidden', tab !== 'studio');
+
+        document.querySelectorAll('.tab-btn').forEach((btn) => {
+          const m = btn.dataset.tab === tab;
+          btn.classList.toggle('bg-white', m);
+          btn.classList.toggle('text-[#181512]', m);
+          btn.classList.toggle('shadow-xs', m);
+          btn.classList.toggle('text-[#6E685F]', !m);
+        });
+
+        updateTineHighlights();
+        updateCuePill();
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+
+      els.btnKeyMinus.addEventListener('click', () => setKeyCount(state.keyCount - 1, false));
+      els.btnKeyPlus.addEventListener('click', () => setKeyCount(state.keyCount + 1, false));
+
+      els.selectInstrument.addEventListener('change', (e) => {
+        audio.instrument = e.target.value;
+        triggerTine(Math.floor(ACTIVE_TINES.length / 2), false);
+      });
+
+      els.btnNotation.addEventListener('click', () => {
+        const order = ['both', 'number', 'letter'];
+        state.notationMode = order[(order.indexOf(state.notationMode) + 1) % order.length];
+        updateNotationDisplay();
+      });
+
+      els.btnKeysToggle.addEventListener('click', () => {
+        state.showKeyHints = !state.showKeyHints;
+        updateNotationDisplay();
+      });
+
+      els.btnMute.addEventListener('click', () => {
+        const nextMuted = !audio.muted;
+        audio.setMuted(nextMuted);
+        setSolarIcon(els.iconMute, nextMuted ? 'solar:volume-cross-bold-duotone' : 'solar:volume-loud-bold-duotone');
+        els.btnMute.classList.toggle('text-[#DC2626]', nextMuted);
+      });
+
+      // Modals
+      els.btnGuide.addEventListener('click', () => els.modalGuide.classList.remove('hidden'));
+      els.btnCloseGuide.addEventListener('click', () => els.modalGuide.classList.add('hidden'));
+      els.modalGuide.addEventListener('click', (e) => { if (e.target === els.modalGuide) els.modalGuide.classList.add('hidden'); });
+
+      els.btnOpenCustomTab.addEventListener('click', () => els.modalCustomTab.classList.remove('hidden'));
+      const closeCustom = () => els.modalCustomTab.classList.add('hidden');
+      els.btnCloseCustom.addEventListener('click', closeCustom);
+      els.btnCancelCustom.addEventListener('click', closeCustom);
+      els.modalCustomTab.addEventListener('click', (e) => { if (e.target === els.modalCustomTab) closeCustom(); });
+
+      els.btnSaveCustom.addEventListener('click', () => {
+        const title = els.customTabTitle.value.trim() || 'Tab Kustomku';
+        const raw = els.customTabNotes.value.trim().replace(/[°*]/g, "'").replace(/["”]/g, "''");
+        const validSet = new Set(BASE_17.map(t => t.token));
+        const parsed = raw.split(/[\s,\-\n]+/).filter(tok => validSet.has(tok));
+        if (parsed.length < 2) {
+          showToast('Masukkan minimal 2 nada valid (mis. 1 3 5 1\')');
+          return;
+        }
+        const customId = 'custom-' + Date.now();
+        SONGS.unshift({
+          id: customId,
+          title,
+          artist: 'Tab Sendiri',
+          region: 'Indonesia',
+          viral: false,
+          level: 'Kustom',
+          bpm: 92,
+          chordList: ['C', 'G', 'Am', 'F'],
+          chordChanges: { 0: 'C' },
+          notes: parsed
+        });
+        closeCustom();
+        els.customTabTitle.value = '';
+        els.customTabNotes.value = '';
+        state.songRegionFilter = 'all';
+        selectSong(customId);
+        showToast(`"${title}" siap dilatih (${parsed.length} nada)`);
+      });
+
+      els.soundholeBtn.addEventListener('click', () => playChordArpeggio(getChordById(state.selectedChordId || 'C')));
+      els.btnPlayArpeggio.addEventListener('click', () => playChordArpeggio(getChordById(state.selectedChordId || 'C')));
+      els.btnPlayBlock.addEventListener('click', () => playChordBlock(getChordById(state.selectedChordId || 'C')));
+      els.btnClearHighlight.addEventListener('click', () => {
+        stopProgression(); stopLearn(); state.selectedChordId = null;
+        renderChordGrid(); updateTineHighlights(); updateCuePill();
+      });
+
+      document.querySelectorAll('.cat-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.chordCategory = btn.dataset.cat;
+          document.querySelectorAll('.cat-pill').forEach((b) => {
+            const act = b.dataset.cat === state.chordCategory;
+            b.className = act
+              ? 'cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#181512] text-white shrink-0 transition-colors'
+              : 'cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors';
+          });
+          renderChordGrid();
+        });
+      });
+
+      els.chordSearch.addEventListener('input', (e) => { state.chordSearch = e.target.value; renderChordGrid(); });
+
+      document.querySelectorAll('.region-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.songRegionFilter = btn.dataset.region;
+          document.querySelectorAll('.region-pill').forEach((b) => {
+            const act = b.dataset.region === state.songRegionFilter;
+            b.className = act
+              ? 'region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#181512] text-white shrink-0 transition-colors'
+              : 'region-pill px-3.5 py-1.5 rounded-full text-xs font-medium bg-white border border-[#181512]/10 text-[#6E685F] hover:text-[#181512] shrink-0 transition-colors';
+          });
+          renderSongGrid();
+        });
+      });
+
+      els.songSearch.addEventListener('input', (e) => { state.songSearch = e.target.value; renderSongGrid(); });
+
+      els.modePracticeBtn.addEventListener('click', () => {
+        stopLearn(); state.learnMode = 'practice';
+        els.modePracticeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium bg-white text-[#181512] shadow-xs flex items-center gap-1.5';
+        els.modeDemoBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-[#6E685F] hover:text-[#181512] flex items-center gap-1.5';
+        els.labelLearnPlay.textContent = 'Mulai';
+      });
+
+      els.modeDemoBtn.addEventListener('click', () => {
+        stopLearn(); state.learnMode = 'demo';
+        els.modeDemoBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium bg-white text-[#181512] shadow-xs flex items-center gap-1.5';
+        els.modePracticeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-[#6E685F] hover:text-[#181512] flex items-center gap-1.5';
+        els.labelLearnPlay.textContent = 'Putar';
+      });
+
+      els.btnLearnPlayToggle.addEventListener('click', () => { if (state.learnActive) stopLearn(); else startLearn(); });
+
+      els.btnLearnLoop.addEventListener('click', () => {
+        state.learnLoop = !state.learnLoop;
+        els.btnLearnLoop.classList.toggle('bg-[#181512]', state.learnLoop);
+        els.btnLearnLoop.classList.toggle('text-white', state.learnLoop);
+        els.btnLearnLoop.classList.toggle('bg-[#F5F2EC]', !state.learnLoop);
+        els.btnLearnLoop.classList.toggle('text-[#6E685F]', !state.learnLoop);
+      });
+
+      els.btnMetronome.addEventListener('click', () => {
+        if (state.metroOn) stopMetronome();
+        else startMetronome();
+      });
+
+      els.btnLearnRestart.addEventListener('click', () => {
+        stopLearn();
+        state.learnStep = 0; state.learnAttempts = 0; state.learnCorrect = 0; state.combo = 0;
+        state.activeSongChordId = getSongChordAtStep(getSongById(state.selectedSongId), 0);
+        renderSongChordStrip(); updateLearnProgress(); renderSongTabStrip(); updateCuePill(); updateTineHighlights();
+      });
+
+      els.toggleDemoChords.addEventListener('change', (e) => { state.demoWithChords = e.target.checked; });
+
+      document.querySelectorAll('.speed-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.speedMult = Number(btn.dataset.speed);
+          document.querySelectorAll('.speed-btn').forEach((b) => {
+            const act = Number(b.dataset.speed) === state.speedMult;
+            b.className = act
+              ? 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#181512] text-white'
+              : 'speed-btn px-2 py-1 rounded-lg text-[10px] font-mono bg-[#F2EFE9] text-[#6E685F] hover:text-[#181512]';
+          });
+          if (state.metroOn) startMetronome();
+        });
+      });
+
+      els.bpmSlider.addEventListener('input', (e) => {
+        state.bpm = Number(e.target.value);
+        els.bpmValue.textContent = `${state.bpm} BPM`;
+        els.learnSongBpmBadge.textContent = `${state.bpm} BPM`;
+        if (state.metroOn) startMetronome();
+      });
+
+      document.querySelectorAll('.tuning-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const st = Number(btn.dataset.semitone);
+          audio.transpose = st;
+          els.transposeLabel.textContent = btn.dataset.name;
+          document.querySelectorAll('.tuning-btn').forEach((b) => {
+            const act = Number(b.dataset.semitone) === st;
+            b.className = act
+              ? 'tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#181512] text-white'
+              : 'tuning-btn py-2 rounded-xl text-xs font-mono font-medium bg-[#FAF8F4] border border-[#181512]/10 text-[#181512]';
+          });
+          triggerTine(Math.floor(ACTIVE_TINES.length / 2), false);
+        });
+      });
+
+      els.volSlider.addEventListener('input', (e) => {
+        const v = Number(e.target.value); els.volValue.textContent = `${v}%`; audio.setVolume(v / 100);
+      });
+
+      els.reverbSlider.addEventListener('input', (e) => {
+        const r = Number(e.target.value); els.reverbValue.textContent = `${r}%`; audio.setReverb(r / 100);
+      });
+
+      els.btnRecToggle.addEventListener('click', toggleRecording);
+      els.btnRecPlay.addEventListener('click', playRecorded);
+      els.btnRecCopy.addEventListener('click', copyRecordedTabs);
+      els.btnRecClear.addEventListener('click', () => {
+        stopRecordingPlayback(); state.recordedEvents = [];
+        els.recStatus.textContent = 'Siap';
+        els.recStatus.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-[#F2EFE9] text-[#6E685F]';
+        renderRecordedNotes();
+      });
+
+      // ZERO-DELAY 2-HAND KEYBOARD PLAY + SPACE STRUM
+      window.addEventListener('keydown', (e) => {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
+        if (e.repeat) return;
+
+        if (e.code === 'Space') {
+          e.preventDefault();
+          playChordArpeggio(getChordById(state.selectedChordId || 'C'));
+          return;
+        }
+        const k = e.key.toLowerCase();
+        if (KEY_TO_IDX[k] !== undefined) {
+          e.preventDefault();
+          triggerTine(KEY_TO_IDX[k], true);
+        }
+      });
+
+      // ============================================================
+      // 15. INIT
+      // ============================================================
+      syncSolarIcons(document);
+      buildTines();
+      renderProgressions();
+      selectChord('C', false);
+      selectSong('vierra-rasaini');
+      renderRecordedNotes();
+    })();
+  </script>
+</body>
+</html>
